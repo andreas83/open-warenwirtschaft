@@ -1,0 +1,684 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Benutzer {
+  BenutzerID      Int               @id @default(autoincrement())
+  Benutzername    String            @unique(map: "Benutzername") @db.VarChar(50)
+  PasswortHash    String            @db.VarChar(255)
+  Vorname         String?           @db.VarChar(100)
+  Nachname        String?           @db.VarChar(100)
+  Rolle           String            @db.VarChar(50)
+  Erstelldatum    DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?         @default(now()) @db.Timestamp(0)
+  IstAktiv        Boolean?          @default(true)
+  Bestellungen    Bestellungen[]
+  Lagerbewegungen Lagerbewegungen[]
+  Rechnungen      Rechnungen[]
+  Retouren        Retouren[]
+  Zahlungen       Zahlungen[]
+}
+
+model Bestand {
+  BestandID           Int                   @id @default(autoincrement())
+  ProduktID           Int
+  StandortID          Int
+  Menge               Decimal               @db.Decimal(10, 2)
+  Chargennummer       String?               @db.VarChar(100)
+  Ablaufdatum         DateTime?             @db.Date
+  Eingangsdatum       DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Status              Bestand_Status?       @default(Verf_gbar)
+  Lagerplatz          String?               @db.VarChar(100)
+  Mindestbestand      Decimal?              @default(0.00) @db.Decimal(10, 2)
+  Meldebestand        Decimal?              @default(0.00) @db.Decimal(10, 2)
+  LetzteAenderung     DateTime?             @default(now()) @db.Timestamp(0)
+  Produkte            Produkte              @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Bestand_ibfk_1")
+  Standorte           Standorte             @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Bestand_ibfk_2")
+  Bestellpositionen   Bestellpositionen[]
+  Lagerbewegungen     Lagerbewegungen[]
+  Rechnungspositionen Rechnungspositionen[]
+  Retourenpositionen  Retourenpositionen[]
+
+  @@unique([ProduktID, StandortID, Chargennummer], map: "uq_produkt_standort_charge")
+  @@index([ProduktID], map: "idx_bestand_produktid")
+  @@index([StandortID], map: "idx_bestand_standortid")
+}
+
+model Bestellpositionen {
+  BestellpositionsID       Int          @id @default(autoincrement())
+  BestellID                Int
+  ProduktID                Int
+  BestandID                Int?
+  Menge                    Decimal      @db.Decimal(10, 2)
+  EinzelpreisNetto         Decimal      @db.Decimal(10, 2)
+  GesamtpreisNettoPosition Decimal      @db.Decimal(10, 2)
+  MwSt_Satz                Decimal?     @db.Decimal(5, 2)
+  MwSt_Betrag              Decimal?     @db.Decimal(10, 2)
+  Beschreibung             String?      @db.VarChar(255)
+  Bestellungen             Bestellungen @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellpositionen_ibfk_1")
+  Produkte                 Produkte     @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellpositionen_ibfk_2")
+  Bestand                  Bestand?     @relation(fields: [BestandID], references: [BestandID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellpositionen_ibfk_3")
+
+  @@index([BestandID], map: "BestandID")
+  @@index([BestellID], map: "idx_bestellpositionen_bestellid")
+  @@index([ProduktID], map: "idx_bestellpositionen_produktid")
+}
+
+model Bestellungen {
+  BestellID            Int                         @id @default(autoincrement())
+  KundenID             Int
+  StandortID           Int?
+  ErfasstVonBenutzerID Int?
+  Bestellnummer        String?                     @unique(map: "Bestellnummer") @db.VarChar(50)
+  Bestelldatum         DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Lieferdatum          DateTime?                   @db.Date
+  Bestellstatus        Bestellungen_Bestellstatus? @default(Offen)
+  Lieferadresse        String?                     @db.Text
+  Versandkosten        Decimal?                    @default(0.00) @db.Decimal(10, 2)
+  GesamtsummeNetto     Decimal?                    @db.Decimal(10, 2)
+  GesamtsummeBrutto    Decimal?                    @db.Decimal(10, 2)
+  Waehrung             String?                     @default("EUR") @db.VarChar(3)
+  Kommentare           String?                     @db.Text
+  StorniertAm          DateTime?                   @db.Timestamp(0)
+  Erstelldatum         DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung      DateTime?                   @default(now()) @db.Timestamp(0)
+  Bestellpositionen    Bestellpositionen[]
+  Benutzer             Benutzer?                   @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellungen_ibfk_1")
+  Kunden               Kunden                      @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellungen_ibfk_2")
+  Standorte            Standorte?                  @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellungen_ibfk_3")
+  Rechnungen           Rechnungen[]
+  Retouren             Retouren[]
+
+  @@index([ErfasstVonBenutzerID], map: "ErfasstVonBenutzerID")
+  @@index([StandortID], map: "StandortID")
+  @@index([Bestelldatum], map: "idx_bestellungen_bestelldatum")
+  @@index([KundenID], map: "idx_bestellungen_kundenid")
+}
+
+model Einheiten {
+  EinheitID Int        @id @default(autoincrement())
+  Name      String     @unique(map: "Name") @db.VarChar(50)
+  Symbol    String     @unique(map: "Symbol") @db.VarChar(10)
+  Produkte  Produkte[]
+}
+
+model Gutschriften {
+  GutschriftID      Int                  @id @default(autoincrement())
+  KundenID          Int
+  RetourenID        Int?
+  RechnungsID       Int?
+  Gutschriftsnummer String               @unique(map: "Gutschriftsnummer") @db.VarChar(50)
+  Gutschriftsdatum  DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Faelligkeitsdatum DateTime?            @db.Date
+  Betrag            Decimal              @db.Decimal(10, 2)
+  Waehrung          String?              @default("EUR") @db.VarChar(3)
+  Status            Gutschriften_Status? @default(Ausgestellt)
+  StorniertAm       DateTime?            @db.Timestamp(0)
+  Kommentare        String?              @db.Text
+  Erstelldatum      DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung   DateTime?            @default(now()) @db.Timestamp(0)
+  Kunden            Kunden               @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Gutschriften_ibfk_1")
+  Retouren          Retouren?            @relation(fields: [RetourenID], references: [RetourenID], onDelete: NoAction, onUpdate: NoAction, map: "Gutschriften_ibfk_2")
+  Rechnungen        Rechnungen?          @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Gutschriften_ibfk_3")
+
+  @@index([KundenID], map: "KundenID")
+  @@index([RechnungsID], map: "RechnungsID")
+  @@index([RetourenID], map: "RetourenID")
+}
+
+model Kunden {
+  KundenID              Int                     @id @default(autoincrement())
+  Kundennummer          String?                 @unique(map: "Kundennummer") @db.VarChar(50)
+  KundengruppeID        Int?
+  Firmenname            String?                 @db.VarChar(255)
+  Anrede                Kunden_Anrede?
+  Vorname               String?                 @db.VarChar(100)
+  Nachname              String?                 @db.VarChar(100)
+  Adresse               String                  @db.VarChar(255)
+  PLZ                   String                  @db.VarChar(10)
+  Ort                   String                  @db.VarChar(100)
+  Land                  String                  @db.VarChar(100)
+  Telefon               String?                 @db.VarChar(50)
+  Email                 String?                 @unique(map: "Email") @db.VarChar(255)
+  UmsatzsteuerID        String?                 @db.VarChar(20)
+  Kundenstatus          Kunden_Kundenstatus?    @default(Aktiv)
+  Zahlungsbedingungen   String?                 @db.Text
+  Erstelldatum          DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung       DateTime?               @default(now()) @db.Timestamp(0)
+  Bestellungen          Bestellungen[]
+  Gutschriften          Gutschriften[]
+  Kundengruppen         Kundengruppen?          @relation(fields: [KundengruppeID], references: [KundengruppeID], onDelete: NoAction, onUpdate: NoAction, map: "Kunden_ibfk_1")
+  KundenRabattAnwendung KundenRabattAnwendung[]
+  Kundenkarten          Kundenkarten[]
+  Rechnungen            Rechnungen[]
+  Retouren              Retouren[]
+
+  @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
+  @@index([Nachname, Vorname], map: "idx_kunden_name")
+}
+
+model KundenRabattAnwendung {
+  KundenRabattAnwendungID Int                           @id @default(autoincrement())
+  KundenID                Int
+  RabattID                Int
+  GueltigAb               DateTime?                     @default(dbgenerated("(now())")) @db.Timestamp(0)
+  GueltigBis              DateTime?                     @db.Timestamp(0)
+  Status                  KundenRabattAnwendung_Status? @default(Aktiv)
+  Erstelldatum            DateTime?                     @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung         DateTime?                     @default(now()) @db.Timestamp(0)
+  Kunden                  Kunden                        @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "KundenRabattAnwendung_ibfk_1")
+  Rabatte                 Rabatte                       @relation(fields: [RabattID], references: [RabattID], onDelete: NoAction, onUpdate: NoAction, map: "KundenRabattAnwendung_ibfk_2")
+
+  @@index([KundenID], map: "KundenID")
+  @@index([RabattID], map: "RabattID")
+}
+
+model Kundengruppen {
+  KundengruppeID Int       @id @default(autoincrement())
+  Name           String    @unique(map: "Name") @db.VarChar(100)
+  Beschreibung   String?   @db.Text
+  Erstelldatum   DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Kunden         Kunden[]
+  Preise         Preise[]
+}
+
+model Kundenkarten {
+  KundenkartenID    Int                  @id @default(autoincrement())
+  KundenID          Int
+  Kartennummer      String               @unique(map: "Kartennummer") @db.VarChar(50)
+  Aktivierungsdatum DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Ablaufdatum       DateTime?            @db.Date
+  Status            Kundenkarten_Status? @default(Aktiv)
+  Bonuspunkte       Decimal?             @default(0.00) @db.Decimal(10, 2)
+  Erstelldatum      DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung   DateTime?            @default(now()) @db.Timestamp(0)
+  Kunden            Kunden               @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Kundenkarten_ibfk_1")
+
+  @@index([KundenID], map: "KundenID")
+}
+
+model Lagerbewegungen {
+  LagerbewegungID                                       Int                          @id @default(autoincrement())
+  BestandID                                             Int
+  BenutzerID                                            Int
+  Bewegungsdatum                                        DateTime?                    @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Bewegungstyp                                          Lagerbewegungen_Bewegungstyp
+  Menge                                                 Decimal                      @db.Decimal(10, 2)
+  QuelleStandortID                                      Int?
+  ZielStandortID                                        Int?
+  ReferenzDokumentID                                    Int?
+  ReferenzDokumentTyp                                   String?                      @db.VarChar(50)
+  Kommentare                                            String?                      @db.Text
+  Erstelldatum                                          DateTime?                    @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Benutzer                                              Benutzer                     @relation(fields: [BenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Lagerbewegungen_ibfk_1")
+  Bestand                                               Bestand                      @relation(fields: [BestandID], references: [BestandID], onDelete: NoAction, onUpdate: NoAction, map: "Lagerbewegungen_ibfk_2")
+  Standorte_Lagerbewegungen_QuelleStandortIDToStandorte Standorte?                   @relation("Lagerbewegungen_QuelleStandortIDToStandorte", fields: [QuelleStandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Lagerbewegungen_ibfk_3")
+  Standorte_Lagerbewegungen_ZielStandortIDToStandorte   Standorte?                   @relation("Lagerbewegungen_ZielStandortIDToStandorte", fields: [ZielStandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Lagerbewegungen_ibfk_4")
+
+  @@index([QuelleStandortID], map: "QuelleStandortID")
+  @@index([ZielStandortID], map: "ZielStandortID")
+  @@index([BenutzerID], map: "idx_lagerbewegungen_benutzerid")
+  @@index([BestandID], map: "idx_lagerbewegungen_bestandid")
+}
+
+model Lieferanten {
+  LieferantenID      Int                  @id @default(autoincrement())
+  Firmenname         String               @db.VarChar(255)
+  Ansprechpartner    String?              @db.VarChar(255)
+  Adresse            String?              @db.VarChar(255)
+  PLZ                String?              @db.VarChar(10)
+  Ort                String?              @db.VarChar(100)
+  Land               String?              @db.VarChar(100)
+  Telefon            String?              @db.VarChar(20)
+  Email              String?              @db.VarChar(255)
+  UmsatzsteuerID     String?              @db.VarChar(20)
+  Erstelldatum       DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung    DateTime?            @default(now()) @db.Timestamp(0)
+  ProduktLieferanten ProduktLieferanten[]
+}
+
+model Preise {
+  PreisID        Int             @id @default(autoincrement())
+  ProduktID      Int
+  Preis          Decimal         @db.Decimal(10, 2)
+  Waehrung       String?         @default("EUR") @db.VarChar(3)
+  GueltigAb      DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0)
+  GueltigBis     DateTime?       @db.Timestamp(0)
+  StandortID     Int?
+  KundengruppeID Int?
+  PreisTyp       Preise_PreisTyp @default(Standard)
+  Produkte       Produkte        @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Preise_ibfk_1")
+  Standorte      Standorte?      @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Preise_ibfk_2")
+  Kundengruppen  Kundengruppen?  @relation(fields: [KundengruppeID], references: [KundengruppeID], onDelete: NoAction, onUpdate: NoAction, map: "Preise_ibfk_3")
+
+  @@index([KundengruppeID], map: "idx_preise_kundengruppeid")
+  @@index([ProduktID], map: "idx_preise_produktid")
+  @@index([StandortID], map: "idx_preise_standortid")
+}
+
+model ProduktLieferanten {
+  ProduktID                Int
+  LieferantenID            Int
+  LieferantenArtikelnummer String?     @db.VarChar(50)
+  Lieferzeit               Int?
+  Mindestbestellmenge      Int?
+  PreisBeimLieferanten     Decimal?    @db.Decimal(10, 2)
+  WaehrungLieferant        String?     @db.VarChar(3)
+  Produkte                 Produkte    @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktLieferanten_ibfk_1")
+  Lieferanten              Lieferanten @relation(fields: [LieferantenID], references: [LieferantenID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktLieferanten_ibfk_2")
+
+  @@id([ProduktID, LieferantenID])
+  @@index([LieferantenID], map: "LieferantenID")
+}
+
+model ProduktZuKategorie {
+  ProduktID         Int
+  KategorieID       Int
+  Produkte          Produkte          @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktZuKategorie_ibfk_1")
+  Produktkategorien Produktkategorien @relation(fields: [KategorieID], references: [KategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktZuKategorie_ibfk_2")
+
+  @@id([ProduktID, KategorieID])
+  @@index([KategorieID], map: "KategorieID")
+}
+
+model Produkte {
+  ProduktID           Int                   @id @default(autoincrement())
+  Produktname         String                @db.VarChar(255)
+  Beschreibung        String?               @db.Text
+  Artikelnummer       String                @unique(map: "Artikelnummer") @db.VarChar(50)
+  EAN_Code            String?               @unique(map: "EAN_Code") @db.VarChar(50)
+  EinheitID           Int
+  UmsatzsteuersatzID  Int
+  Hersteller          String?               @db.VarChar(255)
+  Gewicht             Decimal?              @db.Decimal(10, 3)
+  Volumen             Decimal?              @db.Decimal(10, 3)
+  Erstelldatum        DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?             @default(now()) @db.Timestamp(0)
+  Bestand             Bestand[]
+  Bestellpositionen   Bestellpositionen[]
+  Preise              Preise[]
+  ProduktLieferanten  ProduktLieferanten[]
+  ProduktZuKategorie  ProduktZuKategorie[]
+  Umsatzsteuersaetze  Umsatzsteuersaetze    @relation(fields: [UmsatzsteuersatzID], references: [UmsatzsteuersatzID], onDelete: NoAction, onUpdate: NoAction, map: "Produkte_ibfk_1")
+  Einheiten           Einheiten             @relation(fields: [EinheitID], references: [EinheitID], onDelete: NoAction, onUpdate: NoAction, map: "Produkte_ibfk_2")
+  Rechnungspositionen Rechnungspositionen[]
+  Retourenpositionen  Retourenpositionen[]
+  ProduktBilder       ProduktBilder[]
+
+  @@index([EinheitID], map: "idx_produkte_einheitid")
+  @@index([Produktname], map: "idx_produkte_name")
+  @@index([UmsatzsteuersatzID], map: "idx_produkte_umsatzsteuersatzid")
+}
+
+model ProduktBilder {
+  BildID          Int       @id @default(autoincrement())
+  ProduktID       Int
+  BildPfad        String    @db.VarChar(255)
+  IstHauptbild    Boolean   @default(false)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Produkte        Produkte  @relation(fields: [ProduktID], references: [ProduktID], onDelete: Cascade, onUpdate: NoAction, map: "ProduktBilder_ibfk_1")
+
+  @@index([ProduktID], map: "idx_produktbilder_produktid")
+}
+
+model KategorieBilder {
+  BildID          Int               @id @default(autoincrement())
+  KategorieID     Int
+  BildPfad        String            @db.VarChar(255)
+  IstHauptbild    Boolean           @default(false)
+  Erstelldatum    DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Produktkategorien Produktkategorien @relation(fields: [KategorieID], references: [KategorieID], onDelete: Cascade, onUpdate: NoAction, map: "KategorieBilder_ibfk_1")
+
+  @@index([KategorieID], map: "idx_kategoriebilder_kategorieid")
+}
+
+model Produktkategorien {
+  KategorieID               Int                  @id @default(autoincrement())
+  Name                      String               @unique(map: "Name") @db.VarChar(100)
+  Beschreibung              String?              @db.Text
+  UebergeordneteKategorieID Int?
+  Erstelldatum              DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung           DateTime?            @default(now()) @db.Timestamp(0)
+  ProduktZuKategorie        ProduktZuKategorie[]
+  Produktkategorien         Produktkategorien?   @relation("ProduktkategorienToProduktkategorien", fields: [UebergeordneteKategorieID], references: [KategorieID], onDelete: NoAction, onUpdate: NoAction, map: "Produktkategorien_ibfk_1")
+  other_Produktkategorien   Produktkategorien[]  @relation("ProduktkategorienToProduktkategorien")
+  KategorieBilder           KategorieBilder[]
+
+  @@index([UebergeordneteKategorieID], map: "UebergeordneteKategorieID")
+}
+
+model Rabatte {
+  RabattID                Int                     @id @default(autoincrement())
+  Name                    String                  @db.VarChar(255)
+  Beschreibung            String?                 @db.Text
+  RabattTyp               Rabatte_RabattTyp
+  Anwendungsebene         Rabatte_Anwendungsebene
+  Wert                    Decimal                 @db.Decimal(10, 2)
+  Mindestbestellwert      Decimal?                @db.Decimal(10, 2)
+  Gutscheincode           String?                 @unique(map: "Gutscheincode") @db.VarChar(50)
+  GueltigAb               DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  GueltigBis              DateTime?               @db.Timestamp(0)
+  MaxNutzungenGesamt      Int?
+  AktuelleNutzungenGesamt Int?                    @default(0)
+  MaxNutzungenProKunde    Int?
+  Status                  Rabatte_Status?         @default(Aktiv)
+  Erstelldatum            DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung         DateTime?               @default(now()) @db.Timestamp(0)
+  KundenRabattAnwendung   KundenRabattAnwendung[]
+  Rabattstaffeln          Rabattstaffeln[]
+  RechnungsRabatte        RechnungsRabatte[]
+  Rechnungspositionen     Rechnungspositionen[]
+}
+
+model Rabattstaffeln {
+  RabattstaffelID Int                @id @default(autoincrement())
+  RabattID        Int
+  AbMenge         Decimal            @db.Decimal(10, 2)
+  RabattWert      Decimal            @db.Decimal(10, 2)
+  Typ             Rabattstaffeln_Typ
+  Rabatte         Rabatte            @relation(fields: [RabattID], references: [RabattID], onDelete: NoAction, onUpdate: NoAction, map: "Rabattstaffeln_ibfk_1")
+
+  @@index([RabattID], map: "idx_rabattstaffeln_rabattid")
+}
+
+model Rechnungen {
+  RechnungsID           Int                        @id @default(autoincrement())
+  BestellID             Int?
+  KundenID              Int
+  ErstelltVonBenutzerID Int?
+  Rechnungsnummer       String                     @unique(map: "Rechnungsnummer") @db.VarChar(50)
+  Rechnungsdatum        DateTime                   @db.Date
+  Faelligkeitsdatum     DateTime                   @db.Date
+  Rechnungsadresse      String?                    @db.Text
+  Zahlungsstatus        Rechnungen_Zahlungsstatus? @default(Offen)
+  GesamtbetragNetto     Decimal                    @db.Decimal(10, 2)
+  MwSt_Gesamt           Decimal?                   @db.Decimal(10, 2)
+  GesamtrabattBetrag    Decimal?                   @default(0.00) @db.Decimal(10, 2)
+  GesamtbetragBrutto    Decimal                    @db.Decimal(10, 2)
+  Mahnstufe             Int?                       @default(0)
+  Waehrung              String?                    @default("EUR") @db.VarChar(3)
+  Kommentare            String?                    @db.Text
+  StorniertAm           DateTime?                  @db.Timestamp(0)
+  Erstelldatum          DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung       DateTime?                  @default(now()) @db.Timestamp(0)
+  Gutschriften          Gutschriften[]
+  Benutzer              Benutzer?                  @relation(fields: [ErstelltVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_1")
+  Kunden                Kunden                     @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_2")
+  Bestellungen          Bestellungen?              @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_3")
+  RechnungsRabatte      RechnungsRabatte[]
+  Rechnungspositionen   Rechnungspositionen[]
+  Retouren              Retouren[]
+  Zahlungen             Zahlungen[]
+
+  @@index([BestellID], map: "BestellID")
+  @@index([ErstelltVonBenutzerID], map: "ErstelltVonBenutzerID")
+  @@index([KundenID], map: "idx_rechnungen_kundenid")
+  @@index([Rechnungsdatum], map: "idx_rechnungen_rechnungsdatum")
+}
+
+model RechnungsRabatte {
+  RechnungsRabattID  Int        @id @default(autoincrement())
+  RechnungsID        Int
+  RabattID           Int
+  AngewendeterWert   Decimal?   @db.Decimal(10, 2)
+  AngewendeterBetrag Decimal    @db.Decimal(10, 2)
+  Anwendungsdatum    DateTime?  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Erstelldatum       DateTime?  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung    DateTime?  @default(now()) @db.Timestamp(0)
+  Rechnungen         Rechnungen @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "RechnungsRabatte_ibfk_1")
+  Rabatte            Rabatte    @relation(fields: [RabattID], references: [RabattID], onDelete: NoAction, onUpdate: NoAction, map: "RechnungsRabatte_ibfk_2")
+
+  @@index([RabattID], map: "RabattID")
+  @@index([RechnungsID], map: "RechnungsID")
+}
+
+model Rechnungspositionen {
+  RechnungspositionsID     Int        @id @default(autoincrement())
+  RechnungsID              Int
+  ProduktID                Int
+  BestandID                Int?
+  Menge                    Decimal    @db.Decimal(10, 2)
+  EinzelpreisNetto         Decimal    @db.Decimal(10, 2)
+  RabattID                 Int?
+  RabattProzentPosition    Decimal?   @default(0.00) @db.Decimal(5, 2)
+  RabattBetragPosition     Decimal?   @default(0.00) @db.Decimal(10, 2)
+  GesamtpreisNettoPosition Decimal    @db.Decimal(10, 2)
+  MwSt_Satz                Decimal    @db.Decimal(5, 2)
+  MwSt_Betrag              Decimal    @db.Decimal(10, 2)
+  Beschreibung             String?    @db.VarChar(255)
+  Rechnungen               Rechnungen @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungspositionen_ibfk_1")
+  Produkte                 Produkte   @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungspositionen_ibfk_2")
+  Rabatte                  Rabatte?   @relation(fields: [RabattID], references: [RabattID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungspositionen_ibfk_3")
+  Bestand                  Bestand?   @relation(fields: [BestandID], references: [BestandID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungspositionen_ibfk_4")
+
+  @@index([BestandID], map: "BestandID")
+  @@index([RabattID], map: "RabattID")
+  @@index([ProduktID], map: "idx_rechnungspositionen_produktid")
+  @@index([RechnungsID], map: "idx_rechnungspositionen_rechnungsid")
+}
+
+model Retouren {
+  RetourenID             Int                  @id @default(autoincrement())
+  KundenID               Int
+  BestellID              Int?
+  RechnungsID            Int?
+  AngelegtVonBenutzerID  Int?
+  Retourennummer         String               @unique(map: "Retourennummer") @db.VarChar(50)
+  Retourendatum          DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Status                 Retouren_Status?     @default(Offen)
+  Ruecksendegrund        String?              @db.Text
+  GesamtbetragGutschrift Decimal?             @db.Decimal(10, 2)
+  Waehrung               String?              @default("EUR") @db.VarChar(3)
+  StorniertAm            DateTime?            @db.Timestamp(0)
+  Erstelldatum           DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung        DateTime?            @default(now()) @db.Timestamp(0)
+  Gutschriften           Gutschriften[]
+  Benutzer               Benutzer?            @relation(fields: [AngelegtVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Retouren_ibfk_1")
+  Kunden                 Kunden               @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Retouren_ibfk_2")
+  Bestellungen           Bestellungen?        @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Retouren_ibfk_3")
+  Rechnungen             Rechnungen?          @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Retouren_ibfk_4")
+  Retourenpositionen     Retourenpositionen[]
+
+  @@index([AngelegtVonBenutzerID], map: "AngelegtVonBenutzerID")
+  @@index([BestellID], map: "BestellID")
+  @@index([RechnungsID], map: "RechnungsID")
+  @@index([KundenID], map: "idx_retouren_kundenid")
+}
+
+model Retourenpositionen {
+  RetourenpositionsID Int                        @id @default(autoincrement())
+  RetourenID          Int
+  ProduktID           Int
+  BestandID           Int?
+  Menge               Decimal                    @db.Decimal(10, 2)
+  EinzelpreisNetto    Decimal                    @db.Decimal(10, 2)
+  GesamtpreisNetto    Decimal                    @db.Decimal(10, 2)
+  MwSt_Satz           Decimal                    @db.Decimal(5, 2)
+  MwSt_Betrag         Decimal                    @db.Decimal(10, 2)
+  Beschreibung        String?                    @db.VarChar(255)
+  Status              Retourenpositionen_Status? @default(Erwartet)
+  Retouren            Retouren                   @relation(fields: [RetourenID], references: [RetourenID], onDelete: NoAction, onUpdate: NoAction, map: "Retourenpositionen_ibfk_1")
+  Produkte            Produkte                   @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Retourenpositionen_ibfk_2")
+  Bestand             Bestand?                   @relation(fields: [BestandID], references: [BestandID], onDelete: NoAction, onUpdate: NoAction, map: "Retourenpositionen_ibfk_3")
+
+  @@index([BestandID], map: "BestandID")
+  @@index([ProduktID], map: "ProduktID")
+  @@index([RetourenID], map: "idx_retourenpositionen_retourenid")
+}
+
+model Standorte {
+  StandortID                                                  Int               @id @default(autoincrement())
+  Name                                                        String            @db.VarChar(255)
+  Adresse                                                     String?           @db.VarChar(255)
+  PLZ                                                         String?           @db.VarChar(10)
+  Ort                                                         String?           @db.VarChar(100)
+  Land                                                        String?           @db.VarChar(100)
+  Telefon                                                     String?           @db.VarChar(50)
+  Email                                                       String?           @db.VarChar(255)
+  Typ                                                         Standorte_Typ
+  Erstelldatum                                                DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung                                             DateTime?         @default(now()) @db.Timestamp(0)
+  Bestand                                                     Bestand[]
+  Bestellungen                                                Bestellungen[]
+  Lagerbewegungen_Lagerbewegungen_QuelleStandortIDToStandorte Lagerbewegungen[] @relation("Lagerbewegungen_QuelleStandortIDToStandorte")
+  Lagerbewegungen_Lagerbewegungen_ZielStandortIDToStandorte   Lagerbewegungen[] @relation("Lagerbewegungen_ZielStandortIDToStandorte")
+  Preise                                                      Preise[]
+}
+
+model Umsatzsteuersaetze {
+  UmsatzsteuersatzID Int        @id @default(autoincrement())
+  Name               String     @unique(map: "Name") @db.VarChar(50)
+  Steuersatz         Decimal    @db.Decimal(5, 2)
+  Beschreibung       String?    @db.Text
+  Erstelldatum       DateTime?  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung    DateTime?  @default(now()) @db.Timestamp(0)
+  Produkte           Produkte[]
+}
+
+model Zahlungen {
+  ZahlungsID           Int                   @id @default(autoincrement())
+  RechnungsID          Int
+  GebuchtVonBenutzerID Int?
+  Zahlungsdatum        DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Betrag               Decimal               @db.Decimal(10, 2)
+  Waehrung             String?               @default("EUR") @db.VarChar(3)
+  Zahlungsart          Zahlungen_Zahlungsart
+  Referenznummer       String?               @db.VarChar(100)
+  Kommentare           String?               @db.Text
+  Erstelldatum         DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Benutzer             Benutzer?             @relation(fields: [GebuchtVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Zahlungen_ibfk_1")
+  Rechnungen           Rechnungen            @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Zahlungen_ibfk_2")
+
+  @@index([GebuchtVonBenutzerID], map: "GebuchtVonBenutzerID")
+  @@index([RechnungsID], map: "idx_zahlungen_rechnungsid")
+}
+
+enum Rabatte_RabattTyp {
+  Prozentual
+  Festbetrag
+  Mengenrabatt
+  Versandrabatt
+  Gutschein
+}
+
+enum Kunden_Anrede {
+  Herr
+  Frau
+  Firma
+  Divers
+}
+
+enum Lagerbewegungen_Bewegungstyp {
+  Wareneingang
+  Warenausgang
+  Umlagerung
+  Inventurkorrektur
+  Retoure
+  Schwund
+}
+
+enum Rabatte_Anwendungsebene {
+  Kopf
+  Zeile
+  Kunde
+}
+
+enum Rabattstaffeln_Typ {
+  Prozentual
+  Festpreis_pro_Einheit
+  Gratismenge
+}
+
+enum KundenRabattAnwendung_Status {
+  Aktiv
+  Inaktiv
+}
+
+enum Kundenkarten_Status {
+  Aktiv
+  Inaktiv
+  Gesperrt
+}
+
+enum Zahlungen_Zahlungsart {
+  Bar
+  Kreditkarte
+  Bank_berweisung @map("Banküberweisung")
+  PayPal
+  Gutschein
+  Verrechnung
+}
+
+enum Bestand_Status {
+  Verf_gbar  @map("Verfügbar")
+  Reserviert
+  Besch_digt @map("Beschädigt")
+  Gesperrt
+}
+
+enum Bestellungen_Bestellstatus {
+  Offen
+  In_Bearbeitung @map("In Bearbeitung")
+  Versendet
+  Abgeschlossen
+  Storniert
+}
+
+enum Retouren_Status {
+  Offen
+  In_Bearbeitung @map("In Bearbeitung")
+  Abgeschlossen
+  Storniert
+}
+
+enum Preise_PreisTyp {
+  Standard
+  Aktion
+  Kundenpreis
+}
+
+enum Rechnungen_Zahlungsstatus {
+  Offen
+  Teilbezahlt
+  Bezahlt
+  berf_llig   @map("Überfällig")
+  Storniert
+}
+
+enum Standorte_Typ {
+  Filiale
+  Zentrallager
+  Verteilzentrum
+  Verwaltung
+}
+
+enum Gutschriften_Status {
+  Ausgestellt
+  Teilverrechnet
+  Verrechnet
+  Abgelaufen
+}
+
+enum Retourenpositionen_Status {
+  Erwartet
+  Zur_ckgenommen  @map("Zurückgenommen")
+  Neu_eingelagert @map("Neu eingelagert")
+  Aussortiert
+}
+
+enum Rabatte_Status {
+  Aktiv
+  Inaktiv
+  Abgelaufen
+}
+
+enum Kunden_Kundenstatus {
+  Aktiv
+  Inaktiv
+  Gesperrt
+}

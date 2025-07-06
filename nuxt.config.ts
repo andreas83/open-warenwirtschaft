@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: false },
-  modules: ["@unocss/nuxt", "@nuxtjs/i18n"],
+  modules: ["@unocss/nuxt", "@nuxtjs/i18n", "nuxt-auth-utils"],
  
   i18n: {
     vueI18n: '/home/andreas/dev/macrogroup/i18n/index.js',
@@ -28,5 +28,6 @@ export default defineNuxtConfig({
         warn: true
       })
     ]
-  }
+  },
+  // Server middleware will be automatically applied from server/middleware directory
 })

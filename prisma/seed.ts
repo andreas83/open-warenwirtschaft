@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Faker, de, en } from '@faker-js/faker';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 const faker = new Faker({ locale: [de, en] });
@@ -127,15 +128,31 @@ async function main() {
   console.log(`Created ${bestand.count} Bestand entries`);
 
   // Seed Benutzer (Users)
-  const benutzer = await prisma.benutzer.createMany({
-    data: [
-      { Benutzername: 'admin', PasswortHash: 'hashedpassword123', Vorname: 'Admin', Nachname: 'User', Rolle: 'Administrator', IstAktiv: true },
-      { Benutzername: 'lagerist', PasswortHash: 'hashedpassword123', Vorname: 'Lager', Nachname: 'Ist', Rolle: 'Lagerist', IstAktiv: true },
-      { Benutzername: 'verkauf', PasswortHash: 'hashedpassword123', Vorname: 'Verkauf', Nachname: 'Mitarbeiter', Rolle: 'Verkauf', IstAktiv: true },
-    ],
-    skipDuplicates: true,
-  });
-  console.log(`Created ${benutzer.count} Benutzer`);
+  const hashedPassword = await bcrypt.hash('admin', 10);
+  const benutzerData = [
+    { Benutzername: 'admin', PasswortHash: hashedPassword, Vorname: 'Admin', Nachname: 'User', Rolle: 'Administrator', IstAktiv: true },
+    { Benutzername: 'lagerist', PasswortHash: hashedPassword, Vorname: 'Lager', Nachname: 'Ist', Rolle: 'Lagerist', IstAktiv: true },
+    { Benutzername: 'verkauf', PasswortHash: hashedPassword, Vorname: 'Verkauf', Nachname: 'Mitarbeiter', Rolle: 'Verkauf', IstAktiv: true },
+  ];
+
+  let benutzerCreated = 0;
+  for (const user of benutzerData) {
+    const existingUser = await prisma.benutzer.findUnique({
+      where: { Benutzername: user.Benutzername }
+    });
+    if (existingUser) {
+      await prisma.benutzer.update({
+        where: { Benutzername: user.Benutzername },
+        data: { PasswortHash: user.PasswortHash }
+      });
+    } else {
+      await prisma.benutzer.create({
+        data: user
+      });
+      benutzerCreated++;
+    }
+  }
+  console.log(`Created or updated ${benutzerData.length} Benutzer, ${benutzerCreated} new records created`);
 
   // Seed Kundengruppen (Customer Groups)
   const kundengruppen = await prisma.kundengruppen.createMany({

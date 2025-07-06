@@ -13,6 +13,15 @@
   "footer": {
     "copyright": "© {year} Management System"
   },
+  "conflictModal": {
+    "keepLocal": "Keep Local",
+    "keepServer": "Keep Server",
+    "differences": "Differences",
+    "field": "Field",
+    "yourVersion": "Your Version",
+    "serverVersion": "Server Version",
+    "action": "Action"
+  },
   "produktForm": {
     "newProduct": "New Product",
     "editProduct": "Edit Product",

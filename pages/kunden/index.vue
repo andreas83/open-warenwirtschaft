@@ -34,7 +34,17 @@
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex flex-col gap-2">
               <h3 class="text-lg font-semibold text-gray-800">{{ kunde.Name }}</h3>
-              <p class="text-gray-600 text-sm">{{ kunde.Adresse || 'Keine Adresse' }}</p>
+              <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-gray-500 text-xs">Kundennummer:</span>
+                  <span class="text-gray-800 text-sm font-medium">{{ kunde.Kundennummer || 'N/A' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-gray-500 text-xs">Status:</span>
+                  <span class="text-gray-800 text-sm font-medium">{{ kunde.Kundenstatus || 'N/A' }}</span>
+                </div>
+              </div>
+              <p class="text-gray-600 text-sm">{{ kunde.Adresse || 'Keine Adresse' }}, {{ kunde.PLZ || '' }} {{ kunde.Ort || '' }}, {{ kunde.Land || '' }}</p>
               <div class="flex flex-col gap-1">
                 <div class="flex items-center gap-2">
                   <span class="text-gray-500 text-xs">Telefon:</span>

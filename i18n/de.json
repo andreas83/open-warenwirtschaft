@@ -13,6 +13,15 @@
   "footer": {
     "copyright": "© {year} Verwaltungssystem"
   },
+  "conflictModal": {
+    "keepLocal": "Lokal behalten",
+    "keepServer": "Server behalten",
+    "differences": "Unterschiede",
+    "field": "Feld",
+    "yourVersion": "Ihre Version",
+    "serverVersion": "Server Version",
+    "action": "Aktion"
+  },
   "produktForm": {
     "newProduct": "Neues Produkt",
     "editProduct": "Produkt Bearbeiten",
@@ -194,6 +203,12 @@
       "apply": "Anwenden",
       "totalAmountOverTime": "Gesamtbetrag über Zeit",
       "statusDistribution": "Statusverteilung",
-      "topCustomers": "Top Kunden"
+      "topCustomers": "Top Kunden",
+      "overdueInvoices": "Überfällige Rechnungen",
+      "averageInvoiceValue": "Durchschnittlicher Rechnungswert",
+      "averageInvoiceValueDescription": "Durchschnittlicher Wert der Rechnungen im ausgewählten Zeitraum",
+      "paymentMethodsDistribution": "Zahlungsmethodenverteilung",
+      "invoiceCountByMonth": "Rechnungsanzahl nach Monat",
+      "other": "Andere"
     }
 }

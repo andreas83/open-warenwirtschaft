@@ -23,6 +23,26 @@
               <button @click="applyDateRange" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition duration-200">{{ $t('rechnungen.apply') }}</button>
             </div>
           </div>
+          <select v-model="statusFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full md:w-48" @change="fetchRechnungen">
+            <option value="">{{ $t('rechnungen.allStatuses') }}</option>
+            <option value="Offen">{{ $t('rechnungen.status.open') }}</option>
+            <option value="Teilbezahlt">{{ $t('rechnungen.status.partiallyPaid') }}</option>
+            <option value="Bezahlt">{{ $t('rechnungen.status.paid') }}</option>
+            <option value="Überfällig">{{ $t('rechnungen.status.overdue') }}</option>
+            <option value="Storniert">{{ $t('rechnungen.status.cancelled') }}</option>
+          </select>
+          <Autocomplete
+            id="kundeFilter"
+            :items="kunden"
+            :idKey="'KundenID'"
+            :displayFn="getKundeDisplayName"
+            :filterFn="filterKunden"
+            :placeholder="$t('rechnungen.searchCustomer')"
+            @select="handleKundeSelect"
+            @search="handleKundeSearch"
+            class="w-full md:w-64"
+            ref="kundeAutocomplete"
+          />
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -44,6 +64,33 @@
             <div id="customerChart" style="height: 300px;"></div>
           </ClientOnly>
         </div>
+        <div class="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition duration-200">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ $t('rechnungen.overdueInvoices') }}</h3>
+          <ClientOnly>
+            <div id="overdueChart" style="height: 300px;"></div>
+          </ClientOnly>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition duration-200">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ $t('rechnungen.averageInvoiceValue') }}</h3>
+          <div class="flex items-center justify-center h-full">
+            <div class="text-center">
+              <p class="text-3xl font-bold text-blue-600">{{ averageInvoiceValue }} EUR</p>
+              <p class="text-gray-500 text-sm">{{ $t('rechnungen.averageInvoiceValueDescription') }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition duration-200">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ $t('rechnungen.paymentMethodsDistribution') }}</h3>
+          <ClientOnly>
+            <div id="paymentMethodsChart" style="height: 300px;"></div>
+          </ClientOnly>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition duration-200">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ $t('rechnungen.invoiceCountByMonth') }}</h3>
+          <ClientOnly>
+            <div id="invoiceCountChart" style="height: 300px;"></div>
+          </ClientOnly>
+        </div>
       </div>
     </div>
   </div>
@@ -52,7 +99,11 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import * as echarts from 'echarts'
+import { useI18n } from 'vue-i18n'
+import Autocomplete from '~/components/Autocomplete.vue'
 
+// Data variables
+const { t } = useI18n()
 const rechnungen = ref([])
 const loading = ref(true)
 const error = ref(null)
@@ -60,7 +111,11 @@ const startDate = ref('')
 const endDate = ref('')
 const showDatePicker = ref(false)
 const dateRangeText = ref('')
+const statusFilter = ref('')
+const kundeFilter = ref('')
+const kunden = ref([])
 
+// Fetch Rechnungen from API
 // Fetch Rechnungen from API
 async function fetchRechnungen() {
   try {
@@ -69,20 +124,67 @@ async function fetchRechnungen() {
     if (startDate.value && endDate.value) {
       url += `&startDate=${encodeURIComponent(startDate.value)}&endDate=${encodeURIComponent(endDate.value)}`
     }
+    if (statusFilter.value) {
+      url += `&status=${encodeURIComponent(statusFilter.value)}`
+    }
+    if (kundeFilter.value) {
+      url += `&kunde=${encodeURIComponent(kundeFilter.value)}`
+    }
     const response = await $fetch(url)
     if (Array.isArray(response)) {
       rechnungen.value = response
     } else {
       rechnungen.value = []
-      error.value = $t('rechnungen.noDataFound')
+      error.value = t('rechnungen.noDataFound')
     }
   } catch (err) {
-    error.value = $t('rechnungen.errorLoadingData') + err.message
+    error.value = t('rechnungen.errorLoadingData') + err.message
     rechnungen.value = []
     console.error('Fetch Rechnungen Error:', err)
   } finally {
     loading.value = false
   }
+}
+
+// Fetch Kunden for filter dropdown with server-side search
+async function fetchKunden(search = '') {
+  try {
+    let url = '/api/kunden?limit=20';
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
+    const response = await $fetch(url);
+    if (Array.isArray(response)) {
+      kunden.value = response;
+    } else {
+      console.error('Failed to fetch kunden');
+    }
+  } catch (err) {
+    console.error('Fetch Kunden Error:', err);
+  }
+}
+
+// Helper function to get display name for Kunde
+function getKundeDisplayName(kunde) {
+  if (kunde.Firmenname) return kunde.Firmenname
+  return `${kunde.Vorname || ''} ${kunde.Nachname || ''}`.trim() || 'Unbekannt'
+}
+
+// Filter function for Autocomplete component (not used with server-side search)
+function filterKunden(kunde, search) {
+  // With server-side search, filtering is handled by API
+  return true;
+}
+
+// Handle selection from Autocomplete component
+function handleKundeSelect(kunde) {
+  kundeFilter.value = kunde ? kunde.KundenID : '';
+  fetchRechnungen();
+}
+
+// Handle search input in Autocomplete for server-side search
+function handleKundeSearch(search) {
+  fetchKunden(search);
 }
 
 // Toggle date picker visibility
@@ -221,6 +323,130 @@ const customerChartOption = computed(() => {
   }
 })
 
+// Chart options for Overdue Invoices
+const overdueChartOption = computed(() => {
+  const overdueData = aggregateOverdueInvoices(rechnungen.value)
+  return {
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      top: '5%',
+      left: 'center'
+    },
+    series: [{
+      name: 'Overdue Status',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '16',
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: overdueData.overdueCount, name: t('rechnungen.status.overdue') },
+        { value: overdueData.totalCount - overdueData.overdueCount, name: t('rechnungen.other') }
+      ]
+    }]
+  }
+})
+
+// Computed property for Average Invoice Value
+const averageInvoiceValue = computed(() => {
+  if (rechnungen.value.length === 0) return '0.00'
+  const total = rechnungen.value.reduce((sum, rechnung) => sum + Number(rechnung.GesamtbetragBrutto) || 0, 0)
+  return (total / rechnungen.value.length).toFixed(2)
+})
+
+// Chart options for Payment Methods Distribution
+const paymentMethodsChartOption = computed(() => {
+  const paymentData = aggregateByPaymentMethod(rechnungen.value)
+  return {
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      top: '5%',
+      left: 'center'
+    },
+    series: [{
+      name: 'Payment Method',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '16',
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: paymentData.map(item => ({ value: item.count, name: item.method }))
+    }]
+  }
+})
+
+// Chart options for Invoice Count by Month
+const invoiceCountChartOption = computed(() => {
+  const countData = aggregateInvoiceCountByMonth(rechnungen.value)
+  return {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: countData.map(item => item.month),
+      axisTick: {
+        alignWithLabel: true
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '{value}'
+      }
+    },
+    series: [{
+      data: countData.map(item => item.count),
+      type: 'bar',
+      barWidth: '60%',
+      itemStyle: {
+        color: '#007bff'
+      }
+    }]
+  }
+})
+
 // Aggregate data by date for line chart
 function aggregateByDate(data) {
   const aggregated = {}
@@ -265,6 +491,55 @@ function aggregateByCustomer(data) {
   return Object.values(aggregated).sort((a, b) => b.amount - a.amount).slice(0, 10) // Top 10 customers
 }
 
+// Aggregate data for overdue invoices
+function aggregateOverdueInvoices(data) {
+  const today = new Date().toISOString().split('T')[0]
+  let overdueCount = 0
+  let totalCount = data.length
+  data.forEach(rechnung => {
+    if (rechnung.Faelligkeitsdatum && rechnung.Faelligkeitsdatum < today && rechnung.Zahlungsstatus === 'Offen') {
+      overdueCount += 1
+    }
+  })
+  return { overdueCount, totalCount }
+}
+
+// Aggregate data by payment method
+function aggregateByPaymentMethod(data) {
+  const aggregated = {}
+  data.forEach(rechnung => {
+    if (rechnung.Zahlungen && rechnung.Zahlungen.length > 0) {
+      const method = rechnung.Zahlungen[0].Zahlungsart || 'Unbekannt'
+      if (!aggregated[method]) {
+        aggregated[method] = { method, count: 0 }
+      }
+      aggregated[method].count += 1
+    } else {
+      const method = 'Unbekannt'
+      if (!aggregated[method]) {
+        aggregated[method] = { method, count: 0 }
+      }
+      aggregated[method].count += 1
+    }
+  })
+  return Object.values(aggregated)
+}
+
+// Aggregate invoice count by month
+function aggregateInvoiceCountByMonth(data) {
+  const aggregated = {}
+  data.forEach(rechnung => {
+    if (rechnung.Rechnungsdatum) {
+      const month = new Date(rechnung.Rechnungsdatum).toISOString().split('T')[0].substring(0, 7) // YYYY-MM
+      if (!aggregated[month]) {
+        aggregated[month] = { month, count: 0 }
+      }
+      aggregated[month].count += 1
+    }
+  })
+  return Object.values(aggregated).sort((a, b) => a.month.localeCompare(b.month))
+}
+
 // Watch for changes in date range
 watch([startDate, endDate], () => {
   if (startDate.value && endDate.value) {
@@ -277,6 +552,7 @@ onMounted(async () => {
   // Set default range to last year
   setDateRange('lastYear')
   await fetchRechnungen()
+  await fetchKunden()
   // Delay chart initialization to ensure DOM is ready
   setTimeout(initializeCharts, 100)
 })
@@ -300,6 +576,24 @@ function initializeCharts() {
     if (customerElement) {
       const customerChart = echarts.init(customerElement)
       customerChart.setOption(customerChartOption.value)
+    }
+    
+    const overdueElement = document.getElementById('overdueChart')
+    if (overdueElement) {
+      const overdueChart = echarts.init(overdueElement)
+      overdueChart.setOption(overdueChartOption.value)
+    }
+    
+    const paymentMethodsElement = document.getElementById('paymentMethodsChart')
+    if (paymentMethodsElement) {
+      const paymentMethodsChart = echarts.init(paymentMethodsElement)
+      paymentMethodsChart.setOption(paymentMethodsChartOption.value)
+    }
+    
+    const invoiceCountElement = document.getElementById('invoiceCountChart')
+    if (invoiceCountElement) {
+      const invoiceCountChart = echarts.init(invoiceCountElement)
+      invoiceCountChart.setOption(invoiceCountChartOption.value)
     }
   }
 }

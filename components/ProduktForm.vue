@@ -1,9 +1,9 @@
 <template>
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <h2 class="text-2xl font-semibold mb-6 text-gray-700 dark:text-gray-200">{{ mode === 'create' ? $t('produktForm.newProduct') : $t('produktForm.editProduct') }}</h2>
+    <h2 class="text-2xl font-semibold mb-6 text-gray-700 dark:text-gray-200">{{ mode === 'create' ? t('produktForm.newProduct') : t('produktForm.editProduct') }}</h2>
 <div v-if="loading" class="text-center text-gray-500 dark:text-gray-400 py-12">
   <div class="i-svg-spinners:blocks-wave inline-block" />
-  {{ $t('produktForm.loadingProduct') }}
+  {{ t('produktForm.loadingProduct') }}
 </div>
 <div v-else-if="error" class="text-center text-red-600 dark:text-red-400 py-12">{{ error }}</div>
     <div v-else>
@@ -17,7 +17,7 @@
   :class="['px-4 py-2 -mb-px', activeTab === tab.id ? 'border-b-2 border-indigo-500 text-indigo-500 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300']"
   @click="activeTab = tab.id"
 >
-  {{ $t(`produktForm.tabs.${tab.id}`) }}
+  {{ t(`produktForm.tabs.${tab.id}`) }}
 </button>
           </div>
           
@@ -64,8 +64,8 @@
           />
 
           <div class="flex justify-end space-x-3 pt-6">
-<NuxtLink to="/produkte" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200 text-sm font-medium">{{ $t('produktForm.cancel') }}</NuxtLink>
-<button type="submit" class="bg-indigo-600 dark:bg-indigo-500 text-white px-5 py-2 rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-600 transition duration-200 text-sm font-medium">{{ mode === 'create' ? $t('produktForm.create') : $t('produktForm.save') }}</button>
+<NuxtLink to="/produkte" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200 text-sm font-medium">{{ t('produktForm.cancel') }}</NuxtLink>
+<button type="submit" class="bg-indigo-600 dark:bg-indigo-500 text-white px-5 py-2 rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-600 transition duration-200 text-sm font-medium">{{ mode === 'create' ? t('produktForm.create') : t('produktForm.save') }}</button>
           </div>
         </form>
       </div>
@@ -77,6 +77,14 @@
         cancelText="Nein, abbrechen"
         @confirm="handleConfirm"
         @cancel="handleCancel"
+      />
+      <ConflictDiffModal
+        :show="showConflictDiffModal"
+        :local-data="localProduktData"
+        :server-data="serverProduktData"
+        @confirm="handleConflictResolution"
+        @cancel="handleConflictCancel"
+        @update-resolution="updateResolution"
       />
 
       <PriceModal
@@ -110,6 +118,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from '#app'
+import { useI18n } from 'vue-i18n'
 import Autocomplete from '~/components/Autocomplete.vue'
 import BasicInfo from '~/components/BasicInfo.vue'
 import ProductImages from '~/components/ProductImages.vue'
@@ -118,6 +127,9 @@ import ProductPrices from '~/components/ProductPrices.vue'
 import PriceModal from '~/components/PriceModal.vue'
 import SupplierModal from '~/components/SupplierModal.vue'
 import ConfirmModal from '~/components/ConfirmModal.vue'
+import ConflictDiffModal from '~/components/ConflictDiffModal.vue'
+
+const { t } = useI18n()
 
 const activeTab = ref('basic')
 const tabs = [
@@ -433,7 +445,7 @@ async function saveProdukt() {
         })
       } catch (imageErr) {
         console.error('Fehler beim Hochladen der Bilder:', imageErr)
-        alert($t('produktForm.errorUploadingImages') + imageErr.message)
+        alert(t('produktForm.errorUploadingImages') + imageErr.message)
         return
       }
     }
@@ -442,9 +454,12 @@ async function saveProdukt() {
     }
   } catch (err) {
     if (err.status === 409) {
-      showConfirmModal.value = true;
+      // Store local data
+      localProduktData.value = { ...produkt.value };
+      // Fetch the latest server data to compare
+      fetchServerDataForConflict();
     } else {
-      alert($t('produktForm.errorSavingProduct') + err.message)
+      alert(t('produktForm.errorSavingProduct') + err.message)
     }
   }
 }
@@ -456,6 +471,40 @@ function handleConfirm() {
 
 function handleCancel() {
   showConfirmModal.value = false;
+}
+
+function fetchServerDataForConflict() {
+  $fetch(`/api/produkte?id=${produktId}`)
+    .then(response => {
+      serverProduktData.value = response;
+      showConflictDiffModal.value = true;
+    })
+    .catch(error => {
+      alert(t('produktForm.errorFetchingServerData') + error.message);
+      showConfirmModal.value = true;
+    });
+}
+
+function handleConflictResolution(resolutions) {
+  showConflictDiffModal.value = false;
+  // Apply resolutions to the current product data
+  Object.keys(resolutions).forEach(field => {
+    if (resolutions[field].source === 'local') {
+      // Already in produkt.value, no action needed
+    } else if (resolutions[field].source === 'server') {
+      produkt.value[field] = serverProduktData.value[field];
+    }
+  });
+  // Attempt to save again with resolved data
+  saveProdukt();
+}
+
+function handleConflictCancel() {
+  showConflictDiffModal.value = false;
+}
+
+function updateResolution(resolutions) {
+  conflictResolutions.value = resolutions;
 }
 
 function formatDate(date) {
@@ -494,13 +543,13 @@ function editPreis(index) {
 }
 
 async function deletePreis(index) {
-  if (confirm($t('produktForm.confirmDeletePrice'))) {
+  if (confirm(t('produktForm.confirmDeletePrice'))) {
     if (props.mode === 'edit' && preise.value[index].PreisID) {
       try {
         const preisId = preise.value[index].PreisID
         await $fetch(`/api/preise?id=${preisId}`, { method: 'DELETE' })
       } catch (err) {
-        alert($t('produktForm.errorDeletingPrice') + err.message)
+        alert(t('produktForm.errorDeletingPrice') + err.message)
       }
     }
     preise.value.splice(index, 1)
@@ -533,7 +582,7 @@ function editLieferantDetail(index) {
 }
 
 function deleteLieferantDetail(index) {
-  if (confirm($t('produktForm.confirmRemoveSupplier'))) {
+  if (confirm(t('produktForm.confirmRemoveSupplier'))) {
     lieferantenDetails.value.splice(index, 1)
   }
 }
@@ -557,7 +606,7 @@ function selectLieferant(lieferant) {
 async function saveLieferantDetail() {
   try {
     if (!currentLieferantDetail.value.LieferantenID) {
-      alert($t('produktForm.selectSupplierPrompt'))
+      alert(t('produktForm.selectSupplierPrompt'))
       return
     }
     if (editingLieferant.value && currentLieferantIndex.value >= 0) {
@@ -565,14 +614,14 @@ async function saveLieferantDetail() {
     } else {
       // Check if the Lieferant is already added
       if (lieferantenDetails.value.some(detail => detail.LieferantenID === currentLieferantDetail.value.LieferantenID)) {
-        alert($t('produktForm.supplierAlreadyAdded'))
+        alert(t('produktForm.supplierAlreadyAdded'))
         return
       }
       lieferantenDetails.value.push({ ...currentLieferantDetail.value })
     }
     closeLieferantModal()
   } catch (err) {
-    alert($t('produktForm.errorSavingSupplier') + err.message)
+    alert(t('produktForm.errorSavingSupplier') + err.message)
   }
 }
 
@@ -621,7 +670,7 @@ async function savePreis() {
     }
     closePreisModal()
   } catch (err) {
-    alert($t('produktForm.errorSavingPrice') + err.message)
+    alert(t('produktForm.errorSavingPrice') + err.message)
   }
 }
 
@@ -644,13 +693,13 @@ function removeImagePreview(index) {
 }
 
 async function deleteProduktBild(index) {
-  if (confirm($t('produktForm.confirmDeleteImage'))) {
+  if (confirm(t('produktForm.confirmDeleteImage'))) {
     const bild = produktBilder.value[index]
     if (bild.BildID) {
       try {
         await $fetch(`/api/produktbilder?id=${bild.BildID}`, { method: 'DELETE' })
       } catch (err) {
-        alert($t('produktForm.errorDeletingImage') + err.message)
+        alert(t('produktForm.errorDeletingImage') + err.message)
       }
     }
     produktBilder.value.splice(index, 1)
@@ -669,12 +718,16 @@ async function setHauptbild(index) {
         b.IstHauptbild = i === index
       })
     } catch (err) {
-      alert($t('produktForm.errorSettingMainImage') + err.message)
+      alert(t('produktForm.errorSettingMainImage') + err.message)
     }
   }
 }
 
 const showConfirmModal = ref(false);
+const showConflictDiffModal = ref(false);
+const localProduktData = ref(null);
+const serverProduktData = ref(null);
+const conflictResolutions = ref({});
 
 onMounted(async () => {
   await Promise.all([

@@ -14,6 +14,14 @@
             <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
           </svg>
         </button>
+        <div v-if="user" class="flex items-center space-x-2">
+          <span class="text-white">{{ user.username }}</span>
+          <button class="text-white focus:outline-none" @click="logout" title="Abmelden">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+          </button>
+        </div>
         <div class="relative">
           <button class="text-white focus:outline-none flex items-center" @click="toggleLanguageMenu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -90,13 +98,15 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-
+import { useRouter } from 'vue-router'
 
 const { locale, locales, setLocale } = useI18n()
 const currentYear = new Date().getFullYear()
 const mobileMenuOpen = ref(false)
 const darkMode = ref(false)
 const languageMenuOpen = ref(false)
+const user = ref(null)
+const router = useRouter()
 
 const currentLocaleName = computed(() => {
   const current = locales.value.find(l => l.code === locale.value)
@@ -120,6 +130,23 @@ function toggleLanguageMenu() {
   languageMenuOpen.value = !languageMenuOpen.value
 }
 
+async function logout() {
+  try {
+    const response = await fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      user.value = null
+      router.push('/login')
+    }
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
+}
 
 onMounted(() => {
   if (process.client) {
@@ -131,7 +158,18 @@ onMounted(() => {
       darkMode.value = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
       localStorage.setItem('darkMode', darkMode.value.toString())
     }
-    
+
+    // Check for auth-session cookie
+    const cookies = document.cookie.split(';')
+    const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth-session='))
+    if (authCookie) {
+      try {
+        const sessionData = decodeURIComponent(authCookie.split('=')[1])
+        user.value = JSON.parse(sessionData)
+      } catch (error) {
+        console.error('Failed to parse auth session:', error)
+      }
+    }
   }
 })
 </script>

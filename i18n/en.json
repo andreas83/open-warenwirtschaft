@@ -6,6 +6,7 @@
     "customers": "Customers",
     "invoices": "Invoices",
     "suppliers": "Suppliers",
+    "cashRegister": "Cash Registers",
     "settings": "Settings",
     "vat": "VAT Rates",
     "unit": "Unit"
@@ -204,5 +205,62 @@
     "totalAmountOverTime": "Total Amount Over Time",
     "statusDistribution": "Status Distribution",
     "topCustomers": "Top Customers"
+  },
+  "kassen": {
+    "listTitle": "Cash Registers List",
+    "loadingCashRegisters": "Loading Cash Registers...",
+    "loadingCashRegister": "Loading Cash Register...",
+    "newCashRegister": "New Cash Register",
+    "editCashRegister": "Edit Cash Register",
+    "searchPlaceholder": "Search by designation, register number...",
+    "allStatuses": "All Statuses",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "closed": "Closed"
+    },
+    "registerNumber": "Register Number",
+    "location": "Location",
+    "initialBalance": "Initial Balance",
+    "currentBalance": "Current Balance",
+    "bookings": "Bookings",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noCashRegistersFound": "No cash registers found",
+    "confirmDeleteCashRegister": "Are you sure you want to delete this cash register?",
+    "designation": "Cash Register Designation",
+    "noLocation": "No Location",
+    "statusLabel": "Status",
+    "currency": "Currency",
+    "create": "Create",
+    "save": "Save",
+    "cancel": "Cancel",
+    "bookingsTitle": "Cash Register Bookings",
+    "backToList": "Back to List",
+    "newBooking": "New Booking",
+    "bookingType": "Booking Type",
+    "types": {
+      "income": "Income",
+      "expense": "Expense",
+      "withdrawal": "Withdrawal",
+      "deposit": "Deposit",
+      "cashClosing": "Cash Closing"
+    },
+    "amount": "Amount",
+    "paymentMethod": "Payment Method",
+    "payment": {
+      "cash": "Cash",
+      "creditCard": "Credit Card",
+      "ecCard": "EC Card",
+      "voucher": "Voucher",
+      "other": "Other"
+    },
+    "description": "Description",
+    "receiptNumber": "Receipt Number",
+    "addBooking": "Add Booking",
+    "bookingHistory": "Booking History",
+    "loadingBookings": "Loading Bookings...",
+    "date": "Date",
+    "noBookingsFound": "No bookings found"
   }
 }

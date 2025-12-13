@@ -6,6 +6,7 @@
     "customers": "Kunden",
     "invoices": "Rechnungen",
     "suppliers": "Lieferanten",
+    "cashRegister": "Kassen",
     "settings": "Einstellungen",
     "vat": "Umsatzsteuer",
     "unit": "Einheit"
@@ -210,5 +211,62 @@
       "paymentMethodsDistribution": "Zahlungsmethodenverteilung",
       "invoiceCountByMonth": "Rechnungsanzahl nach Monat",
       "other": "Andere"
-    }
+    },
+  "kassen": {
+    "listTitle": "Kassen Liste",
+    "loadingCashRegisters": "Lade Kassen...",
+    "loadingCashRegister": "Lade Kasse...",
+    "newCashRegister": "Neue Kasse",
+    "editCashRegister": "Kasse Bearbeiten",
+    "searchPlaceholder": "Suche nach Bezeichnung, Kassennummer...",
+    "allStatuses": "Alle Status",
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "closed": "Geschlossen"
+    },
+    "registerNumber": "Kassennummer",
+    "location": "Standort",
+    "initialBalance": "Anfangsbestand",
+    "currentBalance": "Aktueller Bestand",
+    "bookings": "Buchungen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "noCashRegistersFound": "Keine Kassen gefunden",
+    "confirmDeleteCashRegister": "Sind Sie sicher, dass Sie diese Kasse löschen möchten?",
+    "designation": "Kassenbezeichnung",
+    "noLocation": "Kein Standort",
+    "statusLabel": "Status",
+    "currency": "Währung",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "bookingsTitle": "Kassenbuchungen",
+    "backToList": "Zurück zur Liste",
+    "newBooking": "Neue Buchung",
+    "bookingType": "Buchungstyp",
+    "types": {
+      "income": "Einnahme",
+      "expense": "Ausgabe",
+      "withdrawal": "Entnahme",
+      "deposit": "Einlage",
+      "cashClosing": "Kassenabschluss"
+    },
+    "amount": "Betrag",
+    "paymentMethod": "Zahlungsart",
+    "payment": {
+      "cash": "Bar",
+      "creditCard": "Kreditkarte",
+      "ecCard": "EC-Karte",
+      "voucher": "Gutschein",
+      "other": "Sonstige"
+    },
+    "description": "Beschreibung",
+    "receiptNumber": "Belegnummer",
+    "addBooking": "Buchung hinzufügen",
+    "bookingHistory": "Buchungsverlauf",
+    "loadingBookings": "Lade Buchungen...",
+    "date": "Datum",
+    "noBookingsFound": "Keine Buchungen gefunden"
+  }
 }

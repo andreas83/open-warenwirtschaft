@@ -26,6 +26,8 @@ model Benutzer {
   Reservierungen  Reservierungen[]
   RestaurantBestellungen RestaurantBestellungen[]
   Angebote        Angebote[]
+  HotelBuchungen  HotelBuchungen[]
+  HotelZusatzleistungen HotelZusatzleistungen[]
 }
 
 model Bestand {
@@ -174,6 +176,7 @@ model Kunden {
   ShopWarenkorb         ShopWarenkorb[]
   ShopBestellungen      ShopBestellungen[]
   ShopBewertungen       ShopBewertungen[]
+  HotelBuchungen        HotelBuchungen[]
 
   @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
   @@index([Nachname, Vorname], map: "idx_kunden_name")
@@ -438,6 +441,7 @@ model Rechnungen {
   RestaurantBestellungen RestaurantBestellungen[]
   Provisionen           Provisionen[]
   Mahnungen             Mahnungen[]
+  HotelBuchungen        HotelBuchungen[]
 
   @@index([BestellID], map: "BestellID")
   @@index([ErstelltVonBenutzerID], map: "ErstelltVonBenutzerID")
@@ -554,6 +558,7 @@ model Standorte {
   Preise                                                      Preise[]
   Kassen                                                      Kassen[]
   Tischbereiche                                               Tischbereiche[]
+  Zimmer                                                      Zimmer[]
 }
 
 model Umsatzsteuersaetze {
@@ -1666,4 +1671,225 @@ enum ShopBewertungen_Status {
   Genehmigt
   Abgelehnt
   Spam
+}
+
+// ========================================
+// HOTEL MODULE
+// ========================================
+
+// Room Categories
+model Zimmerkategorien {
+  ZimmerkategorieID   Int       @id @default(autoincrement())
+  Name                String    @db.VarChar(100)
+  Beschreibung        String?   @db.Text
+  Grundpreis          Decimal   @db.Decimal(10, 2)
+  MaxPersonen         Int       @default(2)
+  Ausstattung         String?   @db.Text // JSON field for amenities
+  Groesse             Decimal?  @db.Decimal(10, 2) // Size in sqm
+  BildURL             String?   @db.VarChar(255)
+  SortierReihenfolge  Int?      @default(0)
+  IstAktiv            Boolean?  @default(true)
+  Erstelldatum        DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime? @default(now()) @db.Timestamp(0)
+
+  Zimmer              Zimmer[]
+
+  @@index([IstAktiv], map: "idx_zimmerkategorien_aktiv")
+}
+
+// Hotel Rooms
+model Zimmer {
+  ZimmerID            Int                   @id @default(autoincrement())
+  Zimmernummer        String                @db.VarChar(50)
+  ZimmerkategorieID   Int
+  StandortID          Int?
+  Etage               Int?
+  Status              Zimmer_Status?        @default(Verfuegbar)
+  Beschreibung        String?               @db.Text
+  Ausstattung         String?               @db.Text // JSON field for room-specific amenities
+  PreisProNacht       Decimal               @db.Decimal(10, 2)
+  MaxPersonen         Int                   @default(2)
+  IstRaucherZimmer    Boolean?              @default(false)
+  IstBarrierfrei      Boolean?              @default(false)
+  IstAktiv            Boolean?              @default(true)
+  LetzteReinigung     DateTime?             @db.Timestamp(0)
+  Notizen             String?               @db.Text
+  Erstelldatum        DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?             @default(now()) @db.Timestamp(0)
+
+  Zimmerkategorien    Zimmerkategorien      @relation(fields: [ZimmerkategorieID], references: [ZimmerkategorieID], onDelete: NoAction, onUpdate: NoAction, map: "Zimmer_ibfk_1")
+  Standorte           Standorte?            @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Zimmer_ibfk_2")
+  HotelBuchungszimmer HotelBuchungszimmer[]
+
+  @@unique([Zimmernummer, StandortID], map: "unique_zimmernummer_standort")
+  @@index([ZimmerkategorieID], map: "idx_zimmer_kategorien")
+  @@index([StandortID], map: "idx_zimmer_standort")
+  @@index([Status], map: "idx_zimmer_status")
+}
+
+// Hotel Bookings
+model HotelBuchungen {
+  BuchungsID          Int                        @id @default(autoincrement())
+  Buchungsnummer      String                     @unique(map: "Buchungsnummer_Hotel") @db.VarChar(50)
+  KundenID            Int?
+  Gastname            String                     @db.VarChar(255)
+  Email               String?                    @db.VarChar(255)
+  Telefon             String?                    @db.VarChar(50)
+  CheckInDatum        DateTime                   @db.DateTime
+  CheckOutDatum       DateTime                   @db.DateTime
+  AnzahlErwachsene    Int                        @default(1)
+  AnzahlKinder        Int?                       @default(0)
+  Status              HotelBuchungen_Status?     @default(Bestaetigt)
+  GesamtpreisNetto    Decimal                    @default(0.00) @db.Decimal(10, 2)
+  GesamtpreisBrutto   Decimal                    @default(0.00) @db.Decimal(10, 2)
+  MwStGesamt          Decimal                    @default(0.00) @db.Decimal(10, 2)
+  Anzahlung           Decimal?                   @default(0.00) @db.Decimal(10, 2)
+  RechnungsID         Int?
+  Zahlungsart         HotelBuchungen_Zahlungsart?
+  Zahlungsstatus      HotelBuchungen_Zahlungsstatus? @default(Ausstehend)
+  BesondereWuensche   String?                    @db.Text
+  InterneNotizen      String?                    @db.Text
+  CheckInZeit         DateTime?                  @db.Timestamp(0)
+  CheckOutZeit        DateTime?                  @db.Timestamp(0)
+  ErfasstVonBenutzerID Int?
+  Erstelldatum        DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?                  @default(now()) @db.Timestamp(0)
+
+  Kunden              Kunden?                    @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_1")
+  Rechnungen          Rechnungen?                @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_2")
+  Benutzer            Benutzer?                  @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_3")
+  HotelBuchungszimmer HotelBuchungszimmer[]
+  HotelZusatzleistungen HotelZusatzleistungen[]
+  HotelGaeste         HotelGaeste[]
+
+  @@index([KundenID], map: "idx_hotelbuchungen_kundenid")
+  @@index([RechnungsID], map: "idx_hotelbuchungen_rechnungsid")
+  @@index([ErfasstVonBenutzerID], map: "idx_hotelbuchungen_benutzerid")
+  @@index([Status], map: "idx_hotelbuchungen_status")
+  @@index([CheckInDatum], map: "idx_hotelbuchungen_checkin")
+  @@index([CheckOutDatum], map: "idx_hotelbuchungen_checkout")
+}
+
+// Booking Rooms (Many-to-Many relationship)
+model HotelBuchungszimmer {
+  BuchungszimmerID    Int            @id @default(autoincrement())
+  BuchungsID          Int
+  ZimmerID            Int
+  CheckInDatum        DateTime       @db.DateTime
+  CheckOutDatum       DateTime       @db.DateTime
+  PreisProNacht       Decimal        @db.Decimal(10, 2)
+  AnzahlNaechte       Int
+  GesamtpreisNetto    Decimal        @db.Decimal(10, 2)
+  MwStSatz            Decimal        @db.Decimal(5, 2)
+  MwStBetrag          Decimal        @db.Decimal(10, 2)
+  Notizen             String?        @db.Text
+  Erstelldatum        DateTime?      @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  HotelBuchungen      HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelBuchungszimmer_ibfk_1")
+  Zimmer              Zimmer         @relation(fields: [ZimmerID], references: [ZimmerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungszimmer_ibfk_2")
+
+  @@index([BuchungsID], map: "idx_hotelbuchungszimmer_buchungid")
+  @@index([ZimmerID], map: "idx_hotelbuchungszimmer_zimmerid")
+}
+
+// Hotel Guests (additional guest information for bookings)
+model HotelGaeste {
+  GastID              Int            @id @default(autoincrement())
+  BuchungsID          Int
+  Vorname             String         @db.VarChar(100)
+  Nachname            String         @db.VarChar(100)
+  Geburtsdatum        DateTime?      @db.Date
+  Nationalitaet       String?        @db.VarChar(100)
+  AusweisnummerTyp    String?        @db.VarChar(50)  // Passport, ID Card, etc.
+  Ausweisnummer       String?        @db.VarChar(100)
+  Email               String?        @db.VarChar(255)
+  Telefon             String?        @db.VarChar(50)
+  Adresse             String?        @db.VarChar(255)
+  Stadt               String?        @db.VarChar(100)
+  PLZ                 String?        @db.VarChar(20)
+  Land                String?        @db.VarChar(100)
+  IstHauptgast        Boolean?       @default(false)
+  Notizen             String?        @db.Text
+  Erstelldatum        DateTime?      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?      @default(now()) @db.Timestamp(0)
+
+  HotelBuchungen      HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelGaeste_ibfk_1")
+
+  @@index([BuchungsID], map: "idx_hotelgaeste_buchungid")
+  @@index([Nachname], map: "idx_hotelgaeste_nachname")
+}
+
+// Additional Services (room service, minibar, etc.)
+model HotelZusatzleistungen {
+  ZusatzleistungID    Int                               @id @default(autoincrement())
+  BuchungsID          Int
+  Bezeichnung         String                            @db.VarChar(255)
+  Beschreibung        String?                           @db.Text
+  Typ                 HotelZusatzleistungen_Typ?        @default(Sonstiges)
+  Preis               Decimal                           @db.Decimal(10, 2)
+  Menge               Decimal                           @default(1) @db.Decimal(10, 2)
+  GesamtpreisNetto    Decimal                           @db.Decimal(10, 2)
+  MwStSatz            Decimal                           @db.Decimal(5, 2)
+  MwStBetrag          Decimal                           @db.Decimal(10, 2)
+  Datum               DateTime                          @db.DateTime
+  ErfasstVonBenutzerID Int?
+  Notizen             String?                           @db.Text
+  Erstelldatum        DateTime?                         @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  HotelBuchungen      HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelZusatzleistungen_ibfk_1")
+  Benutzer            Benutzer?      @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelZusatzleistungen_ibfk_2")
+
+  @@index([BuchungsID], map: "idx_hotelzusatzleistungen_buchungid")
+  @@index([ErfasstVonBenutzerID], map: "idx_hotelzusatzleistungen_benutzerid")
+  @@index([Datum], map: "idx_hotelzusatzleistungen_datum")
+}
+
+// Hotel Module Enums
+enum Zimmer_Status {
+  Verfuegbar
+  Belegt
+  Reserviert
+  Reinigung
+  Wartung
+  Ausser_Betrieb @map("Außer Betrieb")
+}
+
+enum HotelBuchungen_Status {
+  Angefragt
+  Bestaetigt
+  Eingecheckt
+  Ausgecheckt
+  Abgeschlossen
+  Storniert
+  Nicht_Erschienen @map("Nicht Erschienen")
+}
+
+enum HotelBuchungen_Zahlungsart {
+  Bar
+  Kreditkarte
+  EC_Karte @map("EC-Karte")
+  Rechnung
+  Vorkasse
+  PayPal
+  Ueberweisung
+}
+
+enum HotelBuchungen_Zahlungsstatus {
+  Ausstehend
+  Angezahlt
+  Bezahlt
+  Teilbezahlt
+  Rueckerstattet @map("Rückerstattet")
+  Storniert
+}
+
+enum HotelZusatzleistungen_Typ {
+  Fruehstueck @map("Frühstück")
+  Roomservice
+  Minibar
+  Parkplatz
+  Wellness
+  Transfer
+  Reinigung
+  Sonstiges
 }

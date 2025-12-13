@@ -503,5 +503,127 @@
       "hidden": "Hidden",
       "visibility": "Visibility"
     }
+  },
+  "hotel": {
+    "title": "Hotel",
+    "dashboard": {
+      "title": "Hotel Dashboard",
+      "subtitle": "Overview of your hotel",
+      "availableRooms": "Available Rooms",
+      "occupiedRooms": "Occupied Rooms",
+      "todayCheckIns": "Today's Check-ins",
+      "todayCheckOuts": "Today's Check-outs",
+      "bookings": "Bookings",
+      "manageBookings": "Manage bookings",
+      "rooms": "Rooms",
+      "manageRooms": "Manage rooms",
+      "categories": "Categories",
+      "manageCategories": "Manage room categories"
+    },
+    "categories": {
+      "title": "Room Categories",
+      "subtitle": "Manage your room categories",
+      "newCategory": "New Category",
+      "createSubtitle": "Create a new room category",
+      "persons": "Persons",
+      "night": "Night",
+      "rooms": "Rooms",
+      "noCategories": "No room categories available",
+      "confirmDelete": "Do you really want to delete this room category?",
+      "errorLoading": "Error loading room categories",
+      "errorDeleting": "Error deleting room category"
+    },
+    "rooms": {
+      "title": "Room Management",
+      "subtitle": "Manage your hotel rooms",
+      "newRoom": "New Room",
+      "createSubtitle": "Create a new room",
+      "roomNumber": "Room Number",
+      "category": "Category",
+      "floor": "Floor",
+      "price": "Price",
+      "searchPlaceholder": "Search rooms...",
+      "noRooms": "No rooms available",
+      "confirmDelete": "Do you really want to delete this room?",
+      "errorLoading": "Error loading rooms",
+      "errorDeleting": "Error deleting room",
+      "status": {
+        "available": "Available",
+        "occupied": "Occupied",
+        "reserved": "Reserved",
+        "cleaning": "Cleaning",
+        "maintenance": "Maintenance",
+        "outOfOrder": "Out of Order"
+      }
+    },
+    "bookings": {
+      "title": "Bookings",
+      "subtitle": "Manage your hotel bookings",
+      "newBooking": "New Booking",
+      "createSubtitle": "Create a new booking",
+      "bookingNumber": "Booking Number",
+      "guest": "Guest",
+      "checkInOut": "Check-in / Check-out",
+      "checkInFrom": "Check-in from",
+      "checkInTo": "Check-in to",
+      "details": "Details",
+      "adults": "Adults",
+      "children": "Children",
+      "totalPrice": "Total Price",
+      "searchPlaceholder": "Search by guest, booking number or email...",
+      "noBookings": "No bookings available",
+      "confirmDelete": "Do you really want to delete this booking?",
+      "errorLoading": "Error loading bookings",
+      "errorDeleting": "Error deleting booking",
+      "status": {
+        "requested": "Requested",
+        "confirmed": "Confirmed",
+        "checkedIn": "Checked In",
+        "checkedOut": "Checked Out",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "noShow": "No Show"
+      },
+      "paymentStatus": {
+        "pending": "Pending",
+        "deposit": "Deposit Paid",
+        "paid": "Paid",
+        "partiallyPaid": "Partially Paid",
+        "refunded": "Refunded",
+        "cancelled": "Cancelled"
+      }
+    },
+    "guests": {
+      "title": "Guests",
+      "subtitle": "Manage your hotel guests",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "birthDate": "Birth Date",
+      "nationality": "Nationality",
+      "idType": "ID Type",
+      "idNumber": "ID Number",
+      "mainGuest": "Main Guest",
+      "noGuests": "No guests available"
+    },
+    "services": {
+      "title": "Additional Services",
+      "subtitle": "Additional services for bookings",
+      "newService": "New Service",
+      "name": "Name",
+      "type": "Type",
+      "price": "Price",
+      "quantity": "Quantity",
+      "noServices": "No additional services available",
+      "types": {
+        "breakfast": "Breakfast",
+        "roomService": "Room Service",
+        "minibar": "Minibar",
+        "parking": "Parking",
+        "wellness": "Wellness",
+        "transfer": "Transfer",
+        "cleaning": "Cleaning",
+        "other": "Other"
+      }
+    }
   }
 }

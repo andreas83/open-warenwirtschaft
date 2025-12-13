@@ -223,6 +223,11 @@ const menuItems = [
     label: 'menu.cashRegister'
   },
   {
+    to: '/berichte',
+    icon: 'i-mdi-chart-bar',
+    label: 'menu.reports'
+  },
+  {
     to: '/settings',
     icon: 'i-mdi-cog',
     label: 'menu.settings',

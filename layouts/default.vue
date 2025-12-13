@@ -67,6 +67,11 @@
             </NuxtLink>
           </li>
           <li>
+            <NuxtLink to="/kassen" class="block p-2 rounded flex items-center" :class="{'hover:bg-teal-600': !darkMode, 'hover:bg-teal-700': darkMode}" @click="closeMobileMenu">
+              <span class="i-mdi-cash-register w-5 h-5 mr-2"></span> {{ $t('menu.cashRegister') }}
+            </NuxtLink>
+          </li>
+          <li>
             <div class="block p-2 rounded cursor-pointer flex items-center" :class="{'hover:bg-teal-600': !darkMode, 'hover:bg-teal-700': darkMode}" @click="closeMobileMenu">
               <span class="i-mdi-cog w-5 h-5 mr-2"></span> {{ $t('menu.settings') }}
             </div>

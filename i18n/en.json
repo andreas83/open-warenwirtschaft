@@ -536,6 +536,118 @@
       "visibility": "Visibility"
     }
   },
+  "components": {
+    "pageTitle": "UI Components",
+    "title": "UI Component Library",
+    "description": "Consistent, reusable components for the entire system",
+    "tableOfContents": "Table of Contents",
+    "demo": {
+      "preview": "Preview",
+      "code": "Code",
+      "copyCode": "Copy code"
+    },
+    "sections": {
+      "formComponents": "Form Components",
+      "buttonComponents": "Button Components",
+      "feedbackComponents": "Feedback Components",
+      "navigationComponents": "Navigation Components"
+    },
+    "formInput": {
+      "title": "FormInput",
+      "description": "A reusable input field with validation, error messages and hints",
+      "examples": {
+        "basic": "Basic Input",
+        "required": "Required Field",
+        "withHint": "With Hint",
+        "withError": "With Error",
+        "disabled": "Disabled",
+        "number": "Number Field"
+      }
+    },
+    "formTextarea": {
+      "title": "FormTextarea",
+      "description": "A multi-line text input field with character limit",
+      "examples": {
+        "basic": "Basic Textarea",
+        "withMaxLength": "With Character Limit",
+        "customRows": "Custom Rows"
+      }
+    },
+    "loadingButton": {
+      "title": "LoadingButton",
+      "description": "A button with loading state, different variants and sizes",
+      "examples": {
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "danger": "Danger",
+        "success": "Success",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "withIcon": "With Icon",
+        "loading": "Loading...",
+        "disabled": "Disabled"
+      }
+    },
+    "loadingSpinner": {
+      "title": "LoadingSpinner",
+      "description": "An animated loading spinner in different sizes",
+      "examples": {
+        "sizes": "Sizes",
+        "withText": "With Text",
+        "centered": "Centered",
+        "loadingText": "Loading data...",
+        "centeredText": "Content is loading..."
+      }
+    },
+    "toast": {
+      "title": "Toast",
+      "description": "Notifications for success, error, warning and information",
+      "examples": {
+        "show": "Show Toast",
+        "showSuccess": "Show Success",
+        "showError": "Show Error",
+        "showWarning": "Show Warning",
+        "showInfo": "Show Info",
+        "successTitle": "Success",
+        "successMessage": "The action was completed successfully!",
+        "errorTitle": "Error",
+        "errorMessage": "An error occurred. Please try again.",
+        "warningTitle": "Warning",
+        "warningMessage": "Please note this warning.",
+        "infoTitle": "Information",
+        "infoMessage": "Here is some helpful information for you."
+      }
+    },
+    "confirmModal": {
+      "title": "ConfirmModal",
+      "description": "A confirmation dialog for important actions",
+      "examples": {
+        "show": "Show Confirmation Dialog",
+        "title": "Confirm Action",
+        "message": "Are you sure you want to perform this action?",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "confirmed": "Action was confirmed!"
+      }
+    },
+    "pagination": {
+      "title": "Pagination",
+      "description": "Page navigation for large datasets",
+      "examples": {
+        "currentPage": "Current Page"
+      }
+    },
+    "breadcrumbs": {
+      "title": "Breadcrumbs",
+      "description": "Breadcrumb navigation to display current position",
+      "examples": {
+        "home": "Home",
+        "products": "Products",
+        "details": "Details"
+      }
+    }
+  },
   "hotel": {
     "title": "Hotel",
     "dashboard": {

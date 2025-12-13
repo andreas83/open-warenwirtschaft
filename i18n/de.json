@@ -542,6 +542,118 @@
       "visibility": "Sichtbarkeit"
     }
   },
+  "components": {
+    "pageTitle": "UI Komponenten",
+    "title": "UI Komponenten Bibliothek",
+    "description": "Konsistente, wiederverwendbare Komponenten für das gesamte System",
+    "tableOfContents": "Inhaltsverzeichnis",
+    "demo": {
+      "preview": "Vorschau",
+      "code": "Code",
+      "copyCode": "Code kopieren"
+    },
+    "sections": {
+      "formComponents": "Formularkomponenten",
+      "buttonComponents": "Button-Komponenten",
+      "feedbackComponents": "Feedback-Komponenten",
+      "navigationComponents": "Navigationskomponenten"
+    },
+    "formInput": {
+      "title": "FormInput",
+      "description": "Ein wiederverwendbares Eingabefeld mit Validierung, Fehlermeldungen und Hinweisen",
+      "examples": {
+        "basic": "Einfaches Eingabefeld",
+        "required": "Pflichtfeld",
+        "withHint": "Mit Hinweis",
+        "withError": "Mit Fehler",
+        "disabled": "Deaktiviert",
+        "number": "Numerisches Feld"
+      }
+    },
+    "formTextarea": {
+      "title": "FormTextarea",
+      "description": "Ein mehrzeiliges Texteingabefeld mit Zeichenbegrenzung",
+      "examples": {
+        "basic": "Einfaches Textarea",
+        "withMaxLength": "Mit Zeichenbegrenzung",
+        "customRows": "Benutzerdefinierte Zeilen"
+      }
+    },
+    "loadingButton": {
+      "title": "LoadingButton",
+      "description": "Ein Button mit Ladezustand, verschiedenen Varianten und Größen",
+      "examples": {
+        "primary": "Primär",
+        "secondary": "Sekundär",
+        "danger": "Gefahr",
+        "success": "Erfolg",
+        "small": "Klein",
+        "medium": "Mittel",
+        "large": "Groß",
+        "withIcon": "Mit Icon",
+        "loading": "Lädt...",
+        "disabled": "Deaktiviert"
+      }
+    },
+    "loadingSpinner": {
+      "title": "LoadingSpinner",
+      "description": "Ein animierter Ladespinner in verschiedenen Größen",
+      "examples": {
+        "sizes": "Größen",
+        "withText": "Mit Text",
+        "centered": "Zentriert",
+        "loadingText": "Lade Daten...",
+        "centeredText": "Inhalt wird geladen..."
+      }
+    },
+    "toast": {
+      "title": "Toast",
+      "description": "Benachrichtigungen für Erfolg, Fehler, Warnung und Information",
+      "examples": {
+        "show": "Toast anzeigen",
+        "showSuccess": "Erfolg anzeigen",
+        "showError": "Fehler anzeigen",
+        "showWarning": "Warnung anzeigen",
+        "showInfo": "Info anzeigen",
+        "successTitle": "Erfolg",
+        "successMessage": "Die Aktion wurde erfolgreich abgeschlossen!",
+        "errorTitle": "Fehler",
+        "errorMessage": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+        "warningTitle": "Warnung",
+        "warningMessage": "Bitte beachten Sie diese Warnung.",
+        "infoTitle": "Information",
+        "infoMessage": "Hier ist eine hilfreiche Information für Sie."
+      }
+    },
+    "confirmModal": {
+      "title": "ConfirmModal",
+      "description": "Ein Bestätigungsdialog für wichtige Aktionen",
+      "examples": {
+        "show": "Bestätigungsdialog anzeigen",
+        "title": "Aktion bestätigen",
+        "message": "Sind Sie sicher, dass Sie diese Aktion ausführen möchten?",
+        "confirm": "Bestätigen",
+        "cancel": "Abbrechen",
+        "confirmed": "Aktion wurde bestätigt!"
+      }
+    },
+    "pagination": {
+      "title": "Pagination",
+      "description": "Seitennavigation für große Datensätze",
+      "examples": {
+        "currentPage": "Aktuelle Seite"
+      }
+    },
+    "breadcrumbs": {
+      "title": "Breadcrumbs",
+      "description": "Breadcrumb-Navigation zur Anzeige der aktuellen Position",
+      "examples": {
+        "home": "Startseite",
+        "products": "Produkte",
+        "details": "Details"
+      }
+    }
+  },
   "hotel": {
     "title": "Hotel",
     "dashboard": {

@@ -473,6 +473,13 @@ async function main() {
       // Configuration
       { ModulName: 'einheiten', DisplayName: 'Einheiten', Beschreibung: 'Maßeinheiten', Icon: 'i-heroicons-calculator', Kategorie: 'Settings', Route: '/einheiten', SortOrder: 18, IstSystem: false },
       { ModulName: 'umsatzsteuersaetze', DisplayName: 'Umsatzsteuersätze', Beschreibung: 'Steuersätze', Icon: 'i-heroicons-percent-badge', Kategorie: 'Settings', Route: '/umsatzsteuersaetze', SortOrder: 19, IstSystem: false },
+
+      // Wholesale-specific modules
+      { ModulName: 'preisvertraege', DisplayName: 'Preisverträge', Beschreibung: 'Kundenspezifische Preisverträge', Icon: 'i-heroicons-document-check', Kategorie: 'Procurement', Route: '/preisvertraege', SortOrder: 20, IstSystem: false },
+      { ModulName: 'vertreter', DisplayName: 'Vertriebsvertreter', Beschreibung: 'Vertreterverwaltung und Provisionen', Icon: 'i-heroicons-user-circle', Kategorie: 'CRM', Route: '/vertreter', SortOrder: 21, IstSystem: false },
+      { ModulName: 'kreditmanagement', DisplayName: 'Kreditmanagement', Beschreibung: 'Kreditlimits und Mahnwesen', Icon: 'i-heroicons-exclamation-triangle', Kategorie: 'Finance', Route: '/kreditmanagement', SortOrder: 22, IstSystem: false },
+      { ModulName: 'lieferungen', DisplayName: 'Lieferungen & Logistik', Beschreibung: 'Lieferplanung und Tourenmanagement', Icon: 'i-heroicons-truck', Kategorie: 'Procurement', Route: '/lieferungen', SortOrder: 23, IstSystem: false },
+      { ModulName: 'angebote', DisplayName: 'Angebote', Beschreibung: 'Angebotsverwaltung und Quote-to-Order', Icon: 'i-heroicons-document-duplicate', Kategorie: 'Sales', Route: '/angebote', SortOrder: 24, IstSystem: false },
     ],
     skipDuplicates: true,
   });
@@ -565,25 +572,37 @@ async function main() {
   // Wholesale configuration
   if (wholesale) {
     moduleConfigData.push(
+      // Core modules (10 Required)
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'B2B-Kundenverwaltung essentiell' },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Großhandelsprodukte' },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Wichtig', IstAktiviert: true },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Lagerverwaltung kritisch' },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+
+      // Important modules (11 Important)
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Wichtig', IstAktiviert: true },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Wichtig', IstAktiviert: true },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Wichtig', IstAktiviert: true },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Wichtig', IstAktiviert: true },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Wichtig', IstAktiviert: true },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Wichtig', IstAktiviert: true },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('preisvertraege'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Kundenspezifische Preisvereinbarungen' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('vertreter'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Vertriebsvertreter und Provisionen' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kreditmanagement'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Kreditlimits und Mahnwesen' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('lieferungen'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Lieferplanung und Logistik' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('angebote'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Angebote und Quotes' },
+
+      // Optional modules (2 Optional)
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Optional', IstAktiviert: true },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Wichtig', IstAktiviert: true },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Versteckt', IstAktiviert: false },
       { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Optional', IstAktiviert: false },
-      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: true }
+
+      // Hidden modules (1 Hidden)
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Versteckt', IstAktiviert: false }
     );
   }
 

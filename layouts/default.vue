@@ -187,7 +187,8 @@ const languageMenuOpen = ref(false)
 const sidebarCollapsed = ref(false)
 const openSubmenus = ref({
   '/settings': true,
-  '/restaurant': true
+  '/restaurant': true,
+  '/shop': true
 })
 const user = ref(null)
 const router = useRouter()
@@ -244,6 +245,28 @@ const menuItems = [
         to: '/restaurant/reservierungen',
         icon: 'i-mdi-calendar-check',
         label: 'restaurant.reservations.title'
+      }
+    ]
+  },
+  {
+    to: '/shop',
+    icon: 'i-mdi-shopping',
+    label: 'shop.title',
+    children: [
+      {
+        to: '/shop/produkte',
+        icon: 'i-mdi-package-variant',
+        label: 'shop.products.title'
+      },
+      {
+        to: '/shop/bestellungen',
+        icon: 'i-mdi-cart',
+        label: 'shop.orders.title'
+      },
+      {
+        to: '/shop/kategorien',
+        icon: 'i-mdi-folder-outline',
+        label: 'shop.categories.title'
       }
     ]
   },

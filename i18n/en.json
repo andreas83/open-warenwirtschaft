@@ -434,5 +434,74 @@
         "cancelled": "Cancelled"
       }
     }
+  },
+  "shop": {
+    "title": "Online Shop",
+    "products": {
+      "title": "Shop Products",
+      "subtitle": "Manage your online shop products",
+      "newProduct": "New Product",
+      "category": "Category",
+      "searchPlaceholder": "Search product...",
+      "noProducts": "No products available",
+      "confirmDelete": "Do you really want to delete this product?",
+      "active": "Active",
+      "inactive": "Inactive",
+      "featured": "Featured",
+      "reviews": "Reviews"
+    },
+    "orders": {
+      "title": "Shop Orders",
+      "subtitle": "Manage online shop orders",
+      "orderNumber": "Order Number",
+      "customer": "Customer",
+      "orderDate": "Order Date",
+      "total": "Total",
+      "items": "Items",
+      "payment": "Payment",
+      "orderStatus": "Order Status",
+      "paymentStatus": "Payment Status",
+      "shippingStatus": "Shipping Status",
+      "searchPlaceholder": "Search by order number, email or name...",
+      "noOrders": "No orders available",
+      "viewDetails": "View Details",
+      "status": {
+        "new": "New",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "payment": {
+        "pending": "Pending",
+        "paid": "Paid",
+        "partiallyPaid": "Partially Paid",
+        "failed": "Failed"
+      },
+      "shipping": {
+        "notShipped": "Not Shipped",
+        "preparing": "Preparing",
+        "shipped": "Shipped",
+        "inTransit": "In Transit",
+        "delivered": "Delivered"
+      }
+    },
+    "categories": {
+      "title": "Shop Categories",
+      "subtitle": "Manage your product categories",
+      "newCategory": "New Category",
+      "name": "Name",
+      "slug": "Slug",
+      "parent": "Parent",
+      "products": "Products",
+      "subcategories": "Subcategories",
+      "searchPlaceholder": "Search category...",
+      "noCategories": "No categories available",
+      "confirmDelete": "Do you really want to delete this category?",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "visibility": "Visibility"
+    }
   }
 }

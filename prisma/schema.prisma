@@ -171,6 +171,9 @@ model Kunden {
   KundenVertreter       KundenVertreter[]
   Kreditlimits          Kreditlimits?
   Angebote              Angebote[]
+  ShopWarenkorb         ShopWarenkorb[]
+  ShopBestellungen      ShopBestellungen[]
+  ShopBewertungen       ShopBewertungen[]
 
   @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
   @@index([Nachname, Vorname], map: "idx_kunden_name")
@@ -1343,4 +1346,324 @@ enum Angebote_Status {
   Abgelehnt
   Abgelaufen
   Storniert
+}
+
+// ========================================
+// SHOP MODULE
+// ========================================
+
+// Shop Categories
+model ShopKategorien {
+  ShopKategorieID               Int                  @id @default(autoincrement())
+  Name                          String               @db.VarChar(100)
+  Beschreibung                  String?              @db.Text
+  UebergeordneteKategorieID     Int?
+  Slug                          String               @unique(map: "ShopKategorieSlug") @db.VarChar(150)
+  BildPfad                      String?              @db.VarChar(255)
+  SortOrder                     Int?                 @default(0)
+  IstSichtbar                   Boolean?             @default(true)
+  MetaTitel                     String?              @db.VarChar(255)
+  MetaBeschreibung              String?              @db.Text
+  Erstelldatum                  DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime?            @default(now()) @db.Timestamp(0)
+
+  ShopKategorien                ShopKategorien?      @relation("ShopKategorienToShopKategorien", fields: [UebergeordneteKategorieID], references: [ShopKategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ShopKategorien_ibfk_1")
+  other_ShopKategorien          ShopKategorien[]     @relation("ShopKategorienToShopKategorien")
+  ShopProdukte                  ShopProdukte[]
+
+  @@index([UebergeordneteKategorieID], map: "idx_shopkategorien_uebergeordnet")
+  @@index([Slug], map: "idx_shopkategorien_slug")
+}
+
+// Shop Products (Online Shop specific products)
+model ShopProdukte {
+  ShopProduktID                 Int                     @id @default(autoincrement())
+  ProduktID                     Int
+  ShopKategorieID               Int?
+  Titel                         String                  @db.VarChar(255)
+  Kurzbeschreibung              String?                 @db.Text
+  Langbeschreibung              String?                 @db.Text
+  Slug                          String                  @unique(map: "ShopProduktSlug") @db.VarChar(255)
+  SKU                           String?                 @unique(map: "ShopProduktSKU") @db.VarChar(100)
+  Preis                         Decimal                 @db.Decimal(10, 2)
+  UVP                           Decimal?                @db.Decimal(10, 2)
+  IstAktiv                      Boolean?                @default(true)
+  IstHervorgehoben              Boolean?                @default(false)
+  Lagerbestand                  Int?                    @default(0)
+  MindestBestellmenge           Int?                    @default(1)
+  MaximalBestellmenge           Int?
+  Gewicht                       Decimal?                @db.Decimal(10, 3)
+  Breite                        Decimal?                @db.Decimal(10, 2)
+  Hoehe                         Decimal?                @db.Decimal(10, 2)
+  Tiefe                         Decimal?                @db.Decimal(10, 2)
+  HauptbildPfad                 String?                 @db.VarChar(255)
+  BilderJSON                    String?                 @db.Text
+  AttributeJSON                 String?                 @db.Text
+  MetaTitel                     String?                 @db.VarChar(255)
+  MetaBeschreibung              String?                 @db.Text
+  SortOrder                     Int?                    @default(0)
+  Aufrufe                       Int?                    @default(0)
+  Bewertung                     Decimal?                @db.Decimal(3, 2)
+  AnzahlBewertungen             Int?                    @default(0)
+  Erstelldatum                  DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime?               @default(now()) @db.Timestamp(0)
+
+  Produkte                      Produkte                @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopProdukte_ibfk_1")
+  ShopKategorien                ShopKategorien?         @relation(fields: [ShopKategorieID], references: [ShopKategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ShopProdukte_ibfk_2")
+  ShopBestellpositionen         ShopBestellpositionen[]
+  ShopWarenkorbpositionen       ShopWarenkorbpositionen[]
+  ShopBewertungen               ShopBewertungen[]
+
+  @@index([ProduktID], map: "idx_shopprodukte_produktid")
+  @@index([ShopKategorieID], map: "idx_shopprodukte_kategorieid")
+  @@index([Slug], map: "idx_shopprodukte_slug")
+  @@index([IstAktiv], map: "idx_shopprodukte_aktiv")
+}
+
+// Shopping Cart
+model ShopWarenkorb {
+  WarenkorbID                   Int                       @id @default(autoincrement())
+  KundenID                      Int?
+  SessionID                     String?                   @db.VarChar(255)
+  Status                        ShopWarenkorb_Status?     @default(Aktiv)
+  Erstelldatum                  DateTime?                 @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime?                 @default(now()) @db.Timestamp(0)
+
+  Kunden                        Kunden?                   @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "ShopWarenkorb_ibfk_1")
+  ShopWarenkorbpositionen       ShopWarenkorbpositionen[]
+
+  @@index([KundenID], map: "idx_shopwarenkorb_kundenid")
+  @@index([SessionID], map: "idx_shopwarenkorb_sessionid")
+}
+
+// Shopping Cart Items
+model ShopWarenkorbpositionen {
+  WarenkorbpositionsID          Int                @id @default(autoincrement())
+  WarenkorbID                   Int
+  ShopProduktID                 Int
+  Menge                         Int                @default(1)
+  Preis                         Decimal            @db.Decimal(10, 2)
+  AttributeJSON                 String?            @db.Text
+  Erstelldatum                  DateTime?          @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime?          @default(now()) @db.Timestamp(0)
+
+  ShopWarenkorb                 ShopWarenkorb      @relation(fields: [WarenkorbID], references: [WarenkorbID], onDelete: Cascade, onUpdate: NoAction, map: "ShopWarenkorbpositionen_ibfk_1")
+  ShopProdukte                  ShopProdukte       @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopWarenkorbpositionen_ibfk_2")
+
+  @@index([WarenkorbID], map: "idx_shopwarenkorbpositionen_warenkorbid")
+  @@index([ShopProduktID], map: "idx_shopwarenkorbpositionen_produktid")
+}
+
+// Shop Orders
+model ShopBestellungen {
+  ShopBestellID                 Int                         @id @default(autoincrement())
+  KundenID                      Int
+  Bestellnummer                 String                      @unique(map: "ShopBestellnummer") @db.VarChar(50)
+  Bestelldatum                  DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Status                        ShopBestellungen_Status?    @default(Neu)
+  Zahlungsstatus                ShopBestellungen_Zahlungsstatus? @default(Ausstehend)
+  Versandstatus                 ShopBestellungen_Versandstatus?  @default(NichtVersendet)
+  Zahlungsart                   ShopBestellungen_Zahlungsart?
+  Versandart                    String?                     @db.VarChar(100)
+
+  // Customer Information
+  RechnungsVorname              String                      @db.VarChar(100)
+  RechnungsNachname             String                      @db.VarChar(100)
+  RechnungsFirma                String?                     @db.VarChar(255)
+  RechnungsAdresse              String                      @db.VarChar(255)
+  RechnungsPLZ                  String                      @db.VarChar(10)
+  RechnungsOrt                  String                      @db.VarChar(100)
+  RechnungsLand                 String                      @db.VarChar(100)
+  RechnungsTelefon              String?                     @db.VarChar(50)
+  RechnungsEmail                String                      @db.VarChar(255)
+
+  LieferungVorname              String                      @db.VarChar(100)
+  LieferungNachname             String                      @db.VarChar(100)
+  LieferungFirma                String?                     @db.VarChar(255)
+  LieferungAdresse              String                      @db.VarChar(255)
+  LieferungPLZ                  String                      @db.VarChar(10)
+  LieferungOrt                  String                      @db.VarChar(100)
+  LieferungLand                 String                      @db.VarChar(100)
+  LieferungTelefon              String?                     @db.VarChar(50)
+
+  // Pricing
+  ZwischensummeNetto            Decimal                     @db.Decimal(10, 2)
+  Versandkosten                 Decimal?                    @default(0.00) @db.Decimal(10, 2)
+  RabattBetrag                  Decimal?                    @default(0.00) @db.Decimal(10, 2)
+  RabattCode                    String?                     @db.VarChar(50)
+  MwStGesamt                    Decimal                     @db.Decimal(10, 2)
+  GesamtsummeBrutto             Decimal                     @db.Decimal(10, 2)
+  Waehrung                      String?                     @default("EUR") @db.VarChar(3)
+
+  // Additional Information
+  KundenNotizen                 String?                     @db.Text
+  InterneNotizen                String?                     @db.Text
+  IPAdresse                     String?                     @db.VarChar(45)
+  UserAgent                     String?                     @db.VarChar(255)
+
+  // Tracking
+  TrackingNummer                String?                     @db.VarChar(100)
+  VersandDatum                  DateTime?                   @db.Timestamp(0)
+  ZugesteltDatum                DateTime?                   @db.Timestamp(0)
+
+  Erstelldatum                  DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime?                   @default(now()) @db.Timestamp(0)
+
+  Kunden                        Kunden                      @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBestellungen_ibfk_1")
+  ShopBestellpositionen         ShopBestellpositionen[]
+  ShopZahlungen                 ShopZahlungen[]
+
+  @@index([KundenID], map: "idx_shopbestellungen_kundenid")
+  @@index([Bestelldatum], map: "idx_shopbestellungen_bestelldatum")
+  @@index([Status], map: "idx_shopbestellungen_status")
+  @@index([Zahlungsstatus], map: "idx_shopbestellungen_zahlungsstatus")
+}
+
+// Shop Order Items
+model ShopBestellpositionen {
+  ShopBestellpositionsID        Int                 @id @default(autoincrement())
+  ShopBestellID                 Int
+  ShopProduktID                 Int
+  Produktname                   String              @db.VarChar(255)
+  SKU                           String?             @db.VarChar(100)
+  Menge                         Int
+  EinzelpreisNetto              Decimal             @db.Decimal(10, 2)
+  GesamtpreisNetto              Decimal             @db.Decimal(10, 2)
+  MwStSatz                      Decimal             @db.Decimal(5, 2)
+  MwStBetrag                    Decimal             @db.Decimal(10, 2)
+  AttributeJSON                 String?             @db.Text
+  Erstelldatum                  DateTime?           @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  ShopBestellungen              ShopBestellungen    @relation(fields: [ShopBestellID], references: [ShopBestellID], onDelete: Cascade, onUpdate: NoAction, map: "ShopBestellpositionen_ibfk_1")
+  ShopProdukte                  ShopProdukte        @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBestellpositionen_ibfk_2")
+
+  @@index([ShopBestellID], map: "idx_shopbestellpositionen_bestellid")
+  @@index([ShopProduktID], map: "idx_shopbestellpositionen_produktid")
+}
+
+// Shop Payments
+model ShopZahlungen {
+  ShopZahlungID                 Int                          @id @default(autoincrement())
+  ShopBestellID                 Int
+  Betrag                        Decimal                      @db.Decimal(10, 2)
+  Waehrung                      String?                      @default("EUR") @db.VarChar(3)
+  Zahlungsart                   ShopZahlungen_Zahlungsart
+  TransaktionsID                String?                      @db.VarChar(255)
+  Status                        ShopZahlungen_Status?        @default(Ausstehend)
+  ZahlungsdatumErhalten         DateTime?                    @db.Timestamp(0)
+  PaymentProviderAntwort        String?                      @db.Text
+  Kommentare                    String?                      @db.Text
+  Erstelldatum                  DateTime?                    @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  ShopBestellungen              ShopBestellungen             @relation(fields: [ShopBestellID], references: [ShopBestellID], onDelete: Cascade, onUpdate: NoAction, map: "ShopZahlungen_ibfk_1")
+
+  @@index([ShopBestellID], map: "idx_shopzahlungen_bestellid")
+  @@index([TransaktionsID], map: "idx_shopzahlungen_transaktionid")
+}
+
+// Product Reviews
+model ShopBewertungen {
+  BewertungID                   Int                     @id @default(autoincrement())
+  ShopProduktID                 Int
+  KundenID                      Int?
+  Bewertername                  String                  @db.VarChar(255)
+  Email                         String?                 @db.VarChar(255)
+  Bewertung                     Int
+  Titel                         String?                 @db.VarChar(255)
+  Kommentar                     String?                 @db.Text
+  Status                        ShopBewertungen_Status? @default(Ausstehend)
+  IstVerifizierterKauf          Boolean?                @default(false)
+  Erstelldatum                  DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime?               @default(now()) @db.Timestamp(0)
+
+  ShopProdukte                  ShopProdukte            @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: Cascade, onUpdate: NoAction, map: "ShopBewertungen_ibfk_1")
+  Kunden                        Kunden?                 @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBewertungen_ibfk_2")
+
+  @@index([ShopProduktID], map: "idx_shopbewertungen_produktid")
+  @@index([KundenID], map: "idx_shopbewertungen_kundenid")
+  @@index([Status], map: "idx_shopbewertungen_status")
+}
+
+// Shop Settings
+model ShopEinstellungen {
+  EinstellungID                 Int       @id @default(autoincrement())
+  SchluesselName                String    @unique(map: "ShopEinstellungSchluessel") @db.VarChar(100)
+  Wert                          String?   @db.Text
+  Typ                           String?   @db.VarChar(50)
+  Beschreibung                  String?   @db.Text
+  Kategorie                     String?   @db.VarChar(100)
+  Erstelldatum                  DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung               DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([Kategorie], map: "idx_shopeinstellungen_kategorie")
+}
+
+// Enums for Shop Module
+enum ShopWarenkorb_Status {
+  Aktiv
+  Abgeschlossen
+  Abgebrochen
+}
+
+enum ShopBestellungen_Status {
+  Neu
+  In_Bearbeitung    @map("In Bearbeitung")
+  Versendet
+  Zugestellt
+  Abgeschlossen
+  Storniert
+  Rueckgabe         @map("Rückgabe")
+}
+
+enum ShopBestellungen_Zahlungsstatus {
+  Ausstehend
+  Bezahlt
+  Teilbezahlt
+  Rueckerstattet    @map("Rückerstattet")
+  Fehlgeschlagen
+}
+
+enum ShopBestellungen_Versandstatus {
+  NichtVersendet    @map("Nicht Versendet")
+  Vorbereitung
+  Versendet
+  Unterwegs
+  Zugestellt
+  Fehlgeschlagen
+}
+
+enum ShopBestellungen_Zahlungsart {
+  Vorkasse
+  Rechnung
+  Nachnahme
+  PayPal
+  Kreditkarte
+  Sofortueberweisung @map("Sofortüberweisung")
+  Lastschrift
+}
+
+enum ShopZahlungen_Zahlungsart {
+  Vorkasse
+  Rechnung
+  PayPal
+  Kreditkarte
+  Sofortueberweisung @map("Sofortüberweisung")
+  Lastschrift
+  Sonstige
+}
+
+enum ShopZahlungen_Status {
+  Ausstehend
+  Autorisiert
+  Erfasst
+  Fehlgeschlagen
+  Rueckerstattet    @map("Rückerstattet")
+  Storniert
+}
+
+enum ShopBewertungen_Status {
+  Ausstehend
+  Genehmigt
+  Abgelehnt
+  Spam
 }

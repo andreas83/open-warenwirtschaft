@@ -431,6 +431,292 @@ async function main() {
     skipDuplicates: true,
   });
   console.log(`Created ${rechnungspositionen.count} Rechnungspositionen`);
+
+  // ========================================
+  // MODULE SYSTEM - AUDIENCE TEMPLATES SEED
+  // ========================================
+
+  // Seed ModuleDefinition (All available modules in the system)
+  const moduleDefinitions = await prisma.moduleDefinition.createMany({
+    data: [
+      // Core Modules
+      { ModulName: 'kunden', DisplayName: 'Kunden', Beschreibung: 'Kundenverwaltung', Icon: 'i-heroicons-users', Kategorie: 'Core', Route: '/kunden', SortOrder: 1, IstSystem: true },
+      { ModulName: 'produkte', DisplayName: 'Produkte', Beschreibung: 'Produktverwaltung', Icon: 'i-heroicons-cube', Kategorie: 'Core', Route: '/produkte', SortOrder: 2, IstSystem: true },
+      { ModulName: 'kategorien', DisplayName: 'Kategorien', Beschreibung: 'Produktkategorien', Icon: 'i-heroicons-folder', Kategorie: 'Core', Route: '/kategorien', SortOrder: 3, IstSystem: false },
+      { ModulName: 'bestand', DisplayName: 'Bestand', Beschreibung: 'Lagerverwaltung', Icon: 'i-heroicons-archive-box', Kategorie: 'Inventory', Route: '/bestand', SortOrder: 4, IstSystem: false },
+      { ModulName: 'rechnungen', DisplayName: 'Rechnungen', Beschreibung: 'Rechnungsverwaltung', Icon: 'i-heroicons-document-text', Kategorie: 'Finance', Route: '/rechnungen', SortOrder: 5, IstSystem: true },
+
+      // Inventory Modules
+      { ModulName: 'lagerbewegungen', DisplayName: 'Lagerbewegungen', Beschreibung: 'Warenbewegungen', Icon: 'i-heroicons-arrow-path', Kategorie: 'Inventory', Route: '/lagerbewegungen', SortOrder: 6, IstSystem: false },
+      { ModulName: 'standorte', DisplayName: 'Standorte', Beschreibung: 'Standortverwaltung', Icon: 'i-heroicons-map-pin', Kategorie: 'Inventory', Route: '/standorte', SortOrder: 7, IstSystem: false },
+
+      // Sales Modules
+      { ModulName: 'bestellungen', DisplayName: 'Bestellungen', Beschreibung: 'Bestellverwaltung', Icon: 'i-heroicons-shopping-cart', Kategorie: 'Sales', Route: '/bestellungen', SortOrder: 8, IstSystem: false },
+      { ModulName: 'kassen', DisplayName: 'Kassen', Beschreibung: 'Kassenverwaltung', Icon: 'i-heroicons-banknotes', Kategorie: 'Sales', Route: '/kassen', SortOrder: 9, IstSystem: false },
+      { ModulName: 'preise', DisplayName: 'Preise', Beschreibung: 'Preisverwaltung', Icon: 'i-heroicons-tag', Kategorie: 'Sales', Route: '/preise', SortOrder: 10, IstSystem: false },
+
+      // Customer Relations
+      { ModulName: 'kundengruppen', DisplayName: 'Kundengruppen', Beschreibung: 'Kundensegmentierung', Icon: 'i-heroicons-user-group', Kategorie: 'CRM', Route: '/kundengruppen', SortOrder: 11, IstSystem: false },
+      { ModulName: 'kundenkarten', DisplayName: 'Kundenkarten', Beschreibung: 'Treuekarten', Icon: 'i-heroicons-credit-card', Kategorie: 'CRM', Route: '/kundenkarten', SortOrder: 12, IstSystem: false },
+      { ModulName: 'rabatte', DisplayName: 'Rabatte', Beschreibung: 'Rabattverwaltung', Icon: 'i-heroicons-receipt-percent', Kategorie: 'CRM', Route: '/rabatte', SortOrder: 13, IstSystem: false },
+
+      // Finance Modules
+      { ModulName: 'zahlungen', DisplayName: 'Zahlungen', Beschreibung: 'Zahlungsverwaltung', Icon: 'i-heroicons-currency-euro', Kategorie: 'Finance', Route: '/zahlungen', SortOrder: 14, IstSystem: false },
+      { ModulName: 'gutschriften', DisplayName: 'Gutschriften', Beschreibung: 'Gutschriftenverwaltung', Icon: 'i-heroicons-document-minus', Kategorie: 'Finance', Route: '/gutschriften', SortOrder: 15, IstSystem: false },
+
+      // Supplier Management
+      { ModulName: 'lieferanten', DisplayName: 'Lieferanten', Beschreibung: 'Lieferantenverwaltung', Icon: 'i-heroicons-truck', Kategorie: 'Procurement', Route: '/lieferanten', SortOrder: 16, IstSystem: false },
+
+      // Returns
+      { ModulName: 'retouren', DisplayName: 'Retouren', Beschreibung: 'Retourenverwaltung', Icon: 'i-heroicons-arrow-uturn-left', Kategorie: 'Sales', Route: '/retouren', SortOrder: 17, IstSystem: false },
+
+      // Configuration
+      { ModulName: 'einheiten', DisplayName: 'Einheiten', Beschreibung: 'Maßeinheiten', Icon: 'i-heroicons-calculator', Kategorie: 'Settings', Route: '/einheiten', SortOrder: 18, IstSystem: false },
+      { ModulName: 'umsatzsteuersaetze', DisplayName: 'Umsatzsteuersätze', Beschreibung: 'Steuersätze', Icon: 'i-heroicons-percent-badge', Kategorie: 'Settings', Route: '/umsatzsteuersaetze', SortOrder: 19, IstSystem: false },
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${moduleDefinitions.count} ModuleDefinitions`);
+
+  // Seed AudienceTemplate
+  const audienceTemplates = await prisma.audienceTemplate.createMany({
+    data: [
+      {
+        Name: 'wholesale',
+        DisplayName: 'Großhandel / Wholesale',
+        Beschreibung: 'Optimiert für Großhandelsunternehmen mit Fokus auf B2B-Verkauf, Lieferantenverwaltung und Lagerhaltung',
+        Icon: 'i-heroicons-building-storefront',
+        Farbe: 'blue',
+        SortOrder: 1,
+        IstAktiv: true,
+      },
+      {
+        Name: 'restaurant',
+        DisplayName: 'Restaurant',
+        Beschreibung: 'Speziell für Restaurants mit Kassensystem, Speisekartenverwaltung und Tischreservierungen',
+        Icon: 'i-heroicons-building-office-2',
+        Farbe: 'red',
+        SortOrder: 2,
+        IstAktiv: true,
+      },
+      {
+        Name: 'hotel',
+        DisplayName: 'Hotel',
+        Beschreibung: 'Für Hotels mit Zimmerverwaltung, Reservierungen und Gästeverwaltung',
+        Icon: 'i-heroicons-building-library',
+        Farbe: 'purple',
+        SortOrder: 3,
+        IstAktiv: true,
+      },
+      {
+        Name: 'airbnb',
+        DisplayName: 'Ferienvermietung / Airbnb',
+        Beschreibung: 'Für Ferienwohnungen und Kurzzeitvermietungen mit Buchungsverwaltung',
+        Icon: 'i-heroicons-home',
+        Farbe: 'pink',
+        SortOrder: 4,
+        IstAktiv: true,
+      },
+      {
+        Name: 'online_shop',
+        DisplayName: 'Online Shop / E-Commerce',
+        Beschreibung: 'Vollständiges E-Commerce-System mit Produktkatalog, Warenkorb und Zahlungsabwicklung',
+        Icon: 'i-heroicons-shopping-bag',
+        Farbe: 'green',
+        SortOrder: 5,
+        IstAktiv: true,
+      },
+      {
+        Name: 'retail',
+        DisplayName: 'Einzelhandel / Retail',
+        Beschreibung: 'Für Einzelhandelsgeschäfte mit Kassensystem und Lagerverwaltung',
+        Icon: 'i-heroicons-building-storefront',
+        Farbe: 'orange',
+        SortOrder: 6,
+        IstAktiv: true,
+      },
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${audienceTemplates.count} AudienceTemplates`);
+
+  // Fetch created templates and modules for configuration mapping
+  const wholesale = await prisma.audienceTemplate.findFirst({ where: { Name: 'wholesale' } });
+  const restaurant = await prisma.audienceTemplate.findFirst({ where: { Name: 'restaurant' } });
+  const hotel = await prisma.audienceTemplate.findFirst({ where: { Name: 'hotel' } });
+  const airbnb = await prisma.audienceTemplate.findFirst({ where: { Name: 'airbnb' } });
+  const onlineShop = await prisma.audienceTemplate.findFirst({ where: { Name: 'online_shop' } });
+  const retail = await prisma.audienceTemplate.findFirst({ where: { Name: 'retail' } });
+
+  // Fetch all module definitions
+  const allModules = await prisma.moduleDefinition.findMany();
+  const moduleMap = new Map(allModules.map(m => [m.ModulName, m]));
+
+  // Helper function to get module ID by name
+  const getModuleId = (name: string) => {
+    const module = moduleMap.get(name);
+    if (!module) throw new Error(`Module ${name} not found`);
+    return module.ModulID;
+  };
+
+  // Seed ModuleKonfiguration for each audience template
+  const moduleConfigData = [];
+
+  // Wholesale configuration
+  if (wholesale) {
+    moduleConfigData.push(
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'B2B-Kundenverwaltung essentiell' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Großhandelsprodukte' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Lagerverwaltung kritisch' },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: wholesale.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: true }
+    );
+  }
+
+  // Restaurant configuration
+  if (restaurant) {
+    moduleConfigData.push(
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Speisekarte / Menüpunkte' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Speisekategorien' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Zutaten und Vorräte' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'POS-System essentiell' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: false }
+    );
+  }
+
+  // Hotel configuration
+  if (hotel) {
+    moduleConfigData.push(
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Gästeverwaltung' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Optional', IstAktiviert: true, Beschreibung: 'Zusatzleistungen' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Optional', IstAktiviert: true, Beschreibung: 'Treueprogramm' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Optional', IstAktiviert: false }
+    );
+  }
+
+  // Airbnb/Vacation Rental configuration
+  if (airbnb) {
+    moduleConfigData.push(
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Gästeverwaltung' },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Saisonale Preisgestaltung' },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Optional', IstAktiviert: true, Beschreibung: 'Zusatzleistungen' },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Optional', IstAktiviert: true, Beschreibung: 'Mehrere Unterkünfte' },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Versteckt', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: false },
+      { TemplateID: airbnb.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Versteckt', IstAktiviert: false }
+    );
+  }
+
+  // Online Shop configuration
+  if (onlineShop) {
+    moduleConfigData.push(
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Treueprogramm' },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: true },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Optional', IstAktiviert: false }
+    );
+  }
+
+  // Retail configuration
+  if (retail) {
+    moduleConfigData.push(
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('kunden'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('produkte'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('kategorien'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('bestand'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('rechnungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('preise'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('zahlungen'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('kundengruppen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('kundenkarten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('standorte'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('lieferanten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Wichtig', IstAktiviert: true },
+      { TemplateID: retail.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: true }
+    );
+  }
+
+  const moduleConfigs = await prisma.moduleKonfiguration.createMany({
+    data: moduleConfigData,
+    skipDuplicates: true,
+  });
+  console.log(`Created ${moduleConfigs.count} ModuleKonfigurationen`);
 }
 
 main()

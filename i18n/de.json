@@ -365,5 +365,80 @@
       "topByQuantity": "Top nach Menge",
       "slowMovers": "Ladenhüter"
     }
+  },
+  "restaurant": {
+    "title": "Restaurant",
+    "tables": {
+      "title": "Tischverwaltung",
+      "subtitle": "Verwalten Sie Ihre Restaurant-Tische",
+      "newTable": "Neuer Tisch",
+      "createSubtitle": "Erstellen Sie einen neuen Tisch",
+      "tableNumber": "Tischnummer",
+      "tableNumberPlaceholder": "z.B. T1, Tisch 5",
+      "section": "Bereich",
+      "capacity": "Kapazität",
+      "seats": "Plätze",
+      "searchPlaceholder": "Tisch suchen...",
+      "noTables": "Keine Tische vorhanden",
+      "confirmDelete": "Möchten Sie diesen Tisch wirklich löschen?",
+      "descriptionPlaceholder": "Zusätzliche Informationen zum Tisch",
+      "status": {
+        "available": "Verfügbar",
+        "occupied": "Besetzt",
+        "reserved": "Reserviert",
+        "blocked": "Gesperrt"
+      }
+    },
+    "reservations": {
+      "title": "Reservierungen",
+      "subtitle": "Verwalten Sie Tischreservierungen",
+      "newReservation": "Neue Reservierung",
+      "createSubtitle": "Erstellen Sie eine neue Reservierung",
+      "guestName": "Gastname",
+      "guestNamePlaceholder": "Name des Gastes",
+      "table": "Tisch",
+      "dateTime": "Datum & Uhrzeit",
+      "duration": "Dauer",
+      "minutes": "Minuten",
+      "guests": "Personen",
+      "searchPlaceholder": "Nach Gast, Telefon oder E-Mail suchen...",
+      "noReservations": "Keine Reservierungen vorhanden",
+      "confirmDelete": "Möchten Sie diese Reservierung wirklich löschen?",
+      "notesPlaceholder": "Besondere Wünsche oder Anmerkungen",
+      "status": {
+        "confirmed": "Bestätigt",
+        "checkedIn": "Eingecheckt",
+        "completed": "Abgeschlossen",
+        "cancelled": "Storniert",
+        "noShow": "Nicht erschienen"
+      }
+    },
+    "orders": {
+      "title": "Bestellungen",
+      "subtitle": "Restaurant-Bestellungen verwalten",
+      "newOrder": "Neue Bestellung",
+      "orderNumber": "Bestellnummer",
+      "table": "Tisch",
+      "guests": "Personen",
+      "items": "Positionen",
+      "total": "Gesamt",
+      "tip": "Trinkgeld",
+      "noOrders": "Keine Bestellungen vorhanden",
+      "confirmDelete": "Möchten Sie diese Bestellung wirklich löschen?",
+      "status": {
+        "open": "Offen",
+        "inProgress": "In Bearbeitung",
+        "served": "Serviert",
+        "completed": "Abgeschlossen",
+        "cancelled": "Storniert"
+      },
+      "itemStatus": {
+        "ordered": "Bestellt",
+        "preparing": "In Zubereitung",
+        "ready": "Bereit",
+        "served": "Serviert",
+        "cancelled": "Storniert"
+      }
+    }
   }
 }

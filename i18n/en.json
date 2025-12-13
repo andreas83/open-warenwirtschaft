@@ -359,5 +359,80 @@
       "topByQuantity": "Top by Quantity",
       "slowMovers": "Slow Movers"
     }
+  },
+  "restaurant": {
+    "title": "Restaurant",
+    "tables": {
+      "title": "Table Management",
+      "subtitle": "Manage your restaurant tables",
+      "newTable": "New Table",
+      "createSubtitle": "Create a new table",
+      "tableNumber": "Table Number",
+      "tableNumberPlaceholder": "e.g. T1, Table 5",
+      "section": "Section",
+      "capacity": "Capacity",
+      "seats": "Seats",
+      "searchPlaceholder": "Search table...",
+      "noTables": "No tables available",
+      "confirmDelete": "Do you really want to delete this table?",
+      "descriptionPlaceholder": "Additional information about the table",
+      "status": {
+        "available": "Available",
+        "occupied": "Occupied",
+        "reserved": "Reserved",
+        "blocked": "Blocked"
+      }
+    },
+    "reservations": {
+      "title": "Reservations",
+      "subtitle": "Manage table reservations",
+      "newReservation": "New Reservation",
+      "createSubtitle": "Create a new reservation",
+      "guestName": "Guest Name",
+      "guestNamePlaceholder": "Name of the guest",
+      "table": "Table",
+      "dateTime": "Date & Time",
+      "duration": "Duration",
+      "minutes": "Minutes",
+      "guests": "Guests",
+      "searchPlaceholder": "Search by guest, phone or email...",
+      "noReservations": "No reservations available",
+      "confirmDelete": "Do you really want to delete this reservation?",
+      "notesPlaceholder": "Special requests or notes",
+      "status": {
+        "confirmed": "Confirmed",
+        "checkedIn": "Checked In",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "noShow": "No Show"
+      }
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Manage restaurant orders",
+      "newOrder": "New Order",
+      "orderNumber": "Order Number",
+      "table": "Table",
+      "guests": "Guests",
+      "items": "Items",
+      "total": "Total",
+      "tip": "Tip",
+      "noOrders": "No orders available",
+      "confirmDelete": "Do you really want to delete this order?",
+      "status": {
+        "open": "Open",
+        "inProgress": "In Progress",
+        "served": "Served",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "itemStatus": {
+        "ordered": "Ordered",
+        "preparing": "Preparing",
+        "ready": "Ready",
+        "served": "Served",
+        "cancelled": "Cancelled"
+      }
+    }
   }
 }

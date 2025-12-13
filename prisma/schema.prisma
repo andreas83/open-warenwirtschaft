@@ -23,6 +23,8 @@ model Benutzer {
   Retouren        Retouren[]
   Zahlungen       Zahlungen[]
   Kassenbuchungen Kassenbuchungen[]
+  Reservierungen  Reservierungen[]
+  RestaurantBestellungen RestaurantBestellungen[]
 }
 
 model Bestand {
@@ -159,6 +161,8 @@ model Kunden {
   Rechnungen            Rechnungen[]
   Retouren              Retouren[]
   Kassenbuchungen       Kassenbuchungen[]
+  Reservierungen        Reservierungen[]
+  RestaurantBestellungen RestaurantBestellungen[]
 
   @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
   @@index([Nachname, Vorname], map: "idx_kunden_name")
@@ -311,6 +315,7 @@ model Produkte {
   Rechnungspositionen Rechnungspositionen[]
   Retourenpositionen  Retourenpositionen[]
   ProduktBilder       ProduktBilder[]
+  RestaurantBestellpositionen RestaurantBestellpositionen[]
 
   @@index([EinheitID], map: "idx_produkte_einheitid")
   @@index([Produktname], map: "idx_produkte_name")
@@ -417,6 +422,7 @@ model Rechnungen {
   Retouren              Retouren[]
   Zahlungen             Zahlungen[]
   Kassenbuchungen       Kassenbuchungen[]
+  RestaurantBestellungen RestaurantBestellungen[]
 
   @@index([BestellID], map: "BestellID")
   @@index([ErstelltVonBenutzerID], map: "ErstelltVonBenutzerID")
@@ -532,6 +538,7 @@ model Standorte {
   Lagerbewegungen_Lagerbewegungen_ZielStandortIDToStandorte   Lagerbewegungen[] @relation("Lagerbewegungen_ZielStandortIDToStandorte")
   Preise                                                      Preise[]
   Kassen                                                      Kassen[]
+  Tischbereiche                                               Tischbereiche[]
 }
 
 model Umsatzsteuersaetze {
@@ -848,4 +855,170 @@ enum ModuleKonfiguration_Prioritaet {
   Wichtig
   Optional
   Versteckt
+}
+
+// Restaurant Module
+model Tischbereiche {
+  BereichID       Int       @id @default(autoincrement())
+  Name            String    @db.VarChar(100)
+  Beschreibung    String?   @db.Text
+  StandortID      Int?
+  Farbe           String?   @db.VarChar(50)
+  SortOrder       Int?      @default(0)
+  IstAktiv        Boolean?  @default(true)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
+
+  Standorte       Standorte?        @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Tischbereiche_ibfk_1")
+  RestaurantTische RestaurantTische[]
+
+  @@index([StandortID], map: "idx_tischbereiche_standortid")
+}
+
+model RestaurantTische {
+  TischID         Int                      @id @default(autoincrement())
+  Tischnummer     String                   @db.VarChar(50)
+  BereichID       Int?
+  Kapazitaet      Int                      @default(4)
+  Status          RestaurantTische_Status? @default(Verfuegbar)
+  PositionX       Decimal?                 @db.Decimal(10, 2)
+  PositionY       Decimal?                 @db.Decimal(10, 2)
+  Form            String?                  @db.VarChar(50)
+  Beschreibung    String?                  @db.Text
+  IstAktiv        Boolean?                 @default(true)
+  Erstelldatum    DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?                @default(now()) @db.Timestamp(0)
+
+  Tischbereiche        Tischbereiche?         @relation(fields: [BereichID], references: [BereichID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantTische_ibfk_1")
+  Reservierungen       Reservierungen[]
+  RestaurantBestellungen RestaurantBestellungen[]
+
+  @@index([BereichID], map: "idx_restauranttische_bereichid")
+  @@index([Status], map: "idx_restauranttische_status")
+}
+
+model Reservierungen {
+  ReservierungsID Int                      @id @default(autoincrement())
+  TischID         Int
+  KundenID        Int?
+  Gastname        String                   @db.VarChar(255)
+  Telefon         String?                  @db.VarChar(50)
+  Email           String?                  @db.VarChar(255)
+  PersonenAnzahl  Int
+  Reservierungsdatum DateTime              @db.DateTime
+  Dauer           Int?                     @default(120)
+  Status          Reservierungen_Status?   @default(Bestaetigt)
+  Notizen         String?                  @db.Text
+  ErfasstVonBenutzerID Int?
+  Erstelldatum    DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?                @default(now()) @db.Timestamp(0)
+
+  RestaurantTische RestaurantTische @relation(fields: [TischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "Reservierungen_ibfk_1")
+  Kunden           Kunden?          @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Reservierungen_ibfk_2")
+  Benutzer         Benutzer?        @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Reservierungen_ibfk_3")
+
+  @@index([TischID], map: "idx_reservierungen_tischid")
+  @@index([KundenID], map: "idx_reservierungen_kundenid")
+  @@index([Reservierungsdatum], map: "idx_reservierungen_datum")
+  @@index([Status], map: "idx_reservierungen_status")
+  @@index([ErfasstVonBenutzerID], map: "idx_reservierungen_benutzerid")
+}
+
+model RestaurantBestellungen {
+  RestaurantBestellID Int                            @id @default(autoincrement())
+  TischID             Int
+  KundenID            Int?
+  BenutzerID          Int?
+  Bestellnummer       String?                        @unique(map: "Bestellnummer_Restaurant") @db.VarChar(50)
+  Bestelldatum        DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  PersonenAnzahl      Int?                           @default(1)
+  Status              RestaurantBestellungen_Status? @default(Offen)
+  GesamtbetragNetto   Decimal?                       @default(0.00) @db.Decimal(10, 2)
+  GesamtbetragBrutto  Decimal?                       @default(0.00) @db.Decimal(10, 2)
+  MwStGesamt          Decimal?                       @default(0.00) @db.Decimal(10, 2)
+  Trinkgeld           Decimal?                       @default(0.00) @db.Decimal(10, 2)
+  Zahlungsart         RestaurantBestellungen_Zahlungsart?
+  RechnungsID         Int?
+  Notizen             String?                        @db.Text
+  AbgeschlossenAm     DateTime?                      @db.Timestamp(0)
+  Erstelldatum        DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?                      @default(now()) @db.Timestamp(0)
+
+  RestaurantTische            RestaurantTische              @relation(fields: [TischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_1")
+  Kunden                      Kunden?                       @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_2")
+  Benutzer                    Benutzer?                     @relation(fields: [BenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_3")
+  Rechnungen                  Rechnungen?                   @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_4")
+  RestaurantBestellpositionen RestaurantBestellpositionen[]
+
+  @@index([TischID], map: "idx_restaurantbestellungen_tischid")
+  @@index([KundenID], map: "idx_restaurantbestellungen_kundenid")
+  @@index([BenutzerID], map: "idx_restaurantbestellungen_benutzerid")
+  @@index([RechnungsID], map: "idx_restaurantbestellungen_rechnungsid")
+  @@index([Status], map: "idx_restaurantbestellungen_status")
+  @@index([Bestelldatum], map: "idx_restaurantbestellungen_datum")
+}
+
+model RestaurantBestellpositionen {
+  PositionID              Int                                  @id @default(autoincrement())
+  RestaurantBestellID     Int
+  ProduktID               Int
+  Menge                   Decimal                              @db.Decimal(10, 2)
+  EinzelpreisNetto        Decimal                              @db.Decimal(10, 2)
+  GesamtpreisNetto        Decimal                              @db.Decimal(10, 2)
+  MwStSatz                Decimal                              @db.Decimal(5, 2)
+  MwStBetrag              Decimal                              @db.Decimal(10, 2)
+  Status                  RestaurantBestellpositionen_Status?  @default(Bestellt)
+  Notizen                 String?                              @db.Text
+  KuecheNotizen           String?                              @db.Text
+  BestelltUm              DateTime?                            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  ZubereitetUm            DateTime?                            @db.Timestamp(0)
+  ServiertUm              DateTime?                            @db.Timestamp(0)
+  Erstelldatum            DateTime?                            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung         DateTime?                            @default(now()) @db.Timestamp(0)
+
+  RestaurantBestellungen RestaurantBestellungen @relation(fields: [RestaurantBestellID], references: [RestaurantBestellID], onDelete: Cascade, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_1")
+  Produkte               Produkte               @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_2")
+
+  @@index([RestaurantBestellID], map: "idx_restaurantbestellpositionen_bestellid")
+  @@index([ProduktID], map: "idx_restaurantbestellpositionen_produktid")
+  @@index([Status], map: "idx_restaurantbestellpositionen_status")
+}
+
+enum RestaurantTische_Status {
+  Verfuegbar
+  Besetzt
+  Reserviert
+  Gesperrt
+}
+
+enum Reservierungen_Status {
+  Bestaetigt
+  Eingecheckt
+  Abgeschlossen
+  Storniert
+  Nicht_Erschienen @map("Nicht Erschienen")
+}
+
+enum RestaurantBestellungen_Status {
+  Offen
+  In_Bearbeitung @map("In Bearbeitung")
+  Serviert
+  Abgeschlossen
+  Storniert
+}
+
+enum RestaurantBestellpositionen_Status {
+  Bestellt
+  In_Zubereitung @map("In Zubereitung")
+  Bereit
+  Serviert
+  Storniert
+}
+
+enum RestaurantBestellungen_Zahlungsart {
+  Bar
+  Kreditkarte
+  EC_Karte @map("EC-Karte")
+  Rechnung
+  Gutschein
 }

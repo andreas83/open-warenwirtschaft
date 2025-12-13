@@ -124,22 +124,22 @@
                     <button
                       class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200"
                       :class="{'hover:bg-gray-100 text-gray-700': !darkMode, 'hover:bg-gray-700 text-gray-300': darkMode}"
-                      @click="toggleSettingsMenu">
+                      @click="toggleSubmenu(item.to)">
                       <span :class="[item.icon, 'w-5 h-5 shrink-0']"></span>
                       <span v-show="!sidebarCollapsed || mobileMenuOpen" class="font-medium flex-1 text-left">
                         {{ $t(item.label) }}
                       </span>
                       <span v-show="!sidebarCollapsed || mobileMenuOpen"
-                            :class="['i-mdi-chevron-down w-4 h-4 transition-transform duration-200', settingsMenuOpen ? 'rotate-180' : '']"></span>
+                            :class="['i-mdi-chevron-down w-4 h-4 transition-transform duration-200', isSubmenuOpen(item.to) ? 'rotate-180' : '']"></span>
                     </button>
                     <transition name="submenu">
-                      <ul v-show="settingsMenuOpen && (!sidebarCollapsed || mobileMenuOpen)" class="ml-8 mt-1 space-y-1">
+                      <ul v-show="isSubmenuOpen(item.to) && (!sidebarCollapsed || mobileMenuOpen)" class="ml-8 mt-1 space-y-1">
                         <li v-for="child in item.children" :key="child.to">
                           <NuxtLink
                             :to="child.to"
                             class="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm"
                             :class="[
-                              $route.path === child.to
+                              $route.path === child.to || $route.path.startsWith(child.to + '/')
                                 ? (darkMode ? 'bg-teal-600 text-white' : 'bg-teal-500 text-white')
                                 : (darkMode ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-600'),
                             ]"
@@ -185,7 +185,10 @@ const mobileMenuOpen = ref(false)
 const darkMode = ref(false)
 const languageMenuOpen = ref(false)
 const sidebarCollapsed = ref(false)
-const settingsMenuOpen = ref(true)
+const openSubmenus = ref({
+  '/settings': true,
+  '/restaurant': true
+})
 const user = ref(null)
 const router = useRouter()
 const route = useRoute()
@@ -226,6 +229,23 @@ const menuItems = [
     to: '/kassen',
     icon: 'i-mdi-cash-register',
     label: 'menu.cashRegister'
+  },
+  {
+    to: '/restaurant',
+    icon: 'i-mdi-silverware-fork-knife',
+    label: 'restaurant.title',
+    children: [
+      {
+        to: '/restaurant/tische',
+        icon: 'i-mdi-table-furniture',
+        label: 'restaurant.tables.title'
+      },
+      {
+        to: '/restaurant/reservierungen',
+        icon: 'i-mdi-calendar-check',
+        label: 'restaurant.reservations.title'
+      }
+    ]
   },
   {
     to: '/berichte',
@@ -280,8 +300,12 @@ function toggleLanguageMenu() {
   languageMenuOpen.value = !languageMenuOpen.value
 }
 
-function toggleSettingsMenu() {
-  settingsMenuOpen.value = !settingsMenuOpen.value
+function toggleSubmenu(path) {
+  openSubmenus.value[path] = !openSubmenus.value[path]
+}
+
+function isSubmenuOpen(path) {
+  return openSubmenus.value[path] !== undefined ? openSubmenus.value[path] : false
 }
 
 async function logout() {

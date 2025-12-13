@@ -134,6 +134,179 @@
 /&gt;
             </template>
           </ComponentDemo>
+
+          <!-- DatePicker -->
+          <ComponentDemo
+            :title="$t('components.datePicker.title')"
+            :description="$t('components.datePicker.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <DatePicker
+                  v-model="datePickerDemo.basic"
+                  :label="$t('components.datePicker.examples.basic')"
+                />
+                <DatePicker
+                  v-model="datePickerDemo.withRange"
+                  :label="$t('components.datePicker.examples.withRange')"
+                  :min="datePickerDemo.minDate"
+                  :max="datePickerDemo.maxDate"
+                  hint="Select a date within the allowed range"
+                />
+                <DatePicker
+                  v-model="datePickerDemo.required"
+                  :label="$t('components.datePicker.examples.required')"
+                  required
+                />
+              </div>
+            </template>
+            <template #code>
+&lt;DatePicker
+  v-model="value"
+  label="Select Date"
+  :required="true"
+  :min="minDate"
+  :max="maxDate"
+  hint="Optional hint"
+/&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- FormSelect -->
+          <ComponentDemo
+            :title="$t('components.formSelect.title')"
+            :description="$t('components.formSelect.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <FormSelect
+                  v-model="formSelectDemo.basic"
+                  :label="$t('components.formSelect.examples.basic')"
+                  :options="formSelectDemo.options"
+                  placeholder="Select an option..."
+                />
+                <FormSelect
+                  v-model="formSelectDemo.withObjects"
+                  :label="$t('components.formSelect.examples.withObjects')"
+                  :options="formSelectDemo.countries"
+                  value-key="code"
+                  label-key="name"
+                  placeholder="Select a country..."
+                />
+              </div>
+            </template>
+            <template #code>
+&lt;FormSelect
+  v-model="value"
+  label="Select Label"
+  :options="options"
+  placeholder="Choose..."
+  value-key="value"
+  label-key="label"
+  :required="true"
+/&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- Checkbox -->
+          <ComponentDemo
+            :title="$t('components.checkbox.title')"
+            :description="$t('components.checkbox.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <Checkbox
+                  v-model="checkboxDemo.terms"
+                  :label="$t('components.checkbox.examples.terms')"
+                />
+                <Checkbox
+                  v-model="checkboxDemo.newsletter"
+                  :label="$t('components.checkbox.examples.newsletter')"
+                  :hint="$t('components.checkbox.examples.newsletterHint')"
+                />
+                <Checkbox
+                  v-model="checkboxDemo.disabled"
+                  label="Disabled checkbox"
+                  disabled
+                />
+              </div>
+            </template>
+            <template #code>
+&lt;Checkbox
+  v-model="checked"
+  label="Accept terms"
+  hint="Optional description"
+  :required="true"
+/&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- RadioGroup -->
+          <ComponentDemo
+            :title="$t('components.radioGroup.title')"
+            :description="$t('components.radioGroup.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <RadioGroup
+                  v-model="radioDemo.size"
+                  :label="$t('components.radioGroup.examples.label')"
+                  :options="radioDemo.sizeOptions"
+                />
+                <RadioGroup
+                  v-model="radioDemo.payment"
+                  :label="$t('components.radioGroup.examples.paymentLabel')"
+                  :options="radioDemo.paymentOptions"
+                  value-key="value"
+                  label-key="label"
+                  inline
+                />
+              </div>
+            </template>
+            <template #code>
+&lt;RadioGroup
+  v-model="selected"
+  label="Choose option"
+  :options="options"
+  :inline="false"
+  value-key="value"
+  label-key="label"
+/&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- Toggle -->
+          <ComponentDemo
+            :title="$t('components.toggle.title')"
+            :description="$t('components.toggle.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <Toggle
+                  v-model="toggleDemo.notifications"
+                  :label="$t('components.toggle.examples.notifications')"
+                  :hint="$t('components.toggle.examples.notificationsHint')"
+                />
+                <Toggle
+                  v-model="toggleDemo.darkMode"
+                  :label="$t('components.toggle.examples.darkMode')"
+                />
+                <div class="flex gap-4 items-center">
+                  <Toggle v-model="toggleDemo.small" size="sm" />
+                  <Toggle v-model="toggleDemo.medium" size="md" />
+                  <Toggle v-model="toggleDemo.large" size="lg" />
+                </div>
+              </div>
+            </template>
+            <template #code>
+&lt;Toggle
+  v-model="enabled"
+  label="Enable feature"
+  hint="Optional description"
+  size="md"
+/&gt;
+            </template>
+          </ComponentDemo>
         </ComponentSection>
 
         <!-- Button Components -->
@@ -360,6 +533,197 @@
             </template>
           </ComponentDemo>
         </ComponentSection>
+
+        <!-- Data Display Components -->
+        <ComponentSection
+          id="data-display"
+          :title="$t('components.sections.dataDisplay')"
+          icon="i-mdi-card-text"
+        >
+          <!-- Badge -->
+          <ComponentDemo
+            :title="$t('components.badge.title')"
+            :description="$t('components.badge.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <div class="flex flex-wrap gap-2">
+                  <Badge>{{ $t('components.badge.examples.default') }}</Badge>
+                  <Badge variant="secondary">{{ $t('components.badge.examples.secondary') }}</Badge>
+                  <Badge variant="success">{{ $t('components.badge.examples.success') }}</Badge>
+                  <Badge variant="danger">{{ $t('components.badge.examples.danger') }}</Badge>
+                  <Badge variant="warning">{{ $t('components.badge.examples.warning') }}</Badge>
+                  <Badge variant="info">{{ $t('components.badge.examples.info') }}</Badge>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <Badge size="sm">Small</Badge>
+                  <Badge size="md">Medium</Badge>
+                  <Badge size="lg">Large</Badge>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <Badge icon="i-mdi-check-circle" variant="success">With Icon</Badge>
+                  <Badge rounded>Rounded</Badge>
+                  <Badge variant="danger" rounded>99+</Badge>
+                </div>
+              </div>
+            </template>
+            <template #code>
+&lt;Badge
+  variant="primary|secondary|success|danger|warning|info"
+  size="sm|md|lg"
+  icon="i-mdi-check"
+  :rounded="false"
+&gt;
+  Badge Text
+&lt;/Badge&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- Alert -->
+          <ComponentDemo
+            :title="$t('components.alert.title')"
+            :description="$t('components.alert.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <Alert
+                  type="success"
+                  :title="$t('components.alert.examples.successTitle')"
+                  :message="$t('components.alert.examples.successMessage')"
+                />
+                <Alert
+                  type="error"
+                  :title="$t('components.alert.examples.errorTitle')"
+                  :message="$t('components.alert.examples.errorMessage')"
+                />
+                <Alert
+                  type="warning"
+                  :title="$t('components.alert.examples.warningTitle')"
+                  :message="$t('components.alert.examples.warningMessage')"
+                />
+                <Alert
+                  type="info"
+                  :title="$t('components.alert.examples.infoTitle')"
+                  :dismissible="true"
+                >
+                  {{ $t('components.alert.examples.infoMessage') }}
+                </Alert>
+              </div>
+            </template>
+            <template #code>
+&lt;Alert
+  type="success|error|warning|info"
+  title="Alert Title"
+  message="Alert message"
+  :dismissible="true"
+&gt;
+  Custom content via slot
+&lt;/Alert&gt;
+            </template>
+          </ComponentDemo>
+        </ComponentSection>
+
+        <!-- Layout Components -->
+        <ComponentSection
+          id="layout-components"
+          :title="$t('components.sections.layoutComponents')"
+          icon="i-mdi-view-dashboard"
+        >
+          <!-- Card -->
+          <ComponentDemo
+            :title="$t('components.card.title')"
+            :description="$t('components.card.description')"
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <Card :title="$t('components.card.examples.basicTitle')">
+                  <p>{{ $t('components.card.examples.basicContent') }}</p>
+                </Card>
+                <Card variant="bordered" :title="$t('components.card.examples.borderedTitle')">
+                  <p>{{ $t('components.card.examples.borderedContent') }}</p>
+                </Card>
+                <Card variant="elevated" hover>
+                  <template #header>
+                    <div class="flex items-center justify-between">
+                      <h3 class="text-lg font-semibold">{{ $t('components.card.examples.customHeader') }}</h3>
+                      <Badge variant="success">{{ $t('components.card.examples.newBadge') }}</Badge>
+                    </div>
+                  </template>
+                  <p>{{ $t('components.card.examples.elevatedContent') }}</p>
+                  <template #footer>
+                    <div class="flex justify-end gap-2">
+                      <LoadingButton variant="secondary" size="sm">{{ $t('common.cancel') }}</LoadingButton>
+                      <LoadingButton size="sm">{{ $t('common.save') }}</LoadingButton>
+                    </div>
+                  </template>
+                </Card>
+              </div>
+            </template>
+            <template #code>
+&lt;Card
+  title="Card Title"
+  variant="default|bordered|elevated"
+  padding="none|sm|md|lg"
+  :hover="false"
+&gt;
+  &lt;template #header&gt;Custom header&lt;/template&gt;
+  Card content
+  &lt;template #footer&gt;Custom footer&lt;/template&gt;
+&lt;/Card&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- Tabs -->
+          <ComponentDemo
+            :title="$t('components.tabs.title')"
+            :description="$t('components.tabs.description')"
+          >
+            <template #preview>
+              <div class="space-y-6">
+                <div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ $t('components.tabs.examples.default') }}</p>
+                  <Tabs :tabs="tabsDemo.defaultTabs">
+                    <template #tab-0>{{ $t('components.tabs.examples.tab1Content') }}</template>
+                    <template #tab-1>{{ $t('components.tabs.examples.tab2Content') }}</template>
+                    <template #tab-2>{{ $t('components.tabs.examples.tab3Content') }}</template>
+                  </Tabs>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ $t('components.tabs.examples.pills') }}</p>
+                  <Tabs :tabs="tabsDemo.pillsTabs" variant="pills">
+                    <template #tab-0>{{ $t('components.tabs.examples.tab1Content') }}</template>
+                    <template #tab-1>{{ $t('components.tabs.examples.tab2Content') }}</template>
+                  </Tabs>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ $t('components.tabs.examples.withIcons') }}</p>
+                  <Tabs :tabs="tabsDemo.iconTabs" variant="underline">
+                    <template #tab-0>{{ $t('components.tabs.examples.tab1Content') }}</template>
+                    <template #tab-1>{{ $t('components.tabs.examples.tab2Content') }}</template>
+                    <template #tab-2>{{ $t('components.tabs.examples.tab3Content') }}</template>
+                  </Tabs>
+                </div>
+              </div>
+            </template>
+            <template #code>
+&lt;Tabs
+  :tabs="tabs"
+  variant="default|pills|underline"
+  :default-tab="0"
+  @tab-change="handleTabChange"
+&gt;
+  &lt;template #tab-0&gt;Tab 1 content&lt;/template&gt;
+  &lt;template #tab-1&gt;Tab 2 content&lt;/template&gt;
+&lt;/Tabs&gt;
+
+&lt;!-- tabs array --&gt;
+const tabs = [
+  { label: 'Tab 1', icon: 'i-mdi-home', badge: '3' },
+  { label: 'Tab 2', disabled: true }
+]
+            </template>
+          </ComponentDemo>
+        </ComponentSection>
       </div>
 
       <!-- Toast Container -->
@@ -386,7 +750,9 @@ const sections = [
   { id: 'form-components', title: t('components.sections.formComponents'), icon: 'i-mdi-form-textbox' },
   { id: 'button-components', title: t('components.sections.buttonComponents'), icon: 'i-mdi-gesture-tap-button' },
   { id: 'feedback-components', title: t('components.sections.feedbackComponents'), icon: 'i-mdi-message-alert' },
-  { id: 'navigation-components', title: t('components.sections.navigationComponents'), icon: 'i-mdi-navigation' }
+  { id: 'navigation-components', title: t('components.sections.navigationComponents'), icon: 'i-mdi-navigation' },
+  { id: 'data-display', title: t('components.sections.dataDisplay'), icon: 'i-mdi-card-text' },
+  { id: 'layout-components', title: t('components.sections.layoutComponents'), icon: 'i-mdi-view-dashboard' }
 ]
 
 // Form Input Demo State
@@ -410,6 +776,78 @@ const formTextareaDemo = reactive({
 const paginationDemo = reactive({
   currentPage: 1,
   currentPage2: 1
+})
+
+// DatePicker Demo State
+const today = new Date()
+const minDate = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0]
+const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0]
+
+const datePickerDemo = reactive({
+  basic: '',
+  withRange: '',
+  required: '',
+  minDate,
+  maxDate
+})
+
+// FormSelect Demo State
+const formSelectDemo = reactive({
+  basic: '',
+  withObjects: '',
+  options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+  countries: [
+    { code: 'de', name: 'Deutschland' },
+    { code: 'at', name: 'Österreich' },
+    { code: 'ch', name: 'Schweiz' },
+    { code: 'us', name: 'United States' }
+  ]
+})
+
+// Checkbox Demo State
+const checkboxDemo = reactive({
+  terms: false,
+  newsletter: true,
+  disabled: true
+})
+
+// Radio Demo State
+const radioDemo = reactive({
+  size: 'M',
+  payment: 'card',
+  sizeOptions: ['S', 'M', 'L', 'XL'],
+  paymentOptions: [
+    { value: 'card', label: t('components.radioGroup.examples.card') },
+    { value: 'cash', label: t('components.radioGroup.examples.cash') },
+    { value: 'paypal', label: t('components.radioGroup.examples.paypal') }
+  ]
+})
+
+// Toggle Demo State
+const toggleDemo = reactive({
+  notifications: true,
+  darkMode: false,
+  small: false,
+  medium: true,
+  large: false
+})
+
+// Tabs Demo State
+const tabsDemo = reactive({
+  defaultTabs: [
+    { label: t('components.tabs.examples.tab1'), id: 'tab1' },
+    { label: t('components.tabs.examples.tab2'), id: 'tab2' },
+    { label: t('components.tabs.examples.tab3'), id: 'tab3' }
+  ],
+  pillsTabs: [
+    { label: t('components.tabs.examples.tab1'), id: 'pills1' },
+    { label: t('components.tabs.examples.tab2'), id: 'pills2', badge: '5', badgeVariant: 'danger' as const }
+  ],
+  iconTabs: [
+    { label: t('components.tabs.examples.home'), icon: 'i-mdi-home', id: 'icon1' },
+    { label: t('components.tabs.examples.settings'), icon: 'i-mdi-cog', id: 'icon2' },
+    { label: t('components.tabs.examples.profile'), icon: 'i-mdi-account', id: 'icon3' }
+  ]
 })
 
 // Breadcrumbs Demo

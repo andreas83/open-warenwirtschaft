@@ -556,7 +556,9 @@
       "formComponents": "Formularkomponenten",
       "buttonComponents": "Button-Komponenten",
       "feedbackComponents": "Feedback-Komponenten",
-      "navigationComponents": "Navigationskomponenten"
+      "navigationComponents": "Navigationskomponenten",
+      "dataDisplay": "Datenanzeige",
+      "layoutComponents": "Layout-Komponenten"
     },
     "formInput": {
       "title": "FormInput",
@@ -651,6 +653,109 @@
         "home": "Startseite",
         "products": "Produkte",
         "details": "Details"
+      }
+    },
+    "datePicker": {
+      "title": "DatePicker",
+      "description": "Datumsauswahl-Komponente mit Validierung und Bereichsbeschränkung",
+      "examples": {
+        "basic": "Einfache Datumsauswahl",
+        "withRange": "Mit Datumsbereich",
+        "required": "Pflicht-Datumsauswahl"
+      }
+    },
+    "formSelect": {
+      "title": "FormSelect",
+      "description": "Dropdown-Auswahl mit Unterstützung für einfache Werte und Objekte",
+      "examples": {
+        "basic": "Einfache Auswahl",
+        "withObjects": "Mit Objekten"
+      }
+    },
+    "checkbox": {
+      "title": "Checkbox",
+      "description": "Checkbox für Ja/Nein-Entscheidungen",
+      "examples": {
+        "terms": "Ich akzeptiere die Nutzungsbedingungen",
+        "newsletter": "Newsletter abonnieren",
+        "newsletterHint": "Erhalten Sie Updates und Angebote per E-Mail"
+      }
+    },
+    "radioGroup": {
+      "title": "RadioGroup",
+      "description": "Radio-Button-Gruppe für Einzel-Auswahl",
+      "examples": {
+        "label": "Größe wählen",
+        "paymentLabel": "Zahlungsart",
+        "card": "Kreditkarte",
+        "cash": "Bargeld",
+        "paypal": "PayPal"
+      }
+    },
+    "toggle": {
+      "title": "Toggle",
+      "description": "Umschalter für Ein/Aus-Einstellungen",
+      "examples": {
+        "notifications": "Benachrichtigungen aktivieren",
+        "notificationsHint": "Erhalten Sie Updates in Echtzeit",
+        "darkMode": "Dunkelmodus"
+      }
+    },
+    "badge": {
+      "title": "Badge",
+      "description": "Kleine Label zur Anzeige von Status oder Zählern",
+      "examples": {
+        "default": "Standard",
+        "secondary": "Sekundär",
+        "success": "Erfolg",
+        "danger": "Gefahr",
+        "warning": "Warnung",
+        "info": "Info"
+      }
+    },
+    "alert": {
+      "title": "Alert",
+      "description": "Inline-Benachrichtigungen für wichtige Informationen",
+      "examples": {
+        "successTitle": "Erfolgreich abgeschlossen",
+        "successMessage": "Ihre Änderungen wurden erfolgreich gespeichert.",
+        "errorTitle": "Fehler aufgetreten",
+        "errorMessage": "Es ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.",
+        "warningTitle": "Wichtiger Hinweis",
+        "warningMessage": "Bitte überprüfen Sie Ihre Eingaben vor dem Fortfahren.",
+        "infoTitle": "Information",
+        "infoMessage": "Diese Benachrichtigung kann geschlossen werden."
+      }
+    },
+    "card": {
+      "title": "Card",
+      "description": "Container-Komponente für gruppierten Inhalt",
+      "examples": {
+        "basicTitle": "Einfache Karte",
+        "basicContent": "Dies ist eine einfache Karte mit einem Titel und Inhalt.",
+        "borderedTitle": "Karte mit Rahmen",
+        "borderedContent": "Diese Karte hat einen sichtbaren Rahmen.",
+        "customHeader": "Benutzerdefinierter Header",
+        "newBadge": "Neu",
+        "elevatedContent": "Diese Karte hat einen Schatten und einen benutzerdefinierten Footer."
+      }
+    },
+    "tabs": {
+      "title": "Tabs",
+      "description": "Tab-Navigation für organisierte Inhalte",
+      "examples": {
+        "default": "Standard-Tabs",
+        "pills": "Pill-Tabs",
+        "withIcons": "Mit Icons",
+        "tab1": "Tab 1",
+        "tab2": "Tab 2",
+        "tab3": "Tab 3",
+        "tab1Content": "Inhalt von Tab 1",
+        "tab2Content": "Inhalt von Tab 2",
+        "tab3Content": "Inhalt von Tab 3",
+        "home": "Startseite",
+        "settings": "Einstellungen",
+        "profile": "Profil"
       }
     }
   },

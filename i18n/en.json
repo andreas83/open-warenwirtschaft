@@ -550,7 +550,9 @@
       "formComponents": "Form Components",
       "buttonComponents": "Button Components",
       "feedbackComponents": "Feedback Components",
-      "navigationComponents": "Navigation Components"
+      "navigationComponents": "Navigation Components",
+      "dataDisplay": "Data Display",
+      "layoutComponents": "Layout Components"
     },
     "formInput": {
       "title": "FormInput",
@@ -645,6 +647,109 @@
         "home": "Home",
         "products": "Products",
         "details": "Details"
+      }
+    },
+    "datePicker": {
+      "title": "DatePicker",
+      "description": "Date selection component with validation and range constraints",
+      "examples": {
+        "basic": "Basic Date Picker",
+        "withRange": "With Date Range",
+        "required": "Required Date Picker"
+      }
+    },
+    "formSelect": {
+      "title": "FormSelect",
+      "description": "Dropdown selection with support for simple values and objects",
+      "examples": {
+        "basic": "Basic Select",
+        "withObjects": "With Objects"
+      }
+    },
+    "checkbox": {
+      "title": "Checkbox",
+      "description": "Checkbox for yes/no decisions",
+      "examples": {
+        "terms": "I accept the terms and conditions",
+        "newsletter": "Subscribe to newsletter",
+        "newsletterHint": "Receive updates and offers via email"
+      }
+    },
+    "radioGroup": {
+      "title": "RadioGroup",
+      "description": "Radio button group for single selection",
+      "examples": {
+        "label": "Choose Size",
+        "paymentLabel": "Payment Method",
+        "card": "Credit Card",
+        "cash": "Cash",
+        "paypal": "PayPal"
+      }
+    },
+    "toggle": {
+      "title": "Toggle",
+      "description": "Switch for on/off settings",
+      "examples": {
+        "notifications": "Enable Notifications",
+        "notificationsHint": "Receive real-time updates",
+        "darkMode": "Dark Mode"
+      }
+    },
+    "badge": {
+      "title": "Badge",
+      "description": "Small labels to display status or counters",
+      "examples": {
+        "default": "Default",
+        "secondary": "Secondary",
+        "success": "Success",
+        "danger": "Danger",
+        "warning": "Warning",
+        "info": "Info"
+      }
+    },
+    "alert": {
+      "title": "Alert",
+      "description": "Inline notifications for important information",
+      "examples": {
+        "successTitle": "Successfully Completed",
+        "successMessage": "Your changes have been saved successfully.",
+        "errorTitle": "Error Occurred",
+        "errorMessage": "A problem occurred. Please try again.",
+        "warningTitle": "Important Notice",
+        "warningMessage": "Please review your inputs before proceeding.",
+        "infoTitle": "Information",
+        "infoMessage": "This notification can be dismissed."
+      }
+    },
+    "card": {
+      "title": "Card",
+      "description": "Container component for grouped content",
+      "examples": {
+        "basicTitle": "Basic Card",
+        "basicContent": "This is a simple card with a title and content.",
+        "borderedTitle": "Card with Border",
+        "borderedContent": "This card has a visible border.",
+        "customHeader": "Custom Header",
+        "newBadge": "New",
+        "elevatedContent": "This card has a shadow and a custom footer."
+      }
+    },
+    "tabs": {
+      "title": "Tabs",
+      "description": "Tab navigation for organized content",
+      "examples": {
+        "default": "Default Tabs",
+        "pills": "Pill Tabs",
+        "withIcons": "With Icons",
+        "tab1": "Tab 1",
+        "tab2": "Tab 2",
+        "tab3": "Tab 3",
+        "tab1Content": "Content of Tab 1",
+        "tab2Content": "Content of Tab 2",
+        "tab3Content": "Content of Tab 3",
+        "home": "Home",
+        "settings": "Settings",
+        "profile": "Profile"
       }
     }
   },

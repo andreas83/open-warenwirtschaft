@@ -193,6 +193,11 @@ const route = useRoute()
 // Menu items configuration
 const menuItems = [
   {
+    to: '/projekte',
+    icon: 'i-mdi-folder-multiple',
+    label: 'menu.projects'
+  },
+  {
     to: '/standorte',
     icon: 'i-mdi-map-marker',
     label: 'menu.locations'

@@ -751,3 +751,101 @@ enum Kassenbuchungen_Zahlungsart {
   Gutschein
   Sonstige
 }
+
+// Module System with Audience Templates
+model Projekt {
+  ProjektID       Int              @id @default(autoincrement())
+  ProjektName     String           @db.VarChar(255)
+  Beschreibung    String?          @db.Text
+  AudienceTemplateID Int?
+  Firmenname      String?          @db.VarChar(255)
+  Branche         String?          @db.VarChar(100)
+  Status          Projekt_Status?  @default(Aktiv)
+  Erstelldatum    DateTime?        @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?        @default(now()) @db.Timestamp(0)
+
+  AudienceTemplate AudienceTemplate? @relation(fields: [AudienceTemplateID], references: [TemplateID], onDelete: NoAction, onUpdate: NoAction, map: "Projekt_ibfk_1")
+  ProjektModule    ProjektModule[]
+
+  @@index([AudienceTemplateID], map: "idx_projekt_audiencetemplateid")
+}
+
+model AudienceTemplate {
+  TemplateID      Int                     @id @default(autoincrement())
+  Name            String                  @unique(map: "Name") @db.VarChar(100)
+  DisplayName     String                  @db.VarChar(150)
+  Beschreibung    String?                 @db.Text
+  Icon            String?                 @db.VarChar(100)
+  Farbe           String?                 @db.VarChar(50)
+  SortOrder       Int?                    @default(0)
+  IstAktiv        Boolean?                @default(true)
+  Erstelldatum    DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?               @default(now()) @db.Timestamp(0)
+
+  ModuleKonfigurationen ModuleKonfiguration[]
+  Projekte              Projekt[]
+}
+
+model ModuleDefinition {
+  ModulID         Int                     @id @default(autoincrement())
+  ModulName       String                  @unique(map: "ModulName") @db.VarChar(100)
+  DisplayName     String                  @db.VarChar(150)
+  Beschreibung    String?                 @db.Text
+  Icon            String?                 @db.VarChar(100)
+  Kategorie       String?                 @db.VarChar(100)
+  Route           String?                 @db.VarChar(255)
+  SortOrder       Int?                    @default(0)
+  IstSystem       Boolean?                @default(false)
+  IstAktiv        Boolean?                @default(true)
+  Erstelldatum    DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?               @default(now()) @db.Timestamp(0)
+
+  ModuleKonfigurationen ModuleKonfiguration[]
+  ProjektModule         ProjektModule[]
+}
+
+model ModuleKonfiguration {
+  KonfigID        Int                            @id @default(autoincrement())
+  TemplateID      Int
+  ModulID         Int
+  Prioritaet      ModuleKonfiguration_Prioritaet @default(Optional)
+  IstAktiviert    Boolean?                       @default(true)
+  Beschreibung    String?                        @db.Text
+  Erstelldatum    DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  AudienceTemplate AudienceTemplate @relation(fields: [TemplateID], references: [TemplateID], onDelete: Cascade, onUpdate: NoAction, map: "ModuleKonfiguration_ibfk_1")
+  ModulDefinition  ModuleDefinition @relation(fields: [ModulID], references: [ModulID], onDelete: Cascade, onUpdate: NoAction, map: "ModuleKonfiguration_ibfk_2")
+
+  @@unique([TemplateID, ModulID], map: "uq_template_modul")
+  @@index([TemplateID], map: "idx_modulekonfiguration_templateid")
+  @@index([ModulID], map: "idx_modulekonfiguration_modulid")
+}
+
+model ProjektModule {
+  ProjektModulID  Int       @id @default(autoincrement())
+  ProjektID       Int
+  ModulID         Int
+  IstAktiviert    Boolean?  @default(true)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
+
+  Projekt         Projekt          @relation(fields: [ProjektID], references: [ProjektID], onDelete: Cascade, onUpdate: NoAction, map: "ProjektModule_ibfk_1")
+  ModulDefinition ModuleDefinition @relation(fields: [ModulID], references: [ModulID], onDelete: Cascade, onUpdate: NoAction, map: "ProjektModule_ibfk_2")
+
+  @@unique([ProjektID, ModulID], map: "uq_projekt_modul")
+  @@index([ProjektID], map: "idx_projektmodule_projektid")
+  @@index([ModulID], map: "idx_projektmodule_modulid")
+}
+
+enum Projekt_Status {
+  Aktiv
+  Inaktiv
+  Archiviert
+}
+
+enum ModuleKonfiguration_Prioritaet {
+  Erforderlich  @map("Erforderlich")
+  Wichtig
+  Optional
+  Versteckt
+}

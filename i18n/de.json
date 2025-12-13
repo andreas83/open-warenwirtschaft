@@ -440,5 +440,74 @@
         "cancelled": "Storniert"
       }
     }
+  },
+  "shop": {
+    "title": "Online-Shop",
+    "products": {
+      "title": "Shop-Produkte",
+      "subtitle": "Verwalten Sie Ihre Online-Shop-Produkte",
+      "newProduct": "Neues Produkt",
+      "category": "Kategorie",
+      "searchPlaceholder": "Produkt suchen...",
+      "noProducts": "Keine Produkte vorhanden",
+      "confirmDelete": "Möchten Sie dieses Produkt wirklich löschen?",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "featured": "Hervorgehoben",
+      "reviews": "Bewertungen"
+    },
+    "orders": {
+      "title": "Shop-Bestellungen",
+      "subtitle": "Verwalten Sie Online-Shop-Bestellungen",
+      "orderNumber": "Bestellnummer",
+      "customer": "Kunde",
+      "orderDate": "Bestelldatum",
+      "total": "Gesamt",
+      "items": "Artikel",
+      "payment": "Zahlung",
+      "orderStatus": "Bestellstatus",
+      "paymentStatus": "Zahlungsstatus",
+      "shippingStatus": "Versandstatus",
+      "searchPlaceholder": "Nach Bestellnummer, E-Mail oder Name suchen...",
+      "noOrders": "Keine Bestellungen vorhanden",
+      "viewDetails": "Details ansehen",
+      "status": {
+        "new": "Neu",
+        "processing": "In Bearbeitung",
+        "shipped": "Versendet",
+        "delivered": "Zugestellt",
+        "completed": "Abgeschlossen",
+        "cancelled": "Storniert"
+      },
+      "payment": {
+        "pending": "Ausstehend",
+        "paid": "Bezahlt",
+        "partiallyPaid": "Teilbezahlt",
+        "failed": "Fehlgeschlagen"
+      },
+      "shipping": {
+        "notShipped": "Nicht versendet",
+        "preparing": "Vorbereitung",
+        "shipped": "Versendet",
+        "inTransit": "Unterwegs",
+        "delivered": "Zugestellt"
+      }
+    },
+    "categories": {
+      "title": "Shop-Kategorien",
+      "subtitle": "Verwalten Sie Ihre Produktkategorien",
+      "newCategory": "Neue Kategorie",
+      "name": "Name",
+      "slug": "Slug",
+      "parent": "Übergeordnet",
+      "products": "Produkte",
+      "subcategories": "Unterkategorien",
+      "searchPlaceholder": "Kategorie suchen...",
+      "noCategories": "Keine Kategorien vorhanden",
+      "confirmDelete": "Möchten Sie diese Kategorie wirklich löschen?",
+      "visible": "Sichtbar",
+      "hidden": "Verborgen",
+      "visibility": "Sichtbarkeit"
+    }
   }
 }

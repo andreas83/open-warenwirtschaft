@@ -23,6 +23,7 @@ model Benutzer {
   Retouren        Retouren[]
   Zahlungen       Zahlungen[]
   Kassenbuchungen Kassenbuchungen[]
+  Angebote        Angebote[]
 }
 
 model Bestand {
@@ -94,6 +95,9 @@ model Bestellungen {
   Standorte            Standorte?                  @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Bestellungen_ibfk_3")
   Rechnungen           Rechnungen[]
   Retouren             Retouren[]
+  Provisionen          Provisionen[]
+  Lieferungen          Lieferungen[]
+  Angebote             Angebote[]
 
   @@index([ErfasstVonBenutzerID], map: "ErfasstVonBenutzerID")
   @@index([StandortID], map: "StandortID")
@@ -159,6 +163,10 @@ model Kunden {
   Rechnungen            Rechnungen[]
   Retouren              Retouren[]
   Kassenbuchungen       Kassenbuchungen[]
+  Preisvertraege        Preisvertraege[]
+  KundenVertreter       KundenVertreter[]
+  Kreditlimits          Kreditlimits?
+  Angebote              Angebote[]
 
   @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
   @@index([Nachname, Vorname], map: "idx_kunden_name")
@@ -311,6 +319,8 @@ model Produkte {
   Rechnungspositionen Rechnungspositionen[]
   Retourenpositionen  Retourenpositionen[]
   ProduktBilder       ProduktBilder[]
+  Vertragspositionen  Vertragspositionen[]
+  Angebotspositionen  Angebotspositionen[]
 
   @@index([EinheitID], map: "idx_produkte_einheitid")
   @@index([Produktname], map: "idx_produkte_name")
@@ -417,6 +427,8 @@ model Rechnungen {
   Retouren              Retouren[]
   Zahlungen             Zahlungen[]
   Kassenbuchungen       Kassenbuchungen[]
+  Provisionen           Provisionen[]
+  Mahnungen             Mahnungen[]
 
   @@index([BestellID], map: "BestellID")
   @@index([ErstelltVonBenutzerID], map: "ErstelltVonBenutzerID")
@@ -848,4 +860,316 @@ enum ModuleKonfiguration_Prioritaet {
   Wichtig
   Optional
   Versteckt
+}
+
+// ========================================
+// WHOLESALE MODULE EXTENSIONS
+// ========================================
+
+// Price Contract Management
+model Preisvertraege {
+  VertragsID          Int                        @id @default(autoincrement())
+  KundenID            Int
+  Vertragsnummer      String                     @unique(map: "Vertragsnummer") @db.VarChar(50)
+  Vertragsbezeichnung String                     @db.VarChar(255)
+  Beschreibung        String?                    @db.Text
+  GueltigAb           DateTime                   @db.Date
+  GueltigBis          DateTime?                  @db.Date
+  Status              Preisvertraege_Status?     @default(Aktiv)
+  Zahlungsbedingungen String?                    @db.Text
+  Mindestabnahme      Decimal?                   @db.Decimal(10, 2)
+  Waehrung            String?                    @default("EUR") @db.VarChar(3)
+  Kommentare          String?                    @db.Text
+  Erstelldatum        DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?                  @default(now()) @db.Timestamp(0)
+
+  Kunden              Kunden                     @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Preisvertraege_ibfk_1")
+  Vertragspositionen  Vertragspositionen[]
+
+  @@index([KundenID], map: "idx_preisvertraege_kundenid")
+  @@index([GueltigAb, GueltigBis], map: "idx_preisvertraege_gueltigkeit")
+}
+
+model Vertragspositionen {
+  VertragspositionID  Int             @id @default(autoincrement())
+  VertragsID          Int
+  ProduktID           Int
+  MengeAb             Decimal         @db.Decimal(10, 2)
+  MengeBis            Decimal?        @db.Decimal(10, 2)
+  Vertragspreis       Decimal         @db.Decimal(10, 2)
+  Waehrung            String?         @default("EUR") @db.VarChar(3)
+  Erstelldatum        DateTime?       @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  Preisvertraege      Preisvertraege  @relation(fields: [VertragsID], references: [VertragsID], onDelete: Cascade, onUpdate: NoAction, map: "Vertragspositionen_ibfk_1")
+  Produkte            Produkte        @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Vertragspositionen_ibfk_2")
+
+  @@index([VertragsID], map: "idx_vertragspositionen_vertragsid")
+  @@index([ProduktID], map: "idx_vertragspositionen_produktid")
+}
+
+// Sales Representatives Management
+model Vertreter {
+  VertreterID         Int                     @id @default(autoincrement())
+  Vertreternummer     String                  @unique(map: "Vertreternummer") @db.VarChar(50)
+  Vorname             String                  @db.VarChar(100)
+  Nachname            String                  @db.VarChar(100)
+  Email               String                  @unique(map: "VertreterEmail") @db.VarChar(255)
+  Telefon             String?                 @db.VarChar(50)
+  Gebiet              String?                 @db.VarChar(255)
+  Provisionssatz      Decimal?                @db.Decimal(5, 2)
+  Status              Vertreter_Status?       @default(Aktiv)
+  Einstellungsdatum   DateTime?               @db.Date
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+
+  KundenVertreter     KundenVertreter[]
+  Provisionen         Provisionen[]
+
+  @@index([Vertreternummer], map: "idx_vertreter_vertreternummer")
+}
+
+model KundenVertreter {
+  KundenVertreterID   Int               @id @default(autoincrement())
+  KundenID            Int
+  VertreterID         Int
+  GueltigAb           DateTime          @default(dbgenerated("(now())")) @db.Timestamp(0)
+  GueltigBis          DateTime?         @db.Timestamp(0)
+  IstPrimaer          Boolean?          @default(true)
+  Erstelldatum        DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  Kunden              Kunden            @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "KundenVertreter_ibfk_1")
+  Vertreter           Vertreter         @relation(fields: [VertreterID], references: [VertreterID], onDelete: Cascade, onUpdate: NoAction, map: "KundenVertreter_ibfk_2")
+
+  @@index([KundenID], map: "idx_kundenvertreter_kundenid")
+  @@index([VertreterID], map: "idx_kundenvertreter_vertreterid")
+}
+
+model Provisionen {
+  ProvisionID         Int               @id @default(autoincrement())
+  VertreterID         Int
+  RechnungsID         Int?
+  BestellID           Int?
+  Provisionsbetrag    Decimal           @db.Decimal(10, 2)
+  Provisionssatz      Decimal           @db.Decimal(5, 2)
+  Berechnungsbasis    Decimal           @db.Decimal(10, 2)
+  Berechnungsdatum    DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Auszahlungsdatum    DateTime?         @db.Date
+  Status              Provisionen_Status? @default(Berechnet)
+  Waehrung            String?           @default("EUR") @db.VarChar(3)
+  Kommentare          String?           @db.Text
+  Erstelldatum        DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  Vertreter           Vertreter         @relation(fields: [VertreterID], references: [VertreterID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_1")
+  Rechnungen          Rechnungen?       @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_2")
+  Bestellungen        Bestellungen?     @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_3")
+
+  @@index([VertreterID], map: "idx_provisionen_vertreterid")
+  @@index([RechnungsID], map: "idx_provisionen_rechnungsid")
+  @@index([BestellID], map: "idx_provisionen_bestellid")
+}
+
+// Credit Management
+model Kreditlimits {
+  KreditlimitID       Int                     @id @default(autoincrement())
+  KundenID            Int                     @unique(map: "unique_kunde_kreditlimit")
+  Kreditlimit         Decimal                 @db.Decimal(10, 2)
+  AktuelleSchuld      Decimal                 @default(0.00) @db.Decimal(10, 2)
+  Waehrung            String?                 @default("EUR") @db.VarChar(3)
+  Kreditsperre        Boolean?                @default(false)
+  Sperrgrund          String?                 @db.Text
+  LetztePruefung      DateTime?               @db.Timestamp(0)
+  Zahlungsziel        Int?                    @default(30)
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+
+  Kunden              Kunden                  @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "Kreditlimits_ibfk_1")
+  Mahnungen           Mahnungen[]
+
+  @@index([KundenID], map: "idx_kreditlimits_kundenid")
+}
+
+model Mahnungen {
+  MahnungID           Int                     @id @default(autoincrement())
+  KreditlimitID       Int
+  RechnungsID         Int
+  Mahnstufe           Int                     @default(1)
+  Mahnungsnummer      String                  @unique(map: "Mahnungsnummer") @db.VarChar(50)
+  Mahnungsdatum       DateTime                @db.Date
+  Mahnbetrag          Decimal                 @db.Decimal(10, 2)
+  Mahngebuehr         Decimal?                @default(0.00) @db.Decimal(10, 2)
+  Status              Mahnungen_Status?       @default(Offen)
+  Faelligkeitsdatum   DateTime                @db.Date
+  Waehrung            String?                 @default("EUR") @db.VarChar(3)
+  Kommentare          String?                 @db.Text
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  Kreditlimits        Kreditlimits            @relation(fields: [KreditlimitID], references: [KreditlimitID], onDelete: NoAction, onUpdate: NoAction, map: "Mahnungen_ibfk_1")
+  Rechnungen          Rechnungen              @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Mahnungen_ibfk_2")
+
+  @@index([KreditlimitID], map: "idx_mahnungen_kreditlimitid")
+  @@index([RechnungsID], map: "idx_mahnungen_rechnungsid")
+}
+
+// Delivery & Logistics Management
+model Lieferungen {
+  LieferungID         Int                     @id @default(autoincrement())
+  BestellID           Int
+  Liefernummer        String                  @unique(map: "Liefernummer") @db.VarChar(50)
+  Lieferdatum         DateTime?               @db.Date
+  GeplantesLieferdatum DateTime?              @db.Date
+  LieferadresseID     Int?
+  TourID              Int?
+  Status              Lieferungen_Status?     @default(Geplant)
+  TrackingNummer      String?                 @db.VarChar(100)
+  Lieferant           String?                 @db.VarChar(255)
+  Kommentare          String?                 @db.Text
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+
+  Bestellungen        Bestellungen            @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_1")
+  Touren              Touren?                 @relation(fields: [TourID], references: [TourID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_2")
+  Liefernachweise     Liefernachweise[]
+
+  @@index([BestellID], map: "idx_lieferungen_bestellid")
+  @@index([TourID], map: "idx_lieferungen_tourid")
+}
+
+model Touren {
+  TourID              Int                     @id @default(autoincrement())
+  Tournummer          String                  @unique(map: "Tournummer") @db.VarChar(50)
+  Tourbezeichnung     String                  @db.VarChar(255)
+  Tourdatum           DateTime                @db.Date
+  FahrerName          String?                 @db.VarChar(255)
+  Fahrzeug            String?                 @db.VarChar(100)
+  Status              Touren_Status?          @default(Geplant)
+  Startzeit           DateTime?               @db.Timestamp(0)
+  Endzeit             DateTime?               @db.Timestamp(0)
+  GesamtKilometer     Decimal?                @db.Decimal(10, 2)
+  Kommentare          String?                 @db.Text
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+
+  Lieferungen         Lieferungen[]
+
+  @@index([Tourdatum], map: "idx_touren_tourdatum")
+}
+
+model Liefernachweise {
+  LiefernachweisID    Int                     @id @default(autoincrement())
+  LieferungID         Int
+  EmpfaengerName      String                  @db.VarChar(255)
+  Empfangsdatum       DateTime                @db.Timestamp(0)
+  UnterschriftPfad    String?                 @db.VarChar(255)
+  FotoPfad            String?                 @db.VarChar(255)
+  Anmerkungen         String?                 @db.Text
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  Lieferungen         Lieferungen             @relation(fields: [LieferungID], references: [LieferungID], onDelete: Cascade, onUpdate: NoAction, map: "Liefernachweise_ibfk_1")
+
+  @@index([LieferungID], map: "idx_liefernachweise_lieferungid")
+}
+
+// Quote & Proposal System
+model Angebote {
+  AngebotID           Int                     @id @default(autoincrement())
+  KundenID            Int
+  ErstelltVonBenutzerID Int?
+  Angebotsnummer      String                  @unique(map: "Angebotsnummer") @db.VarChar(50)
+  Angebotstitel       String                  @db.VarChar(255)
+  Angebotsdatum       DateTime                @db.Date
+  Gueltigkeitsdatum   DateTime                @db.Date
+  Status              Angebote_Status?        @default(Entwurf)
+  GesamtsummeNetto    Decimal?                @db.Decimal(10, 2)
+  MwSt_Gesamt         Decimal?                @db.Decimal(10, 2)
+  GesamtsummeBrutto   Decimal?                @db.Decimal(10, 2)
+  Waehrung            String?                 @default("EUR") @db.VarChar(3)
+  Zahlungsbedingungen String?                 @db.Text
+  Lieferbedingungen   String?                 @db.Text
+  Kommentare          String?                 @db.Text
+  BestellID           Int?
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+
+  Kunden              Kunden                  @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_1")
+  Benutzer            Benutzer?               @relation(fields: [ErstelltVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_2")
+  Bestellungen        Bestellungen?           @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_3")
+  Angebotspositionen  Angebotspositionen[]
+
+  @@index([KundenID], map: "idx_angebote_kundenid")
+  @@index([ErstelltVonBenutzerID], map: "idx_angebote_benutzerid")
+  @@index([BestellID], map: "idx_angebote_bestellid")
+}
+
+model Angebotspositionen {
+  AngebotspositionsID Int                     @id @default(autoincrement())
+  AngebotID           Int
+  ProduktID           Int
+  Positionsnummer     Int                     @default(1)
+  Menge               Decimal                 @db.Decimal(10, 2)
+  EinzelpreisNetto    Decimal                 @db.Decimal(10, 2)
+  RabattProzent       Decimal?                @default(0.00) @db.Decimal(5, 2)
+  RabattBetrag        Decimal?                @default(0.00) @db.Decimal(10, 2)
+  GesamtpreisNetto    Decimal                 @db.Decimal(10, 2)
+  MwSt_Satz           Decimal                 @db.Decimal(5, 2)
+  MwSt_Betrag         Decimal                 @db.Decimal(10, 2)
+  Beschreibung        String?                 @db.Text
+  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  Angebote            Angebote                @relation(fields: [AngebotID], references: [AngebotID], onDelete: Cascade, onUpdate: NoAction, map: "Angebotspositionen_ibfk_1")
+  Produkte            Produkte                @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Angebotspositionen_ibfk_2")
+
+  @@index([AngebotID], map: "idx_angebotspositionen_angebotid")
+  @@index([ProduktID], map: "idx_angebotspositionen_produktid")
+}
+
+// Enums for new modules
+enum Preisvertraege_Status {
+  Entwurf
+  Aktiv
+  Abgelaufen
+  Gekuendigt
+}
+
+enum Vertreter_Status {
+  Aktiv
+  Inaktiv
+  Beurlaubt
+}
+
+enum Provisionen_Status {
+  Berechnet
+  Freigegeben
+  Ausgezahlt
+  Storniert
+}
+
+enum Mahnungen_Status {
+  Offen
+  Versendet
+  Bezahlt
+  Storniert
+}
+
+enum Lieferungen_Status {
+  Geplant
+  In_Vorbereitung   @map("In Vorbereitung")
+  Unterwegs
+  Zugestellt
+  Fehlgeschlagen
+}
+
+enum Touren_Status {
+  Geplant
+  In_Durchfuehrung  @map("In Durchführung")
+  Abgeschlossen
+  Storniert
+}
+
+enum Angebote_Status {
+  Entwurf
+  Versendet
+  Angenommen
+  Abgelehnt
+  Abgelaufen
+  Storniert
 }

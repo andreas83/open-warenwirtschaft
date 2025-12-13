@@ -509,5 +509,127 @@
       "hidden": "Verborgen",
       "visibility": "Sichtbarkeit"
     }
+  },
+  "hotel": {
+    "title": "Hotel",
+    "dashboard": {
+      "title": "Hotel Dashboard",
+      "subtitle": "Übersicht über Ihr Hotel",
+      "availableRooms": "Verfügbare Zimmer",
+      "occupiedRooms": "Belegte Zimmer",
+      "todayCheckIns": "Heutige Check-ins",
+      "todayCheckOuts": "Heutige Check-outs",
+      "bookings": "Buchungen",
+      "manageBookings": "Buchungen verwalten",
+      "rooms": "Zimmer",
+      "manageRooms": "Zimmer verwalten",
+      "categories": "Kategorien",
+      "manageCategories": "Zimmerkategorien verwalten"
+    },
+    "categories": {
+      "title": "Zimmerkategorien",
+      "subtitle": "Verwalten Sie Ihre Zimmerkategorien",
+      "newCategory": "Neue Kategorie",
+      "createSubtitle": "Erstellen Sie eine neue Zimmerkategorie",
+      "persons": "Personen",
+      "night": "Nacht",
+      "rooms": "Zimmer",
+      "noCategories": "Keine Zimmerkategorien vorhanden",
+      "confirmDelete": "Möchten Sie diese Zimmerkategorie wirklich löschen?",
+      "errorLoading": "Fehler beim Laden der Zimmerkategorien",
+      "errorDeleting": "Fehler beim Löschen der Zimmerkategorie"
+    },
+    "rooms": {
+      "title": "Zimmerverwaltung",
+      "subtitle": "Verwalten Sie Ihre Hotelzimmer",
+      "newRoom": "Neues Zimmer",
+      "createSubtitle": "Erstellen Sie ein neues Zimmer",
+      "roomNumber": "Zimmernummer",
+      "category": "Kategorie",
+      "floor": "Etage",
+      "price": "Preis",
+      "searchPlaceholder": "Zimmer suchen...",
+      "noRooms": "Keine Zimmer vorhanden",
+      "confirmDelete": "Möchten Sie dieses Zimmer wirklich löschen?",
+      "errorLoading": "Fehler beim Laden der Zimmer",
+      "errorDeleting": "Fehler beim Löschen des Zimmers",
+      "status": {
+        "available": "Verfügbar",
+        "occupied": "Belegt",
+        "reserved": "Reserviert",
+        "cleaning": "Reinigung",
+        "maintenance": "Wartung",
+        "outOfOrder": "Außer Betrieb"
+      }
+    },
+    "bookings": {
+      "title": "Buchungen",
+      "subtitle": "Verwalten Sie Ihre Hotelbuchungen",
+      "newBooking": "Neue Buchung",
+      "createSubtitle": "Erstellen Sie eine neue Buchung",
+      "bookingNumber": "Buchungsnummer",
+      "guest": "Gast",
+      "checkInOut": "Check-in / Check-out",
+      "checkInFrom": "Check-in von",
+      "checkInTo": "Check-in bis",
+      "details": "Details",
+      "adults": "Erwachsene",
+      "children": "Kinder",
+      "totalPrice": "Gesamtpreis",
+      "searchPlaceholder": "Nach Gast, Buchungsnummer oder E-Mail suchen...",
+      "noBookings": "Keine Buchungen vorhanden",
+      "confirmDelete": "Möchten Sie diese Buchung wirklich löschen?",
+      "errorLoading": "Fehler beim Laden der Buchungen",
+      "errorDeleting": "Fehler beim Löschen der Buchung",
+      "status": {
+        "requested": "Angefragt",
+        "confirmed": "Bestätigt",
+        "checkedIn": "Eingecheckt",
+        "checkedOut": "Ausgecheckt",
+        "completed": "Abgeschlossen",
+        "cancelled": "Storniert",
+        "noShow": "Nicht erschienen"
+      },
+      "paymentStatus": {
+        "pending": "Ausstehend",
+        "deposit": "Angezahlt",
+        "paid": "Bezahlt",
+        "partiallyPaid": "Teilbezahlt",
+        "refunded": "Rückerstattet",
+        "cancelled": "Storniert"
+      }
+    },
+    "guests": {
+      "title": "Gäste",
+      "subtitle": "Verwalten Sie Ihre Hotelgäste",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "birthDate": "Geburtsdatum",
+      "nationality": "Nationalität",
+      "idType": "Ausweistyp",
+      "idNumber": "Ausweisnummer",
+      "mainGuest": "Hauptgast",
+      "noGuests": "Keine Gäste vorhanden"
+    },
+    "services": {
+      "title": "Zusatzleistungen",
+      "subtitle": "Zusätzliche Services für Buchungen",
+      "newService": "Neue Leistung",
+      "name": "Bezeichnung",
+      "type": "Typ",
+      "price": "Preis",
+      "quantity": "Menge",
+      "noServices": "Keine Zusatzleistungen vorhanden",
+      "types": {
+        "breakfast": "Frühstück",
+        "roomService": "Roomservice",
+        "minibar": "Minibar",
+        "parking": "Parkplatz",
+        "wellness": "Wellness",
+        "transfer": "Transfer",
+        "cleaning": "Reinigung",
+        "other": "Sonstiges"
+      }
+    }
   }
 }

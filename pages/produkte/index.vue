@@ -1,24 +1,38 @@
 <template>
   <div class="container mx-auto py-6">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">{{ $t('produkte.listTitle') }}</h2>
-    <div v-if="loading" class="text-center text-gray-500 py-10">{{ $t('produkte.loadingProducts') }}</div>
+    <Breadcrumbs :crumbs="breadcrumbs" />
+    <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">{{ $t('produkte.listTitle') }}</h2>
+
+    <LoadingSpinner v-if="loading" :text="$t('produkte.loadingProducts')" center />
+
     <div v-else-if="error" class="text-center text-red-500 py-10">{{ error }}</div>
+
     <div v-else>
-      <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow-md">
+      <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
         <div class="flex gap-2">
           <NuxtLink to="/produkte/create" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">{{ $t('produkte.newProduct') }}</NuxtLink>
           <NuxtLink to="/produkte/kategorien" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200">{{ $t('produkte.categories') }}</NuxtLink>
         </div>
         <div class="flex flex-col md:flex-row gap-3 items-center w-full md:w-auto">
           <div class="relative w-full md:w-64">
-            <input v-model="searchQuery" type="text" :placeholder="$t('produkte.searchPlaceholder')" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" @input="debouncedSearch" ref="searchInput" autofocus>
-            <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+            <input
+              v-model="searchQuery"
+              type="text"
+              :placeholder="$t('produkte.searchPlaceholder')"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              @input="debouncedSearch"
+              ref="searchInput"
+              autofocus
+            >
+            <div class="i-mdi-magnify absolute right-3 top-2.5 w-5 h-5 text-gray-400" />
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-gray-600 text-sm whitespace-nowrap">{{ $t('produkte.entriesPerPage') }}</span>
-            <select v-model="itemsPerPage" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" @change="fetchProdukte">
+            <span class="text-gray-600 dark:text-gray-300 text-sm whitespace-nowrap">{{ $t('produkte.entriesPerPage') }}</span>
+            <select
+              v-model="itemsPerPage"
+              class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              @change="fetchProdukte"
+            >
               <option :value="5">5</option>
               <option :value="10">10</option>
               <option :value="20">20</option>
@@ -27,53 +41,67 @@
           </div>
         </div>
       </div>
+
       <div class="space-y-4">
-        <div v-for="produkt in paginatedProdukte" :key="produkt.ProduktID" class="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition duration-200">
+        <div v-for="produkt in paginatedProdukte" :key="produkt.ProduktID" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-5 hover:shadow-lg transition duration-200">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex flex-col md:flex-row gap-4">
               <div v-if="getMainImage(produkt)" class="w-full md:w-24 h-24 flex-shrink-0">
-                <img :src="getMainImage(produkt)" alt="Produktbild" class="w-full h-full object-cover rounded-md border border-gray-200">
+                <img :src="getMainImage(produkt)" alt="Produktbild" class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700">
               </div>
               <div class="flex flex-col gap-2">
-                <h3 class="text-lg font-semibold text-gray-800">{{ produkt.Name }}</h3>
-                <p class="text-gray-600 text-sm">{{ produkt.Beschreibung || $t('produkte.noDescription') }}</p>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ produkt.Name }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">{{ produkt.Beschreibung || $t('produkte.noDescription') }}</p>
                 <div class="flex flex-col gap-1">
                   <div class="flex items-center gap-2">
-                    <span class="text-gray-500 text-xs">{{ $t('produkte.price') }}</span>
-                    <span class="text-blue-600 text-sm font-medium">{{ getStandardPrice(produkt) }} €</span>
+                    <span class="text-gray-500 dark:text-gray-400 text-xs">{{ $t('produkte.price') }}</span>
+                    <span class="text-blue-600 dark:text-blue-400 text-sm font-medium">{{ getStandardPrice(produkt) }} €</span>
                   </div>
                   <div v-if="getActionPrice(produkt)" class="flex items-center gap-2">
-                    <span class="text-gray-500 text-xs">{{ $t('produkte.actionPrice') }}</span>
-                    <span class="text-red-600 text-sm font-medium">{{ getActionPrice(produkt) }} €</span>
+                    <span class="text-gray-500 dark:text-gray-400 text-xs">{{ $t('produkte.actionPrice') }}</span>
+                    <span class="text-red-600 dark:text-red-400 text-sm font-medium">{{ getActionPrice(produkt) }} €</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="flex gap-2">
-              <NuxtLink :to="`/produkte/edit/${produkt.ProduktID}`" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg hover:bg-blue-200 transition duration-200 text-sm">{{ $t('produkte.edit') }}</NuxtLink>
-              <button @click="deleteProdukt(produkt.ProduktID)" class="bg-red-100 text-red-800 px-3 py-1 rounded-lg hover:bg-red-200 transition duration-200 text-sm">{{ $t('produkte.delete') }}</button>
+              <NuxtLink :to="`/produkte/edit/${produkt.ProduktID}`" class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition duration-200 text-sm">{{ $t('produkte.edit') }}</NuxtLink>
+              <LoadingButton
+                variant="danger"
+                size="sm"
+                :loading="deletingId === produkt.ProduktID"
+                @click="confirmDelete(produkt.ProduktID)"
+              >
+                {{ $t('produkte.delete') }}
+              </LoadingButton>
             </div>
           </div>
         </div>
-        <div v-if="paginatedProdukte.length === 0" class="text-center text-gray-500 py-10 bg-white rounded-lg shadow-md">
+        <div v-if="paginatedProdukte.length === 0" class="text-center text-gray-500 dark:text-gray-400 py-10 bg-white dark:bg-gray-800 rounded-lg shadow-md">
           {{ $t('produkte.noProductsFound') }}
         </div>
       </div>
-      <div class="mt-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow-md">
-        <div class="text-gray-600 text-sm">
+
+      <div class="mt-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <div class="text-gray-600 dark:text-gray-300 text-sm text-center mb-4">
           {{ $t('produkte.showingEntries', { start: startIndex + 1, end: endIndex, total: totalItems }) }}
         </div>
-        <div class="flex flex-wrap justify-center gap-2">
-          <button :disabled="currentPage === 1" @click="currentPage = 1" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200">{{ $t('produkte.first') }}</button>
-          <button :disabled="currentPage === 1" @click="currentPage -= 1" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200">{{ $t('produkte.previous') }}</button>
-          <button v-if="startPage > 1" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-300 transition duration-200" @click="currentPage = startPage - 1">...</button>
-          <button v-for="page in pageRange" :key="page" @click="currentPage = page" :class="currentPage === page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'" class="px-3 py-1 rounded-lg hover:bg-gray-300 transition duration-200">{{ page }}</button>
-          <button v-if="endPage < totalPages" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-300 transition duration-200" @click="currentPage = endPage + 1">...</button>
-          <button :disabled="currentPage === totalPages" @click="currentPage += 1" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200">{{ $t('produkte.next') }}</button>
-          <button :disabled="currentPage === totalPages" @click="currentPage = totalPages" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200">{{ $t('produkte.last') }}</button>
-        </div>
+        <Pagination
+          :current-page="currentPage"
+          :total-pages="totalPages"
+          @update:page="currentPage = $event"
+        />
       </div>
     </div>
+
+    <!-- Confirm Delete Modal -->
+    <ConfirmModal
+      v-if="showDeleteModal"
+      :title="$t('common.confirmDelete')"
+      :message="$t('produkte.confirmDeleteProduct')"
+      @confirm="handleDelete"
+      @cancel="showDeleteModal = false"
+    />
   </div>
 </template>
 
@@ -90,7 +118,17 @@ const sortOrder = ref('asc')
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 const totalItems = ref(0)
+const deletingId = ref(null)
+const showDeleteModal = ref(false)
+const productToDelete = ref(null)
 let searchTimeout = null
+
+const toast = useToast()
+const { t } = useI18n()
+
+const breadcrumbs = computed(() => [
+  { label: t('menu.products'), to: '/produkte' }
+])
 
 // Fetch Produkte from API
 async function fetchProdukte() {
@@ -109,10 +147,10 @@ async function fetchProdukte() {
     } else {
       produkte.value = []
       totalItems.value = 0
-      error.value = 'Keine Produkte gefunden oder ungültige Antwort vom Server.'
+      error.value = t('produkte.noProductsFound')
     }
   } catch (err) {
-    error.value = $t('produkte.errorLoadingProducts') + err.message
+    toast.error(t('produkte.errorLoadingProducts') + err.message)
     produkte.value = []
     totalItems.value = 0
     console.error('Fetch Produkte Error:', err)
@@ -121,15 +159,28 @@ async function fetchProdukte() {
   }
 }
 
+// Show delete confirmation
+function confirmDelete(id) {
+  productToDelete.value = id
+  showDeleteModal.value = true
+}
+
 // Delete a Produkt
-async function deleteProdukt(id) {
-  if (confirm($t('produkte.confirmDeleteProduct'))) {
-    try {
-      await $fetch(`/api/produkte?id=${id}`, { method: 'DELETE' })
-      produkte.value = produkte.value.filter(p => p.ProduktID !== id)
-    } catch (err) {
-      alert($t('produkte.errorDeletingProduct') + err.message)
-    }
+async function handleDelete() {
+  const id = productToDelete.value
+  showDeleteModal.value = false
+
+  try {
+    deletingId.value = id
+    await $fetch(`/api/produkte?id=${id}`, { method: 'DELETE' })
+    produkte.value = produkte.value.filter(p => p.ProduktID !== id)
+    totalItems.value -= 1
+    toast.success(t('common.deleteSuccess'))
+  } catch (err) {
+    toast.error(t('produkte.errorDeletingProduct') + err.message)
+  } finally {
+    deletingId.value = null
+    productToDelete.value = null
   }
 }
 
@@ -201,26 +252,6 @@ const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.valu
 const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage.value)
 const endIndex = computed(() => Math.min(startIndex.value + itemsPerPage.value, totalItems.value))
 const paginatedProdukte = computed(() => filteredProdukte.value)
-// Compute pagination range to show limited page buttons
-const maxVisiblePages = 5 // Adjust this number to show more or fewer page buttons
-const startPage = computed(() => {
-  let start = currentPage.value - Math.floor(maxVisiblePages / 2)
-  if (start < 1) start = 1
-  if (start > totalPages.value - maxVisiblePages + 1) start = Math.max(1, totalPages.value - maxVisiblePages + 1)
-  return start
-})
-const endPage = computed(() => {
-  let end = startPage.value + maxVisiblePages - 1
-  if (end > totalPages.value) end = totalPages.value
-  return end
-})
-const pageRange = computed(() => {
-  const range = []
-  for (let i = startPage.value; i <= endPage.value; i++) {
-    range.push(i)
-  }
-  return range
-})
 
 // Watch for page changes to fetch data
 watch(currentPage, () => {

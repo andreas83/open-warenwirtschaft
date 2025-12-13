@@ -20,7 +20,7 @@ Dieses System bietet grundlegende Funktionen für die Verwaltung von **Produkten
 ## Technologie
 
 * **Frontend-Framework:** Nuxt 3
-* **KI-Agent:** Cline
+* **KI-Agent:** Cline und claude code
 
 ## Wichtiger Hinweis
 

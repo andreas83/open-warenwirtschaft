@@ -2,8 +2,8 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $t('shop.orders.title') }}</h1>
-        <p class="text-gray-600 mt-1">{{ $t('shop.orders.subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-gray-800">{{ t('shop.orders.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('shop.orders.subtitle') }}</p>
       </div>
     </div>
 
@@ -12,65 +12,65 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.search') }}
+            {{ t('common.search') }}
           </label>
           <input
             v-model="searchQuery"
             type="text"
-            :placeholder="$t('shop.orders.searchPlaceholder')"
+            :placeholder="t('shop.orders.searchPlaceholder')"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @input="debounceSearch"
           />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('shop.orders.orderStatus') }}
+            {{ t('shop.orders.orderStatus') }}
           </label>
           <select
             v-model="filterStatus"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadOrders"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="Neu">{{ $t('shop.orders.status.new') }}</option>
-            <option value="In_Bearbeitung">{{ $t('shop.orders.status.processing') }}</option>
-            <option value="Versendet">{{ $t('shop.orders.status.shipped') }}</option>
-            <option value="Zugestellt">{{ $t('shop.orders.status.delivered') }}</option>
-            <option value="Abgeschlossen">{{ $t('shop.orders.status.completed') }}</option>
-            <option value="Storniert">{{ $t('shop.orders.status.cancelled') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="Neu">{{ t('shop.orders.status.new') }}</option>
+            <option value="In_Bearbeitung">{{ t('shop.orders.status.processing') }}</option>
+            <option value="Versendet">{{ t('shop.orders.status.shipped') }}</option>
+            <option value="Zugestellt">{{ t('shop.orders.status.delivered') }}</option>
+            <option value="Abgeschlossen">{{ t('shop.orders.status.completed') }}</option>
+            <option value="Storniert">{{ t('shop.orders.status.cancelled') }}</option>
           </select>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('shop.orders.paymentStatus') }}
+            {{ t('shop.orders.paymentStatus') }}
           </label>
           <select
             v-model="filterZahlungsstatus"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadOrders"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="Ausstehend">{{ $t('shop.orders.payment.pending') }}</option>
-            <option value="Bezahlt">{{ $t('shop.orders.payment.paid') }}</option>
-            <option value="Teilbezahlt">{{ $t('shop.orders.payment.partiallyPaid') }}</option>
-            <option value="Fehlgeschlagen">{{ $t('shop.orders.payment.failed') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="Ausstehend">{{ t('shop.orders.payment.pending') }}</option>
+            <option value="Bezahlt">{{ t('shop.orders.payment.paid') }}</option>
+            <option value="Teilbezahlt">{{ t('shop.orders.payment.partiallyPaid') }}</option>
+            <option value="Fehlgeschlagen">{{ t('shop.orders.payment.failed') }}</option>
           </select>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('shop.orders.shippingStatus') }}
+            {{ t('shop.orders.shippingStatus') }}
           </label>
           <select
             v-model="filterVersandstatus"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadOrders"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="NichtVersendet">{{ $t('shop.orders.shipping.notShipped') }}</option>
-            <option value="Vorbereitung">{{ $t('shop.orders.shipping.preparing') }}</option>
-            <option value="Versendet">{{ $t('shop.orders.shipping.shipped') }}</option>
-            <option value="Unterwegs">{{ $t('shop.orders.shipping.inTransit') }}</option>
-            <option value="Zugestellt">{{ $t('shop.orders.shipping.delivered') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="NichtVersendet">{{ t('shop.orders.shipping.notShipped') }}</option>
+            <option value="Vorbereitung">{{ t('shop.orders.shipping.preparing') }}</option>
+            <option value="Versendet">{{ t('shop.orders.shipping.shipped') }}</option>
+            <option value="Unterwegs">{{ t('shop.orders.shipping.inTransit') }}</option>
+            <option value="Zugestellt">{{ t('shop.orders.shipping.delivered') }}</option>
           </select>
         </div>
       </div>
@@ -87,25 +87,25 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.orders.orderNumber') }}
+              {{ t('shop.orders.orderNumber') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.orders.customer') }}
+              {{ t('shop.orders.customer') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.orders.orderDate') }}
+              {{ t('shop.orders.orderDate') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.orders.total') }}
+              {{ t('shop.orders.total') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('common.status') }}
+              {{ t('common.status') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.orders.payment') }}
+              {{ t('shop.orders.payment') }}
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('common.actions') }}
+              {{ t('common.actions') }}
             </th>
           </tr>
         </thead>
@@ -113,7 +113,7 @@
           <tr v-for="order in orders" :key="order.ShopBestellID" class="hover:bg-gray-50">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">{{ order.Bestellnummer }}</div>
-              <div class="text-sm text-gray-500">{{ order._count.ShopBestellpositionen }} {{ $t('shop.orders.items') }}</div>
+              <div class="text-sm text-gray-500">{{ order._count.ShopBestellpositionen }} {{ t('shop.orders.items') }}</div>
             </td>
             <td class="px-6 py-4">
               <div class="text-sm text-gray-900">{{ order.RechnungsVorname }} {{ order.RechnungsNachname }}</div>
@@ -146,7 +146,7 @@
                 :to="`/shop/bestellungen/details/${order.ShopBestellID}`"
                 class="text-blue-600 hover:text-blue-900"
               >
-                {{ $t('shop.orders.viewDetails') }}
+                {{ t('shop.orders.viewDetails') }}
               </NuxtLink>
             </td>
           </tr>
@@ -157,7 +157,7 @@
     <!-- Empty State -->
     <div v-if="!loading && orders.length === 0" class="text-center py-12 bg-white rounded-lg shadow-md">
       <span class="i-mdi-cart-outline text-6xl text-gray-400 mb-4"></span>
-      <p class="text-gray-500 text-lg">{{ $t('shop.orders.noOrders') }}</p>
+      <p class="text-gray-500 text-lg">{{ t('shop.orders.noOrders') }}</p>
     </div>
 
     <!-- Pagination -->
@@ -167,14 +167,14 @@
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.first') }}
+        {{ t('pagination.first') }}
       </button>
       <button
         @click="goToPage(offset - limit)"
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.previous') }}
+        {{ t('pagination.previous') }}
       </button>
       <span class="px-3 py-1">
         {{ Math.floor(offset / limit) + 1 }} / {{ Math.ceil(total / limit) }}
@@ -184,21 +184,21 @@
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.next') }}
+        {{ t('pagination.next') }}
       </button>
       <button
         @click="goToPage(Math.floor(total / limit) * limit)"
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.last') }}
+        {{ t('pagination.last') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-const { $t } = useNuxtApp()
+const { t } = useI18n()
 const loading = ref(true)
 const orders = ref([])
 const total = ref(0)
@@ -267,7 +267,7 @@ const getStatusClass = (status) => {
   const classes = {
     Neu: 'bg-blue-100 text-blue-800',
     In_Bearbeitung: 'bg-yellow-100 text-yellow-800',
-    Versendet: 'bg-purple-100 text-purple-800',
+    Versendet: 'bg-indigo-100 text-indigo-800',
     Zugestellt: 'bg-green-100 text-green-800',
     Abgeschlossen: 'bg-gray-100 text-gray-800',
     Storniert: 'bg-red-100 text-red-800'
@@ -277,12 +277,12 @@ const getStatusClass = (status) => {
 
 const getStatusText = (status) => {
   const texts = {
-    Neu: $t('shop.orders.status.new'),
-    In_Bearbeitung: $t('shop.orders.status.processing'),
-    Versendet: $t('shop.orders.status.shipped'),
-    Zugestellt: $t('shop.orders.status.delivered'),
-    Abgeschlossen: $t('shop.orders.status.completed'),
-    Storniert: $t('shop.orders.status.cancelled')
+    Neu: t('shop.orders.status.new'),
+    In_Bearbeitung: t('shop.orders.status.processing'),
+    Versendet: t('shop.orders.status.shipped'),
+    Zugestellt: t('shop.orders.status.delivered'),
+    Abgeschlossen: t('shop.orders.status.completed'),
+    Storniert: t('shop.orders.status.cancelled')
   }
   return texts[status] || status
 }
@@ -299,10 +299,10 @@ const getPaymentStatusClass = (status) => {
 
 const getPaymentStatusText = (status) => {
   const texts = {
-    Ausstehend: $t('shop.orders.payment.pending'),
-    Bezahlt: $t('shop.orders.payment.paid'),
-    Teilbezahlt: $t('shop.orders.payment.partiallyPaid'),
-    Fehlgeschlagen: $t('shop.orders.payment.failed')
+    Ausstehend: t('shop.orders.payment.pending'),
+    Bezahlt: t('shop.orders.payment.paid'),
+    Teilbezahlt: t('shop.orders.payment.partiallyPaid'),
+    Fehlgeschlagen: t('shop.orders.payment.failed')
   }
   return texts[status] || status
 }

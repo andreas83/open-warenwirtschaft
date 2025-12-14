@@ -169,9 +169,19 @@ const fetchProjekt = async () => {
 
 // Toggle module activation
 const toggleModule = async (modulConfig: any) => {
-  // TODO: Implement API call to toggle module
-  console.log('Toggle module:', modulConfig);
-  modulConfig.IstAktiviert = !modulConfig.IstAktiviert;
+  const newState = !modulConfig.IstAktiviert;
+  try {
+    const response = await $fetch(`/api/projekte/${projektId.value}/modules/${modulConfig.ModulID}`, {
+      method: 'PATCH',
+      body: { istAktiviert: newState },
+    });
+    if (response.success) {
+      modulConfig.IstAktiviert = newState;
+    }
+  } catch (error) {
+    console.error('Error toggling module:', error);
+    alert('Fehler beim Ändern des Moduls');
+  }
 };
 
 // Lifecycle

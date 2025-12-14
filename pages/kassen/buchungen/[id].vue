@@ -2,7 +2,13 @@
   <div class="container mx-auto py-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-3xl font-bold text-gray-800">{{ $t('kassen.bookingsTitle') }}</h2>
-      <NuxtLink to="/kassen" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-200">{{ $t('kassen.backToList') }}</NuxtLink>
+      <div class="flex gap-3">
+        <NuxtLink :to="`/kassen/pos/${$route.params.id}`" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition duration-200 flex items-center gap-2">
+          <span class="i-mdi-point-of-sale w-5 h-5"></span>
+          {{ $t('kassen.openPOS') }}
+        </NuxtLink>
+        <NuxtLink to="/kassen" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-200">{{ $t('kassen.backToList') }}</NuxtLink>
+      </div>
     </div>
 
     <div v-if="loadingKasse" class="text-center text-gray-500 py-10">{{ $t('kassen.loadingCashRegister') }}</div>
@@ -217,7 +223,7 @@ function getTypeClass(typ) {
     case 'Entnahme':
       return 'bg-orange-100 text-orange-800'
     case 'Kassenabschluss':
-      return 'bg-purple-100 text-purple-800'
+      return 'bg-indigo-100 text-indigo-800'
     default:
       return 'bg-gray-100 text-gray-800'
   }

@@ -2,15 +2,15 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $t('hotel.bookings.title') }}</h1>
-        <p class="text-gray-600 mt-1">{{ $t('hotel.bookings.subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-gray-800">{{ t('hotel.bookings.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('hotel.bookings.subtitle') }}</p>
       </div>
       <NuxtLink
         to="/hotel/buchungen/create"
-        class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200 flex items-center gap-2"
+        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center gap-2"
       >
         <span class="i-mdi-plus text-xl"></span>
-        {{ $t('hotel.bookings.newBooking') }}
+        {{ t('hotel.bookings.newBooking') }}
       </NuxtLink>
     </div>
 
@@ -18,46 +18,46 @@
     <div class="bg-white rounded-lg shadow-md p-4 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('common.search') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.search') }}</label>
           <input
             v-model="searchQuery"
             type="text"
-            :placeholder="$t('hotel.bookings.searchPlaceholder')"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            :placeholder="t('hotel.bookings.searchPlaceholder')"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @input="debounceSearch"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('common.status') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.status') }}</label>
           <select
             v-model="filterStatus"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @change="loadBookings"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="Angefragt">{{ $t('hotel.bookings.status.requested') }}</option>
-            <option value="Bestaetigt">{{ $t('hotel.bookings.status.confirmed') }}</option>
-            <option value="Eingecheckt">{{ $t('hotel.bookings.status.checkedIn') }}</option>
-            <option value="Ausgecheckt">{{ $t('hotel.bookings.status.checkedOut') }}</option>
-            <option value="Abgeschlossen">{{ $t('hotel.bookings.status.completed') }}</option>
-            <option value="Storniert">{{ $t('hotel.bookings.status.cancelled') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="Angefragt">{{ t('hotel.bookings.status.requested') }}</option>
+            <option value="Bestaetigt">{{ t('hotel.bookings.status.confirmed') }}</option>
+            <option value="Eingecheckt">{{ t('hotel.bookings.status.checkedIn') }}</option>
+            <option value="Ausgecheckt">{{ t('hotel.bookings.status.checkedOut') }}</option>
+            <option value="Abgeschlossen">{{ t('hotel.bookings.status.completed') }}</option>
+            <option value="Storniert">{{ t('hotel.bookings.status.cancelled') }}</option>
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('hotel.bookings.checkInFrom') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('hotel.bookings.checkInFrom') }}</label>
           <input
             v-model="filterCheckInFrom"
             type="date"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @change="loadBookings"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('hotel.bookings.checkInTo') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('hotel.bookings.checkInTo') }}</label>
           <input
             v-model="filterCheckInTo"
             type="date"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @change="loadBookings"
           />
         </div>
@@ -66,7 +66,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
     </div>
 
     <!-- Bookings List -->
@@ -91,14 +91,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
               <div>
-                <p class="text-sm text-gray-500">{{ $t('hotel.bookings.guest') }}</p>
+                <p class="text-sm text-gray-500">{{ t('hotel.bookings.guest') }}</p>
                 <p class="text-sm font-medium text-gray-800">{{ booking.Gastname }}</p>
                 <p v-if="booking.Email" class="text-xs text-gray-600">{{ booking.Email }}</p>
                 <p v-if="booking.Telefon" class="text-xs text-gray-600">{{ booking.Telefon }}</p>
               </div>
 
               <div>
-                <p class="text-sm text-gray-500">{{ $t('hotel.bookings.checkInOut') }}</p>
+                <p class="text-sm text-gray-500">{{ t('hotel.bookings.checkInOut') }}</p>
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                   <span class="i-mdi-calendar-arrow-right text-green-600"></span>
                   <span>{{ formatDate(booking.CheckInDatum) }}</span>
@@ -110,9 +110,9 @@
               </div>
 
               <div>
-                <p class="text-sm text-gray-500">{{ $t('hotel.bookings.details') }}</p>
-                <p class="text-sm text-gray-800">{{ booking.AnzahlErwachsene }} {{ $t('hotel.bookings.adults') }}, {{ booking.AnzahlKinder || 0 }} {{ $t('hotel.bookings.children') }}</p>
-                <p class="text-sm text-gray-800">{{ booking._count?.HotelBuchungszimmer || 0 }} {{ $t('hotel.bookings.rooms') }}</p>
+                <p class="text-sm text-gray-500">{{ t('hotel.bookings.details') }}</p>
+                <p class="text-sm text-gray-800">{{ booking.AnzahlErwachsene }} {{ t('hotel.bookings.adults') }}, {{ booking.AnzahlKinder || 0 }} {{ t('hotel.bookings.children') }}</p>
+                <p class="text-sm text-gray-800">{{ booking._count?.HotelBuchungszimmer || 0 }} {{ t('hotel.bookings.rooms') }}</p>
               </div>
             </div>
 
@@ -120,7 +120,7 @@
               <span
                 v-for="bz in booking.HotelBuchungszimmer"
                 :key="bz.BuchungszimmerID"
-                class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full"
+                class="px-3 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full"
               >
                 {{ bz.Zimmer?.Zimmernummer }} - {{ bz.Zimmer?.Zimmerkategorien?.Name }}
               </span>
@@ -128,8 +128,8 @@
           </div>
 
           <div class="text-right ml-4">
-            <p class="text-2xl font-bold text-purple-600">€ {{ parseFloat(booking.GesamtpreisBrutto).toFixed(2) }}</p>
-            <p class="text-xs text-gray-500">{{ $t('hotel.bookings.totalPrice') }}</p>
+            <p class="text-2xl font-bold text-indigo-600">€ {{ parseFloat(booking.GesamtpreisBrutto).toFixed(2) }}</p>
+            <p class="text-xs text-gray-500">{{ t('hotel.bookings.totalPrice') }}</p>
           </div>
         </div>
       </div>
@@ -138,13 +138,13 @@
     <!-- Empty State -->
     <div v-if="!loading && bookings.length === 0" class="bg-white rounded-lg shadow-md p-12 text-center">
       <span class="i-mdi-calendar-check text-6xl text-gray-300 mb-4"></span>
-      <p class="text-gray-500 text-lg">{{ $t('hotel.bookings.noBookings') }}</p>
+      <p class="text-gray-500 text-lg">{{ t('hotel.bookings.noBookings') }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-const { $t } = useNuxtApp()
+const { t } = useI18n()
 const loading = ref(true)
 const bookings = ref([])
 const searchQuery = ref('')
@@ -170,7 +170,7 @@ async function loadBookings() {
     bookings.value = response.bookings || []
   } catch (error) {
     console.error('Error loading bookings:', error)
-    alert($t('hotel.bookings.errorLoading'))
+    alert(t('hotel.bookings.errorLoading'))
   } finally {
     loading.value = false
   }
@@ -201,12 +201,12 @@ function getStatusClass(status) {
 
 function getStatusText(status) {
   const texts = {
-    'Angefragt': $t('hotel.bookings.status.requested'),
-    'Bestaetigt': $t('hotel.bookings.status.confirmed'),
-    'Eingecheckt': $t('hotel.bookings.status.checkedIn'),
-    'Ausgecheckt': $t('hotel.bookings.status.checkedOut'),
-    'Abgeschlossen': $t('hotel.bookings.status.completed'),
-    'Storniert': $t('hotel.bookings.status.cancelled')
+    'Angefragt': t('hotel.bookings.status.requested'),
+    'Bestaetigt': t('hotel.bookings.status.confirmed'),
+    'Eingecheckt': t('hotel.bookings.status.checkedIn'),
+    'Ausgecheckt': t('hotel.bookings.status.checkedOut'),
+    'Abgeschlossen': t('hotel.bookings.status.completed'),
+    'Storniert': t('hotel.bookings.status.cancelled')
   }
   return texts[status] || status
 }
@@ -225,12 +225,12 @@ function getPaymentStatusClass(status) {
 
 function getPaymentStatusText(status) {
   const texts = {
-    'Ausstehend': $t('hotel.bookings.paymentStatus.pending'),
-    'Angezahlt': $t('hotel.bookings.paymentStatus.deposit'),
-    'Bezahlt': $t('hotel.bookings.paymentStatus.paid'),
-    'Teilbezahlt': $t('hotel.bookings.paymentStatus.partiallyPaid'),
-    'Rueckerstattet': $t('hotel.bookings.paymentStatus.refunded'),
-    'Storniert': $t('hotel.bookings.paymentStatus.cancelled')
+    'Ausstehend': t('hotel.bookings.paymentStatus.pending'),
+    'Angezahlt': t('hotel.bookings.paymentStatus.deposit'),
+    'Bezahlt': t('hotel.bookings.paymentStatus.paid'),
+    'Teilbezahlt': t('hotel.bookings.paymentStatus.partiallyPaid'),
+    'Rueckerstattet': t('hotel.bookings.paymentStatus.refunded'),
+    'Storniert': t('hotel.bookings.paymentStatus.cancelled')
   }
   return texts[status] || status
 }

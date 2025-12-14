@@ -418,15 +418,170 @@ Add these keys to i18n files:
 ## Component Locations
 
 - `components/Toast.vue` - Toast notification component
+- `components/ToastContainer.vue` - Container for rendering toasts
 - `components/LoadingSpinner.vue` - Loading spinner
 - `components/LoadingButton.vue` - Button with loading state
 - `components/Breadcrumbs.vue` - Breadcrumb navigation
 - `components/Pagination.vue` - Pagination controls
 - `components/FormInput.vue` - Form input with validation
 - `components/FormTextarea.vue` - Textarea with validation
+- `components/FormSelect.vue` - Select dropdown with validation
+- `components/DatePicker.vue` - Calendar date picker
+- `components/Tabs.vue` - Tab navigation component
+- `components/DataTable.vue` - Responsive data table with search, sort, pagination
+- `components/AsyncAutocomplete.vue` - Autocomplete with async search
 - `composables/useToast.ts` - Toast notification composable
 - `components/ConfirmModal.vue` - Existing modal for confirmations
 
+## New Components
+
+### DatePicker
+
+Calendar-based date picker with min/max date support.
+
+```vue
+<template>
+  <DatePicker
+    v-model="selectedDate"
+    label="Select Date"
+    placeholder="Choose a date..."
+    :min-date="minDate"
+    :max-date="maxDate"
+    format="dd.MM.yyyy"
+    clearable
+  />
+</template>
+```
+
+**Props:**
+- `modelValue`: Selected date (string or Date)
+- `label`: Input label
+- `placeholder`: Input placeholder
+- `minDate` / `maxDate`: Date limits
+- `format`: Output format ('dd.MM.yyyy' or 'yyyy-MM-dd')
+- `clearable`: Allow clearing selection
+- `disabled`: Disable input
+
+### Tabs
+
+Tab navigation with underline or pills style.
+
+```vue
+<template>
+  <Tabs v-model="activeTab" :tabs="tabs" variant="underline">
+    <template #tab1>Tab 1 content</template>
+    <template #tab2>Tab 2 content</template>
+  </Tabs>
+</template>
+
+<script setup>
+const activeTab = ref('tab1')
+const tabs = [
+  { value: 'tab1', label: 'Tab 1', icon: 'i-mdi-home' },
+  { value: 'tab2', label: 'Tab 2', badge: 5 },
+  { value: 'tab3', label: 'Tab 3', disabled: true }
+]
+</script>
+```
+
+**Props:**
+- `modelValue`: Active tab value
+- `tabs`: Array of tab definitions
+- `variant`: 'underline' or 'pills'
+
+### DataTable
+
+Responsive data table with search, sort, pagination, and selection.
+
+```vue
+<template>
+  <DataTable
+    :columns="columns"
+    :data="data"
+    searchable
+    paginated
+    :page-size="10"
+    selectable
+    v-model:selected-rows="selected"
+  >
+    <template #cell-status="{ value }">
+      <Badge :variant="value === 'Active' ? 'success' : 'gray'">{{ value }}</Badge>
+    </template>
+    <template #rowActions="{ row }">
+      <button @click="edit(row)">Edit</button>
+    </template>
+  </DataTable>
+</template>
+```
+
+**Props:**
+- `columns`: Column definitions (key, label, sortable, align, format)
+- `data`: Array of data rows
+- `loading`: Show loading state
+- `searchable`: Enable search bar
+- `paginated`: Enable pagination
+- `pageSize`: Items per page
+- `selectable`: Enable row selection
+- `selectedRows`: Selected rows (v-model)
+- `striped`: Striped rows
+- `hoverable`: Hover effect
+
+**Mobile View:** On screens smaller than `md`, the table automatically switches to a card-based layout for better mobile UX.
+
+### AsyncAutocomplete
+
+Autocomplete with debounced async search.
+
+```vue
+<template>
+  <AsyncAutocomplete
+    v-model="selectedUser"
+    label="Search Users"
+    :items="searchResults"
+    :loading="isSearching"
+    :display-fn="user => user.name"
+    item-key="id"
+    :debounce="300"
+    :min-chars="2"
+    @search="handleSearch"
+  >
+    <template #item="{ item }">
+      <div>{{ item.name }} - {{ item.email }}</div>
+    </template>
+  </AsyncAutocomplete>
+</template>
+
+<script setup>
+const selectedUser = ref(null)
+const searchResults = ref([])
+const isSearching = ref(false)
+
+async function handleSearch(query) {
+  isSearching.value = true
+  searchResults.value = await fetchUsers(query)
+  isSearching.value = false
+}
+</script>
+```
+
+**Props:**
+- `modelValue`: Selected item
+- `items`: Search results array
+- `loading`: Loading state
+- `itemKey`: Unique key field
+- `displayFn`: Function to display item
+- `debounce`: Debounce delay in ms
+- `minChars`: Minimum characters before search
+
+**Events:**
+- `@search`: Emitted when user types (debounced)
+- `@select`: Emitted when item selected
+- `@clear`: Emitted when cleared
+
+## Demo Page
+
+Visit `/ui-demo` to see all components in action with interactive examples.
+
 ## Example: Complete Page Update
 
-See `/pages/produkte/index.vue` for a complete example of a page using all new UX components.
+See `/pages/produkte/index.vue` for a complete example of a page using all UX components.

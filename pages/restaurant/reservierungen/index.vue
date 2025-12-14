@@ -2,15 +2,15 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $t('restaurant.reservations.title') }}</h1>
-        <p class="text-gray-600 mt-1">{{ $t('restaurant.reservations.subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-gray-800">{{ t('restaurant.reservations.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('restaurant.reservations.subtitle') }}</p>
       </div>
       <NuxtLink
         to="/restaurant/reservierungen/create"
         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2"
       >
         <span class="i-mdi-calendar-plus text-xl"></span>
-        {{ $t('restaurant.reservations.newReservation') }}
+        {{ t('restaurant.reservations.newReservation') }}
       </NuxtLink>
     </div>
 
@@ -19,19 +19,19 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.search') }}
+            {{ t('common.search') }}
           </label>
           <input
             v-model="searchQuery"
             type="text"
-            :placeholder="$t('restaurant.reservations.searchPlaceholder')"
+            :placeholder="t('restaurant.reservations.searchPlaceholder')"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @input="debounceSearch"
           />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.date') }}
+            {{ t('common.date') }}
           </label>
           <input
             v-model="filterDatum"
@@ -42,19 +42,19 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.status') }}
+            {{ t('common.status') }}
           </label>
           <select
             v-model="filterStatus"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadReservations"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="Bestaetigt">{{ $t('restaurant.reservations.status.confirmed') }}</option>
-            <option value="Eingecheckt">{{ $t('restaurant.reservations.status.checkedIn') }}</option>
-            <option value="Abgeschlossen">{{ $t('restaurant.reservations.status.completed') }}</option>
-            <option value="Storniert">{{ $t('restaurant.reservations.status.cancelled') }}</option>
-            <option value="Nicht_Erschienen">{{ $t('restaurant.reservations.status.noShow') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="Bestaetigt">{{ t('restaurant.reservations.status.confirmed') }}</option>
+            <option value="Eingecheckt">{{ t('restaurant.reservations.status.checkedIn') }}</option>
+            <option value="Abgeschlossen">{{ t('restaurant.reservations.status.completed') }}</option>
+            <option value="Storniert">{{ t('restaurant.reservations.status.cancelled') }}</option>
+            <option value="Nicht_Erschienen">{{ t('restaurant.reservations.status.noShow') }}</option>
           </select>
         </div>
       </div>
@@ -71,22 +71,22 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('restaurant.reservations.guestName') }}
+              {{ t('restaurant.reservations.guestName') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('restaurant.reservations.table') }}
+              {{ t('restaurant.reservations.table') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('restaurant.reservations.dateTime') }}
+              {{ t('restaurant.reservations.dateTime') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('restaurant.reservations.guests') }}
+              {{ t('restaurant.reservations.guests') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('common.status') }}
+              {{ t('common.status') }}
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('common.actions') }}
+              {{ t('common.actions') }}
             </th>
           </tr>
         </thead>
@@ -109,7 +109,7 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900">{{ formatDateTime(reservation.Reservierungsdatum) }}</div>
-              <div class="text-sm text-gray-500">{{ reservation.Dauer }} {{ $t('restaurant.reservations.minutes') }}</div>
+              <div class="text-sm text-gray-500">{{ reservation.Dauer }} {{ t('restaurant.reservations.minutes') }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {{ reservation.PersonenAnzahl }}
@@ -127,7 +127,7 @@
                 @click.stop="deleteReservation(reservation.ReservierungsID)"
                 class="text-red-600 hover:text-red-900 ml-3"
               >
-                {{ $t('common.delete') }}
+                {{ t('common.delete') }}
               </button>
             </td>
           </tr>
@@ -137,7 +137,7 @@
       <!-- Empty State -->
       <div v-if="reservations.length === 0" class="text-center py-12">
         <span class="i-mdi-calendar-blank text-6xl text-gray-400 mb-4"></span>
-        <p class="text-gray-500 text-lg">{{ $t('restaurant.reservations.noReservations') }}</p>
+        <p class="text-gray-500 text-lg">{{ t('restaurant.reservations.noReservations') }}</p>
       </div>
     </div>
 
@@ -148,14 +148,14 @@
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.first') }}
+        {{ t('pagination.first') }}
       </button>
       <button
         @click="goToPage(offset - limit)"
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.previous') }}
+        {{ t('pagination.previous') }}
       </button>
       <span class="px-3 py-1">
         {{ Math.floor(offset / limit) + 1 }} / {{ Math.ceil(total / limit) }}
@@ -165,21 +165,21 @@
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.next') }}
+        {{ t('pagination.next') }}
       </button>
       <button
         @click="goToPage(Math.floor(total / limit) * limit)"
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.last') }}
+        {{ t('pagination.last') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-const { $t } = useNuxtApp()
+const { t } = useI18n()
 const loading = ref(true)
 const reservations = ref([])
 const total = ref(0)
@@ -226,13 +226,13 @@ const goToPage = (newOffset) => {
 }
 
 const deleteReservation = async (id) => {
-  if (!confirm($t('restaurant.reservations.confirmDelete'))) return
+  if (!confirm(t('restaurant.reservations.confirmDelete'))) return
 
   try {
     await $fetch(`/api/restaurant/reservierungen?id=${id}`, { method: 'DELETE' })
     await loadReservations()
   } catch (error) {
-    alert(error.data?.message || $t('common.error'))
+    alert(error.data?.message || t('common.error'))
   }
 }
 
@@ -260,11 +260,11 @@ const getStatusClass = (status) => {
 
 const getStatusText = (status) => {
   const texts = {
-    Bestaetigt: $t('restaurant.reservations.status.confirmed'),
-    Eingecheckt: $t('restaurant.reservations.status.checkedIn'),
-    Abgeschlossen: $t('restaurant.reservations.status.completed'),
-    Storniert: $t('restaurant.reservations.status.cancelled'),
-    Nicht_Erschienen: $t('restaurant.reservations.status.noShow')
+    Bestaetigt: t('restaurant.reservations.status.confirmed'),
+    Eingecheckt: t('restaurant.reservations.status.checkedIn'),
+    Abgeschlossen: t('restaurant.reservations.status.completed'),
+    Storniert: t('restaurant.reservations.status.cancelled'),
+    Nicht_Erschienen: t('restaurant.reservations.status.noShow')
   }
   return texts[status] || status
 }

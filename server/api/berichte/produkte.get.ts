@@ -8,26 +8,12 @@ export default defineEventHandler(async (event) => {
   const endDate = query.endDate as string | undefined
 
   try {
-    // Build date filter
-    const dateFilter: any = {}
-    if (startDate && endDate) {
-      dateFilter.Rechnungsdatum = {
-        gte: new Date(startDate),
-        lte: new Date(endDate)
-      }
-    }
-
     // Get all products with sales data
     const produkte = await prisma.produkte.findMany({
       include: {
         Rechnungspositionen: {
           include: {
-            Rechnungen: {
-              where: {
-                ...dateFilter,
-                StorniertAm: null
-              }
-            }
+            Rechnungen: true
           }
         },
         Bestand: true,
@@ -53,9 +39,19 @@ export default defineEventHandler(async (event) => {
       }
     })
 
+    // Build date filter bounds
+    const startDateObj = startDate ? new Date(startDate) : null
+    const endDateObj = endDate ? new Date(endDate) : null
+
     // Calculate product metrics
     const productMetrics = produkte.map(p => {
-      const salesPositions = p.Rechnungspositionen.filter(rp => rp.Rechnungen && !rp.Rechnungen.StorniertAm)
+      const salesPositions = p.Rechnungspositionen.filter(rp => {
+        if (!rp.Rechnungen || rp.Rechnungen.StorniertAm) return false
+        const invoiceDate = new Date(rp.Rechnungen.Rechnungsdatum)
+        if (startDateObj && invoiceDate < startDateObj) return false
+        if (endDateObj && invoiceDate > endDateObj) return false
+        return true
+      })
       const totalRevenue = salesPositions.reduce((sum, rp) =>
         sum + Number(rp.GesamtpreisNettoPosition) + Number(rp.MwSt_Betrag), 0
       )
@@ -154,14 +150,17 @@ export default defineEventHandler(async (event) => {
     const salesByMonth: any = {}
     produkte.forEach(p => {
       p.Rechnungspositionen.forEach(rp => {
-        if (rp.Rechnungen && !rp.Rechnungen.StorniertAm) {
-          const month = new Date(rp.Rechnungen.Rechnungsdatum).toISOString().substring(0, 7)
-          if (!salesByMonth[month]) {
-            salesByMonth[month] = { month, revenue: 0, quantity: 0 }
-          }
-          salesByMonth[month].revenue += Number(rp.GesamtpreisNettoPosition) + Number(rp.MwSt_Betrag)
-          salesByMonth[month].quantity += Number(rp.Menge)
+        if (!rp.Rechnungen || rp.Rechnungen.StorniertAm) return
+        const invoiceDate = new Date(rp.Rechnungen.Rechnungsdatum)
+        if (startDateObj && invoiceDate < startDateObj) return
+        if (endDateObj && invoiceDate > endDateObj) return
+
+        const month = invoiceDate.toISOString().substring(0, 7)
+        if (!salesByMonth[month]) {
+          salesByMonth[month] = { month, revenue: 0, quantity: 0 }
         }
+        salesByMonth[month].revenue += Number(rp.GesamtpreisNettoPosition) + Number(rp.MwSt_Betrag)
+        salesByMonth[month].quantity += Number(rp.Menge)
       })
     })
 

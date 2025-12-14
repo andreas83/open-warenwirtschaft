@@ -23,6 +23,12 @@ yarn preview
 
 # Seed database with test data
 yarn seed
+
+# Run tests
+yarn test              # Run tests in watch mode
+yarn test:run          # Run tests once
+yarn test:ui           # Run tests with UI interface
+yarn test:coverage     # Run tests with coverage report
 ```
 
 ## Database Management
@@ -80,9 +86,17 @@ DATABASE_URL="mysql://user:password@localhost:3306/database_name"
 **`/lib`**: Shared utilities
 - `prisma.ts`: Singleton Prisma client instance
 
-**`/i18n`**: Internationalization files
+**`/composables`**: Vue composables for shared state
+- `useActiveProject.ts`: Manages active project selection and dynamic menu building
+- `useToast.ts`: Toast notification system
+
+**`/layouts`**: Page layouts
+- `default.vue`: Main application layout with sidebar navigation
+- `pos.vue`: Point-of-sale focused layout
+- `login.vue`: Authentication page layout
+
+**`/i18n/locales`**: Internationalization files
 - `de.json`, `en.json`: Translation files
-- `index.js`: i18n configuration
 
 **`/prisma`**: Database schema and migrations
 - `schema.prisma`: Complete database schema
@@ -119,6 +133,17 @@ The database has a **modular architecture** with core and extension modules:
 **Cash Register Module** (`Kassen`, `Kassenbuchungen`):
 - Multiple cash registers per location
 - Cash transactions with invoice linking
+- POS interface for retail operations
+
+**Hotel Module** (`Zimmer`, `Zimmerkategorien`, `HotelBuchungen`, `HotelGaeste`, `HotelZusatzleistungen`):
+- Room management with categories
+- Guest bookings and check-in/check-out
+- Additional services tracking
+
+**Shop Module** (`ShopProdukte`, `ShopKategorien`, `ShopBestellungen`, `ShopWarenkorb`, `ShopBewertungen`):
+- E-commerce product catalog
+- Shopping cart and order management
+- Customer reviews
 
 **Module System** (`Projekt`, `AudienceTemplate`, `ModuleDefinition`, `ModuleKonfiguration`, `ProjektModule`):
 - Dynamic module activation per project
@@ -145,7 +170,7 @@ The database has a **modular architecture** with core and extension modules:
 **Available locales**: `de`, `en`
 **Strategy**: `no_prefix` (no locale prefix in URLs)
 
-Translation keys are referenced in components using `$t('key.path')`. When adding new features, update both `i18n/de.json` and `i18n/en.json`.
+Translation keys are referenced in components using `$t('key.path')`. When adding new features, update both `i18n/locales/de.json` and `i18n/locales/en.json`.
 
 ## Authentication
 
@@ -156,6 +181,15 @@ Uses `nuxt-auth-utils` for authentication. User model is `Benutzer` with role-ba
 The project uses UnoCSS with Wind preset (Tailwind-compatible). Utility classes are available throughout components.
 
 **Icons**: Use Iconify icons via UnoCSS preset-icons, e.g., `<div class="i-mdi-account" />`
+
+**Pre-defined Shortcuts** (from `nuxt.config.ts`):
+- Buttons: `btn-primary`, `btn-secondary`, `btn-success`, `btn-danger`, `btn-warning`, `btn-ghost`
+- Sizes: `btn-xs`, `btn-sm`, `btn-md`, `btn-lg`, `btn-xl`
+- Cards: `card`, `card-header`, `card-body`, `card-footer`
+- Form: `input`
+- Badges: `badge-primary`, `badge-success`, `badge-warning`, `badge-danger`, `badge-info`
+
+**Custom Colors**: `primary`, `secondary`, `success`, `warning`, `danger`, `info` (each with shades 50-950)
 
 ## Common Development Patterns
 
@@ -183,6 +217,23 @@ export default defineEventHandler(async (event) => {
 - Create pages: Use form component with empty initial data
 
 **Form Handling**: Forms often use refs for form data and methods for validation/submission.
+
+## Testing
+
+**Framework**: Vitest with happy-dom/jsdom environment
+
+**Test Structure**:
+- `/tests/unit/api/`: API endpoint tests
+- `/tests/unit/components/`: Vue component tests
+- `/tests/integration/`: Integration tests (e.g., invoice workflow)
+- `/tests/helpers/`: Test factories and utilities
+- `/tests/mocks/prisma.mock.ts`: Prisma client mock
+
+**Running Single Tests**:
+```bash
+yarn test tests/unit/api/produkte.test.ts     # Run specific test file
+yarn test -t "should create product"          # Run tests matching name
+```
 
 ## Important Notes
 

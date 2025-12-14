@@ -39,7 +39,7 @@
 
       <!-- Customer Analytics Card -->
       <NuxtLink to="/berichte/kunden" class="group">
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-4">
             <div class="bg-white bg-opacity-20 rounded-lg p-3">
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@
             </div>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">{{ $t('berichte.kunden.title') }}</h3>
-          <p class="text-purple-100 text-sm">{{ $t('berichte.kunden.description') }}</p>
+          <p class="text-indigo-100 text-sm">{{ $t('berichte.kunden.description') }}</p>
         </div>
       </NuxtLink>
 
@@ -93,13 +93,13 @@
         </div>
 
         <!-- Total Customers -->
-        <div class="bg-purple-50 rounded-lg p-5 border-l-4 border-purple-500">
+        <div class="bg-indigo-50 rounded-lg p-5 border-l-4 border-indigo-500">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-purple-600 font-semibold mb-1">{{ $t('berichte.totalCustomers') }}</p>
+              <p class="text-sm text-indigo-600 font-semibold mb-1">{{ $t('berichte.totalCustomers') }}</p>
               <p class="text-2xl font-bold text-gray-800">{{ stats.totalCustomers }}</p>
             </div>
-            <div class="bg-purple-500 rounded-full p-3">
+            <div class="bg-indigo-500 rounded-full p-3">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
               </svg>

@@ -63,7 +63,7 @@
         </div>
         <div class="bg-white rounded-lg shadow-md p-5">
           <p class="text-sm text-gray-600 mb-1">{{ $t('berichte.verkauf.totalInvoices') }}</p>
-          <p class="text-2xl font-bold text-purple-600">{{ data.kpis.totalInvoices }}</p>
+          <p class="text-2xl font-bold text-indigo-600">{{ data.kpis.totalInvoices }}</p>
         </div>
         <div class="bg-white rounded-lg shadow-md p-5">
           <p class="text-sm text-gray-600 mb-1">{{ $t('berichte.verkauf.averageInvoice') }}</p>

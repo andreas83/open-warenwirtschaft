@@ -58,7 +58,7 @@
         </div>
         <div class="bg-white rounded-lg shadow-md p-5">
           <p class="text-sm text-gray-600 mb-1">{{ $t('berichte.produkte.stockValue') }}</p>
-          <p class="text-2xl font-bold text-purple-600">{{ formatCurrency(data.kpis.totalStockValue) }}</p>
+          <p class="text-2xl font-bold text-indigo-600">{{ formatCurrency(data.kpis.totalStockValue) }}</p>
         </div>
         <div class="bg-white rounded-lg shadow-md p-5">
           <p class="text-sm text-gray-600 mb-1">{{ $t('berichte.produkte.avgPrice') }}</p>

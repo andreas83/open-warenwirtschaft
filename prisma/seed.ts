@@ -480,6 +480,26 @@ async function main() {
       { ModulName: 'kreditmanagement', DisplayName: 'Kreditmanagement', Beschreibung: 'Kreditlimits und Mahnwesen', Icon: 'i-heroicons-exclamation-triangle', Kategorie: 'Finance', Route: '/kreditmanagement', SortOrder: 22, IstSystem: false },
       { ModulName: 'lieferungen', DisplayName: 'Lieferungen & Logistik', Beschreibung: 'Lieferplanung und Tourenmanagement', Icon: 'i-heroicons-truck', Kategorie: 'Procurement', Route: '/lieferungen', SortOrder: 23, IstSystem: false },
       { ModulName: 'angebote', DisplayName: 'Angebote', Beschreibung: 'Angebotsverwaltung und Quote-to-Order', Icon: 'i-heroicons-document-duplicate', Kategorie: 'Sales', Route: '/angebote', SortOrder: 24, IstSystem: false },
+
+      // Restaurant-specific modules
+      { ModulName: 'restaurant', DisplayName: 'Restaurant', Beschreibung: 'Restaurant-Modul mit Tischen und Reservierungen', Icon: 'i-mdi-silverware-fork-knife', Kategorie: 'Restaurant', Route: '/restaurant', SortOrder: 25, IstSystem: false },
+      { ModulName: 'restaurant_tische', DisplayName: 'Tische', Beschreibung: 'Tischverwaltung und Tischbereiche', Icon: 'i-mdi-table-furniture', Kategorie: 'Restaurant', Route: '/restaurant/tische', SortOrder: 26, IstSystem: false },
+      { ModulName: 'restaurant_reservierungen', DisplayName: 'Reservierungen', Beschreibung: 'Tischreservierungen verwalten', Icon: 'i-mdi-calendar-check', Kategorie: 'Restaurant', Route: '/restaurant/reservierungen', SortOrder: 27, IstSystem: false },
+      { ModulName: 'restaurant_bestellungen', DisplayName: 'Restaurant Bestellungen', Beschreibung: 'Speisebestellungen am Tisch', Icon: 'i-mdi-clipboard-list', Kategorie: 'Restaurant', Route: '/restaurant/bestellungen', SortOrder: 28, IstSystem: false },
+
+      // Hotel-specific modules
+      { ModulName: 'hotel', DisplayName: 'Hotel', Beschreibung: 'Hotelverwaltung mit Zimmern und Buchungen', Icon: 'i-mdi-hotel', Kategorie: 'Hotel', Route: '/hotel', SortOrder: 30, IstSystem: false },
+      { ModulName: 'hotel_zimmer', DisplayName: 'Zimmer', Beschreibung: 'Zimmerverwaltung', Icon: 'i-mdi-bed', Kategorie: 'Hotel', Route: '/hotel/zimmer', SortOrder: 31, IstSystem: false },
+      { ModulName: 'hotel_zimmerkategorien', DisplayName: 'Zimmerkategorien', Beschreibung: 'Zimmertypen und Kategorien', Icon: 'i-mdi-tag-multiple', Kategorie: 'Hotel', Route: '/hotel/zimmerkategorien', SortOrder: 32, IstSystem: false },
+      { ModulName: 'hotel_buchungen', DisplayName: 'Buchungen', Beschreibung: 'Hotelbuchungen und Reservierungen', Icon: 'i-mdi-calendar-clock', Kategorie: 'Hotel', Route: '/hotel/buchungen', SortOrder: 33, IstSystem: false },
+
+      // Online Shop modules
+      { ModulName: 'shop', DisplayName: 'Online Shop', Beschreibung: 'E-Commerce und Online-Verkauf', Icon: 'i-mdi-shopping', Kategorie: 'Shop', Route: '/shop', SortOrder: 35, IstSystem: false },
+      { ModulName: 'shop_bestellungen', DisplayName: 'Shop Bestellungen', Beschreibung: 'Online-Bestellungen verwalten', Icon: 'i-mdi-cart', Kategorie: 'Shop', Route: '/shop/bestellungen', SortOrder: 36, IstSystem: false },
+      { ModulName: 'shop_kategorien', DisplayName: 'Shop Kategorien', Beschreibung: 'Produktkategorien für den Shop', Icon: 'i-mdi-folder-outline', Kategorie: 'Shop', Route: '/shop/kategorien', SortOrder: 37, IstSystem: false },
+
+      // Reports module
+      { ModulName: 'berichte', DisplayName: 'Berichte', Beschreibung: 'Berichte und Statistiken', Icon: 'i-mdi-chart-bar', Kategorie: 'Reports', Route: '/berichte', SortOrder: 40, IstSystem: false },
     ],
     skipDuplicates: true,
   });
@@ -627,7 +647,13 @@ async function main() {
       { TemplateID: restaurant.TemplateID, ModulID: getModuleId('bestellungen'), Prioritaet: 'Versteckt', IstAktiviert: false },
       { TemplateID: restaurant.TemplateID, ModulID: getModuleId('lagerbewegungen'), Prioritaet: 'Optional', IstAktiviert: true },
       { TemplateID: restaurant.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Versteckt', IstAktiviert: false },
-      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: false }
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: false },
+      // Restaurant-specific modules
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('restaurant'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Hauptmodul Restaurant' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('restaurant_tische'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Tischverwaltung' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('restaurant_reservierungen'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Reservierungssystem' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('restaurant_bestellungen'), Prioritaet: 'Wichtig', IstAktiviert: true, Beschreibung: 'Tischbestellungen' },
+      { TemplateID: restaurant.TemplateID, ModulID: getModuleId('berichte'), Prioritaet: 'Wichtig', IstAktiviert: true }
     );
   }
 
@@ -652,7 +678,13 @@ async function main() {
       { TemplateID: hotel.TemplateID, ModulID: getModuleId('retouren'), Prioritaet: 'Versteckt', IstAktiviert: false },
       { TemplateID: hotel.TemplateID, ModulID: getModuleId('rabatte'), Prioritaet: 'Optional', IstAktiviert: true },
       { TemplateID: hotel.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: false },
-      { TemplateID: hotel.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Optional', IstAktiviert: false }
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Optional', IstAktiviert: false },
+      // Hotel-specific modules
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('hotel'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Hauptmodul Hotel' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('hotel_zimmer'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Zimmerverwaltung' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('hotel_zimmerkategorien'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Zimmertypen' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('hotel_buchungen'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Buchungssystem' },
+      { TemplateID: hotel.TemplateID, ModulID: getModuleId('berichte'), Prioritaet: 'Wichtig', IstAktiviert: true }
     );
   }
 
@@ -702,7 +734,12 @@ async function main() {
       { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('umsatzsteuersaetze'), Prioritaet: 'Erforderlich', IstAktiviert: true },
       { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('einheiten'), Prioritaet: 'Wichtig', IstAktiviert: true },
       { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('gutschriften'), Prioritaet: 'Optional', IstAktiviert: true },
-      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Optional', IstAktiviert: false }
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('kassen'), Prioritaet: 'Optional', IstAktiviert: false },
+      // Shop-specific modules
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('shop'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Hauptmodul Shop' },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('shop_bestellungen'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Online-Bestellungen' },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('shop_kategorien'), Prioritaet: 'Erforderlich', IstAktiviert: true, Beschreibung: 'Shop-Kategorien' },
+      { TemplateID: onlineShop.TemplateID, ModulID: getModuleId('berichte'), Prioritaet: 'Wichtig', IstAktiviert: true }
     );
   }
 
@@ -736,6 +773,720 @@ async function main() {
     skipDuplicates: true,
   });
   console.log(`Created ${moduleConfigs.count} ModuleKonfigurationen`);
+
+  // ========================================
+  // RABATTE (DISCOUNTS) SEED
+  // ========================================
+
+  const rabatte = await prisma.rabatte.createMany({
+    data: [
+      {
+        Name: '10% Neukunden',
+        Beschreibung: 'Rabatt für Neukunden',
+        RabattTyp: 'Prozentual',
+        Anwendungsebene: 'Kopf',
+        Wert: 10.00,
+        Mindestbestellwert: 50.00,
+        GueltigAb: new Date(),
+        Status: 'Aktiv'
+      },
+      {
+        Name: '5€ Newsletter',
+        Beschreibung: 'Rabatt für Newsletter-Anmeldung',
+        RabattTyp: 'Festbetrag',
+        Anwendungsebene: 'Kopf',
+        Wert: 5.00,
+        Mindestbestellwert: 30.00,
+        Gutscheincode: 'NEWSLETTER5',
+        GueltigAb: new Date(),
+        Status: 'Aktiv'
+      },
+      {
+        Name: '15% VIP',
+        Beschreibung: 'Exklusiver VIP-Rabatt',
+        RabattTyp: 'Prozentual',
+        Anwendungsebene: 'Kunde',
+        Wert: 15.00,
+        GueltigAb: new Date(),
+        Status: 'Aktiv'
+      },
+      {
+        Name: 'Mengenrabatt 10+',
+        Beschreibung: 'Rabatt ab 10 Stück',
+        RabattTyp: 'Mengenrabatt',
+        Anwendungsebene: 'Zeile',
+        Wert: 5.00,
+        GueltigAb: new Date(),
+        Status: 'Aktiv'
+      }
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${rabatte.count} Rabatte`);
+
+  // ========================================
+  // HOTEL MODULE SEED
+  // ========================================
+
+  // Seed Zimmerkategorien (Room Categories)
+  const zimmerkategorien = await prisma.zimmerkategorien.createMany({
+    data: [
+      {
+        Name: 'Einzelzimmer Standard',
+        Beschreibung: 'Gemütliches Einzelzimmer mit allen Annehmlichkeiten',
+        Grundpreis: 79.00,
+        MaxPersonen: 1,
+        Ausstattung: JSON.stringify(['WLAN', 'TV', 'Minibar', 'Dusche']),
+        Groesse: 18.00,
+        SortierReihenfolge: 1,
+        IstAktiv: true
+      },
+      {
+        Name: 'Doppelzimmer Standard',
+        Beschreibung: 'Komfortables Doppelzimmer für 2 Personen',
+        Grundpreis: 119.00,
+        MaxPersonen: 2,
+        Ausstattung: JSON.stringify(['WLAN', 'TV', 'Minibar', 'Badewanne', 'Klimaanlage']),
+        Groesse: 25.00,
+        SortierReihenfolge: 2,
+        IstAktiv: true
+      },
+      {
+        Name: 'Doppelzimmer Superior',
+        Beschreibung: 'Geräumiges Doppelzimmer mit Balkon',
+        Grundpreis: 149.00,
+        MaxPersonen: 2,
+        Ausstattung: JSON.stringify(['WLAN', 'TV', 'Minibar', 'Badewanne', 'Klimaanlage', 'Balkon', 'Nespresso-Maschine']),
+        Groesse: 32.00,
+        SortierReihenfolge: 3,
+        IstAktiv: true
+      },
+      {
+        Name: 'Junior Suite',
+        Beschreibung: 'Elegante Suite mit separatem Wohnbereich',
+        Grundpreis: 199.00,
+        MaxPersonen: 3,
+        Ausstattung: JSON.stringify(['WLAN', 'Smart-TV', 'Minibar', 'Whirlpool', 'Klimaanlage', 'Balkon', 'Nespresso-Maschine', 'Bademantel']),
+        Groesse: 45.00,
+        SortierReihenfolge: 4,
+        IstAktiv: true
+      },
+      {
+        Name: 'Familienzimmer',
+        Beschreibung: 'Großes Zimmer für Familien mit bis zu 4 Personen',
+        Grundpreis: 179.00,
+        MaxPersonen: 4,
+        Ausstattung: JSON.stringify(['WLAN', 'TV', 'Minibar', 'Dusche', 'Klimaanlage', 'Kinderbett möglich']),
+        Groesse: 38.00,
+        SortierReihenfolge: 5,
+        IstAktiv: true
+      }
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${zimmerkategorien.count} Zimmerkategorien`);
+
+  // Fetch Zimmerkategorien for reference
+  const einzelzimmer = await prisma.zimmerkategorien.findFirst({ where: { Name: 'Einzelzimmer Standard' } });
+  const doppelzimmerStd = await prisma.zimmerkategorien.findFirst({ where: { Name: 'Doppelzimmer Standard' } });
+  const doppelzimmerSup = await prisma.zimmerkategorien.findFirst({ where: { Name: 'Doppelzimmer Superior' } });
+  const juniorSuite = await prisma.zimmerkategorien.findFirst({ where: { Name: 'Junior Suite' } });
+  const familienzimmer = await prisma.zimmerkategorien.findFirst({ where: { Name: 'Familienzimmer' } });
+
+  if (einzelzimmer && doppelzimmerStd && doppelzimmerSup && juniorSuite && familienzimmer) {
+    // Seed Zimmer (Rooms)
+    const zimmer = await prisma.zimmer.createMany({
+      data: [
+        { Zimmernummer: '101', ZimmerkategorieID: einzelzimmer.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 1, PreisProNacht: 79.00, MaxPersonen: 1, Status: 'Verfuegbar' },
+        { Zimmernummer: '102', ZimmerkategorieID: einzelzimmer.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 1, PreisProNacht: 79.00, MaxPersonen: 1, Status: 'Verfuegbar' },
+        { Zimmernummer: '103', ZimmerkategorieID: doppelzimmerStd.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 1, PreisProNacht: 119.00, MaxPersonen: 2, Status: 'Verfuegbar' },
+        { Zimmernummer: '104', ZimmerkategorieID: doppelzimmerStd.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 1, PreisProNacht: 119.00, MaxPersonen: 2, Status: 'Verfuegbar' },
+        { Zimmernummer: '201', ZimmerkategorieID: doppelzimmerSup.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 2, PreisProNacht: 149.00, MaxPersonen: 2, Status: 'Verfuegbar' },
+        { Zimmernummer: '202', ZimmerkategorieID: doppelzimmerSup.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 2, PreisProNacht: 149.00, MaxPersonen: 2, Status: 'Verfuegbar' },
+        { Zimmernummer: '203', ZimmerkategorieID: familienzimmer.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 2, PreisProNacht: 179.00, MaxPersonen: 4, Status: 'Verfuegbar' },
+        { Zimmernummer: '301', ZimmerkategorieID: juniorSuite.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 3, PreisProNacht: 199.00, MaxPersonen: 3, Status: 'Verfuegbar' },
+        { Zimmernummer: '302', ZimmerkategorieID: juniorSuite.ZimmerkategorieID, StandortID: wien.StandortID, Etage: 3, PreisProNacht: 219.00, MaxPersonen: 3, Status: 'Verfuegbar', IstBarrierfrei: true },
+      ],
+      skipDuplicates: true,
+    });
+    console.log(`Created ${zimmer.count} Zimmer`);
+
+    // Fetch rooms for bookings
+    const room101 = await prisma.zimmer.findFirst({ where: { Zimmernummer: '101' } });
+    const room201 = await prisma.zimmer.findFirst({ where: { Zimmernummer: '201' } });
+    const room301 = await prisma.zimmer.findFirst({ where: { Zimmernummer: '301' } });
+
+    if (room101 && room201 && room301) {
+      // Seed Hotel Buchungen (Bookings)
+      const checkIn1 = new Date();
+      checkIn1.setDate(checkIn1.getDate() + 7);
+      const checkOut1 = new Date(checkIn1);
+      checkOut1.setDate(checkOut1.getDate() + 3);
+
+      const checkIn2 = new Date();
+      checkIn2.setDate(checkIn2.getDate() + 14);
+      const checkOut2 = new Date(checkIn2);
+      checkOut2.setDate(checkOut2.getDate() + 5);
+
+      const checkIn3 = new Date();
+      checkIn3.setDate(checkIn3.getDate() + 1);
+      const checkOut3 = new Date(checkIn3);
+      checkOut3.setDate(checkOut3.getDate() + 2);
+
+      const booking1 = await prisma.hotelBuchungen.create({
+        data: {
+          Buchungsnummer: 'HB-000001',
+          KundenID: kunde1.KundenID,
+          Gastname: 'Hans Muster',
+          Email: 'hans.muster@example.com',
+          Telefon: '+43123456789',
+          CheckInDatum: checkIn1,
+          CheckOutDatum: checkOut1,
+          AnzahlErwachsene: 2,
+          AnzahlKinder: 0,
+          Status: 'Bestaetigt',
+          GesamtpreisNetto: 417.76,
+          GesamtpreisBrutto: 447.00,
+          MwStGesamt: 29.24,
+          Zahlungsstatus: 'Ausstehend',
+          ErfasstVonBenutzerID: adminUser.BenutzerID,
+          HotelBuchungszimmer: {
+            create: {
+              ZimmerID: room201.ZimmerID,
+              CheckInDatum: checkIn1,
+              CheckOutDatum: checkOut1,
+              PreisProNacht: 149.00,
+              AnzahlNaechte: 3,
+              GesamtpreisNetto: 417.76,
+              MwStSatz: 7.00,
+              MwStBetrag: 29.24
+            }
+          },
+          HotelGaeste: {
+            create: [
+              {
+                Vorname: 'Hans',
+                Nachname: 'Muster',
+                Geburtsdatum: new Date('1985-03-15'),
+                Nationalitaet: 'Österreich',
+                AusweisnummerTyp: 'Personalausweis',
+                Ausweisnummer: 'PA12345678',
+                Email: 'hans.muster@example.com',
+                Telefon: '+43123456789',
+                Adresse: 'Musterstraße 1',
+                Stadt: 'Wien',
+                PLZ: '1010',
+                Land: 'Österreich',
+                IstHauptgast: true
+              },
+              {
+                Vorname: 'Maria',
+                Nachname: 'Muster',
+                Geburtsdatum: new Date('1987-06-22'),
+                Nationalitaet: 'Österreich',
+                AusweisnummerTyp: 'Personalausweis',
+                Ausweisnummer: 'PA87654321',
+                IstHauptgast: false
+              }
+            ]
+          }
+        }
+      });
+
+      const booking2 = await prisma.hotelBuchungen.create({
+        data: {
+          Buchungsnummer: 'HB-000002',
+          KundenID: kunde2.KundenID,
+          Gastname: 'Großhandel GmbH - Herr Schmidt',
+          Email: 'info@grosshandel.at',
+          Telefon: '+43987654321',
+          CheckInDatum: checkIn2,
+          CheckOutDatum: checkOut2,
+          AnzahlErwachsene: 1,
+          AnzahlKinder: 0,
+          Status: 'Bestaetigt',
+          GesamtpreisNetto: 929.44,
+          GesamtpreisBrutto: 995.00,
+          MwStGesamt: 65.56,
+          Zahlungsstatus: 'Angezahlt',
+          Anzahlung: 200.00,
+          ErfasstVonBenutzerID: adminUser.BenutzerID,
+          HotelBuchungszimmer: {
+            create: {
+              ZimmerID: room301.ZimmerID,
+              CheckInDatum: checkIn2,
+              CheckOutDatum: checkOut2,
+              PreisProNacht: 199.00,
+              AnzahlNaechte: 5,
+              GesamtpreisNetto: 929.44,
+              MwStSatz: 7.00,
+              MwStBetrag: 65.56
+            }
+          },
+          HotelGaeste: {
+            create: {
+              Vorname: 'Thomas',
+              Nachname: 'Schmidt',
+              Geburtsdatum: new Date('1978-11-05'),
+              Nationalitaet: 'Deutschland',
+              AusweisnummerTyp: 'Reisepass',
+              Ausweisnummer: 'C01X23456',
+              Email: 't.schmidt@grosshandel.at',
+              Telefon: '+4917612345678',
+              Adresse: 'Handelsstraße 10',
+              Stadt: 'Wien',
+              PLZ: '1020',
+              Land: 'Österreich',
+              IstHauptgast: true
+            }
+          }
+        }
+      });
+
+      const booking3 = await prisma.hotelBuchungen.create({
+        data: {
+          Buchungsnummer: 'HB-000003',
+          Gastname: 'Anna Berger',
+          Email: 'anna.berger@email.at',
+          Telefon: '+43664123456',
+          CheckInDatum: checkIn3,
+          CheckOutDatum: checkOut3,
+          AnzahlErwachsene: 1,
+          Status: 'Bestaetigt',
+          GesamtpreisNetto: 147.66,
+          GesamtpreisBrutto: 158.00,
+          MwStGesamt: 10.34,
+          Zahlungsstatus: 'Ausstehend',
+          ErfasstVonBenutzerID: adminUser.BenutzerID,
+          HotelBuchungszimmer: {
+            create: {
+              ZimmerID: room101.ZimmerID,
+              CheckInDatum: checkIn3,
+              CheckOutDatum: checkOut3,
+              PreisProNacht: 79.00,
+              AnzahlNaechte: 2,
+              GesamtpreisNetto: 147.66,
+              MwStSatz: 7.00,
+              MwStBetrag: 10.34
+            }
+          },
+          HotelGaeste: {
+            create: {
+              Vorname: 'Anna',
+              Nachname: 'Berger',
+              Geburtsdatum: new Date('1992-08-18'),
+              Nationalitaet: 'Österreich',
+              AusweisnummerTyp: 'Führerschein',
+              Ausweisnummer: 'FS98765432',
+              Email: 'anna.berger@email.at',
+              Telefon: '+43664123456',
+              IstHauptgast: true
+            }
+          }
+        }
+      });
+
+      console.log(`Created 3 Hotel Buchungen with guests`);
+    }
+  }
+
+  // ========================================
+  // RESTAURANT MODULE SEED
+  // ========================================
+
+  // Seed Tischbereiche (Table Areas)
+  const tischbereiche = await prisma.tischbereiche.createMany({
+    data: [
+      { Name: 'Innenbereich', Beschreibung: 'Gemütlicher Innenbereich', StandortID: wien.StandortID, Farbe: 'blue', SortOrder: 1, IstAktiv: true },
+      { Name: 'Terrasse', Beschreibung: 'Sonnige Außenterrasse', StandortID: wien.StandortID, Farbe: 'green', SortOrder: 2, IstAktiv: true },
+      { Name: 'VIP-Bereich', Beschreibung: 'Exklusiver Bereich für besondere Anlässe', StandortID: wien.StandortID, Farbe: 'purple', SortOrder: 3, IstAktiv: true },
+      { Name: 'Bar', Beschreibung: 'Barhocker an der Theke', StandortID: wien.StandortID, Farbe: 'orange', SortOrder: 4, IstAktiv: true }
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${tischbereiche.count} Tischbereiche`);
+
+  // Fetch areas for reference
+  const innenbereich = await prisma.tischbereiche.findFirst({ where: { Name: 'Innenbereich' } });
+  const terrasse = await prisma.tischbereiche.findFirst({ where: { Name: 'Terrasse' } });
+  const vipBereich = await prisma.tischbereiche.findFirst({ where: { Name: 'VIP-Bereich' } });
+  const barBereich = await prisma.tischbereiche.findFirst({ where: { Name: 'Bar' } });
+
+  if (innenbereich && terrasse && vipBereich && barBereich) {
+    // Seed RestaurantTische (Tables)
+    const tische = await prisma.restaurantTische.createMany({
+      data: [
+        // Innenbereich
+        { Tischnummer: '1', BereichID: innenbereich.BereichID, Kapazitaet: 4, Status: 'Verfuegbar', PositionX: 100, PositionY: 100, Form: 'rund' },
+        { Tischnummer: '2', BereichID: innenbereich.BereichID, Kapazitaet: 4, Status: 'Verfuegbar', PositionX: 200, PositionY: 100, Form: 'rund' },
+        { Tischnummer: '3', BereichID: innenbereich.BereichID, Kapazitaet: 6, Status: 'Verfuegbar', PositionX: 100, PositionY: 200, Form: 'rechteckig' },
+        { Tischnummer: '4', BereichID: innenbereich.BereichID, Kapazitaet: 6, Status: 'Verfuegbar', PositionX: 200, PositionY: 200, Form: 'rechteckig' },
+        { Tischnummer: '5', BereichID: innenbereich.BereichID, Kapazitaet: 2, Status: 'Verfuegbar', PositionX: 300, PositionY: 100, Form: 'rund' },
+        // Terrasse
+        { Tischnummer: 'T1', BereichID: terrasse.BereichID, Kapazitaet: 4, Status: 'Verfuegbar', PositionX: 100, PositionY: 100, Form: 'rund' },
+        { Tischnummer: 'T2', BereichID: terrasse.BereichID, Kapazitaet: 4, Status: 'Verfuegbar', PositionX: 200, PositionY: 100, Form: 'rund' },
+        { Tischnummer: 'T3', BereichID: terrasse.BereichID, Kapazitaet: 8, Status: 'Verfuegbar', PositionX: 150, PositionY: 200, Form: 'rechteckig', Beschreibung: 'Großer Gruppentisch' },
+        // VIP
+        { Tischnummer: 'VIP1', BereichID: vipBereich.BereichID, Kapazitaet: 8, Status: 'Verfuegbar', PositionX: 100, PositionY: 100, Form: 'oval', Beschreibung: 'Separée für besondere Anlässe' },
+        { Tischnummer: 'VIP2', BereichID: vipBereich.BereichID, Kapazitaet: 6, Status: 'Verfuegbar', PositionX: 200, PositionY: 100, Form: 'rund' },
+        // Bar
+        { Tischnummer: 'B1', BereichID: barBereich.BereichID, Kapazitaet: 2, Status: 'Verfuegbar', PositionX: 100, PositionY: 50, Form: 'rechteckig' },
+        { Tischnummer: 'B2', BereichID: barBereich.BereichID, Kapazitaet: 2, Status: 'Verfuegbar', PositionX: 150, PositionY: 50, Form: 'rechteckig' },
+        { Tischnummer: 'B3', BereichID: barBereich.BereichID, Kapazitaet: 2, Status: 'Verfuegbar', PositionX: 200, PositionY: 50, Form: 'rechteckig' }
+      ],
+      skipDuplicates: true,
+    });
+    console.log(`Created ${tische.count} Restaurant Tische`);
+
+    // Fetch tables for reservations
+    const tisch1 = await prisma.restaurantTische.findFirst({ where: { Tischnummer: '1' } });
+    const tischT1 = await prisma.restaurantTische.findFirst({ where: { Tischnummer: 'T1' } });
+    const tischVIP1 = await prisma.restaurantTische.findFirst({ where: { Tischnummer: 'VIP1' } });
+
+    if (tisch1 && tischT1 && tischVIP1) {
+      // Seed Reservierungen (Reservations)
+      const reservierungsDatum1 = new Date();
+      reservierungsDatum1.setDate(reservierungsDatum1.getDate() + 1);
+      reservierungsDatum1.setHours(19, 0, 0, 0);
+
+      const reservierungsDatum2 = new Date();
+      reservierungsDatum2.setDate(reservierungsDatum2.getDate() + 2);
+      reservierungsDatum2.setHours(12, 30, 0, 0);
+
+      const reservierungsDatum3 = new Date();
+      reservierungsDatum3.setDate(reservierungsDatum3.getDate() + 3);
+      reservierungsDatum3.setHours(20, 0, 0, 0);
+
+      const reservierungen = await prisma.reservierungen.createMany({
+        data: [
+          {
+            TischID: tisch1.TischID,
+            KundenID: kunde1.KundenID,
+            Gastname: 'Hans Muster',
+            Telefon: '+43123456789',
+            Email: 'hans.muster@example.com',
+            PersonenAnzahl: 4,
+            Reservierungsdatum: reservierungsDatum1,
+            Dauer: 120,
+            Status: 'Bestaetigt',
+            Notizen: 'Geburtstag - bitte Kerzen bereitstellen',
+            ErfasstVonBenutzerID: adminUser.BenutzerID
+          },
+          {
+            TischID: tischT1.TischID,
+            Gastname: 'Familie Huber',
+            Telefon: '+43664987654',
+            PersonenAnzahl: 4,
+            Reservierungsdatum: reservierungsDatum2,
+            Dauer: 90,
+            Status: 'Bestaetigt',
+            Notizen: 'Kinderhochstuhl benötigt',
+            ErfasstVonBenutzerID: adminUser.BenutzerID
+          },
+          {
+            TischID: tischVIP1.TischID,
+            KundenID: kunde2.KundenID,
+            Gastname: 'Großhandel GmbH',
+            Telefon: '+43987654321',
+            Email: 'info@grosshandel.at',
+            PersonenAnzahl: 8,
+            Reservierungsdatum: reservierungsDatum3,
+            Dauer: 180,
+            Status: 'Bestaetigt',
+            Notizen: 'Geschäftsessen - Menüvorbestellung erwünscht',
+            ErfasstVonBenutzerID: adminUser.BenutzerID
+          }
+        ],
+        skipDuplicates: true,
+      });
+      console.log(`Created ${reservierungen.count} Reservierungen`);
+    }
+  }
+
+  // ========================================
+  // KASSEN (POS) MODULE SEED
+  // ========================================
+
+  // Seed Kassen (Cash Registers)
+  const kassen = await prisma.kassen.createMany({
+    data: [
+      {
+        Kassenbezeichnung: 'Hauptkasse Wien',
+        StandortID: wien.StandortID,
+        Kassennummer: 'K-WIEN-01',
+        Anfangsbestand: 500.00,
+        AktuellerBestand: 1250.75,
+        Status: 'Aktiv'
+      },
+      {
+        Kassenbezeichnung: 'Nebenkasse Wien',
+        StandortID: wien.StandortID,
+        Kassennummer: 'K-WIEN-02',
+        Anfangsbestand: 300.00,
+        AktuellerBestand: 485.50,
+        Status: 'Aktiv'
+      },
+      {
+        Kassenbezeichnung: 'Kasse Graz',
+        StandortID: graz.StandortID,
+        Kassennummer: 'K-GRAZ-01',
+        Anfangsbestand: 400.00,
+        AktuellerBestand: 892.30,
+        Status: 'Aktiv'
+      }
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${kassen.count} Kassen`);
+
+  // Fetch Kassen for transactions
+  const kasseWien1 = await prisma.kassen.findFirst({ where: { Kassennummer: 'K-WIEN-01' } });
+  const kasseGraz = await prisma.kassen.findFirst({ where: { Kassennummer: 'K-GRAZ-01' } });
+
+  if (kasseWien1 && kasseGraz) {
+    // Seed Kassenbuchungen (Cash Register Transactions)
+    const kassenbuchungen = await prisma.kassenbuchungen.createMany({
+      data: [
+        {
+          KassenID: kasseWien1.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          Buchungstyp: 'Einlage',
+          Betrag: 500.00,
+          Zahlungsart: 'Bar',
+          Beschreibung: 'Anfangsbestand',
+          Belegnummer: 'KB-001'
+        },
+        {
+          KassenID: kasseWien1.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          RechnungsID: rechnung1.RechnungsID,
+          KundenID: kunde1.KundenID,
+          Buchungstyp: 'Einnahme',
+          Betrag: 49.50,
+          Zahlungsart: 'Bar',
+          Beschreibung: 'Rechnung R001 - Barzahlung',
+          Belegnummer: 'KB-002'
+        },
+        {
+          KassenID: kasseWien1.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          RechnungsID: rechnung3.RechnungsID,
+          KundenID: kunde1.KundenID,
+          Buchungstyp: 'Einnahme',
+          Betrag: 132.00,
+          Zahlungsart: 'EC_Karte',
+          Beschreibung: 'Rechnung R003 - EC-Kartenzahlung',
+          Belegnummer: 'KB-003'
+        },
+        {
+          KassenID: kasseWien1.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          Buchungstyp: 'Einnahme',
+          Betrag: 85.25,
+          Zahlungsart: 'Bar',
+          Beschreibung: 'Barverkauf - diverse Artikel',
+          Belegnummer: 'KB-004'
+        },
+        {
+          KassenID: kasseWien1.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          Buchungstyp: 'Ausgabe',
+          Betrag: -16.00,
+          Zahlungsart: 'Bar',
+          Beschreibung: 'Kleinausgabe - Büromaterial',
+          Belegnummer: 'KB-005'
+        },
+        {
+          KassenID: kasseGraz.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          Buchungstyp: 'Einlage',
+          Betrag: 400.00,
+          Zahlungsart: 'Bar',
+          Beschreibung: 'Anfangsbestand',
+          Belegnummer: 'KB-G001'
+        },
+        {
+          KassenID: kasseGraz.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          Buchungstyp: 'Einnahme',
+          Betrag: 245.80,
+          Zahlungsart: 'Kreditkarte',
+          Beschreibung: 'Verkauf diverse Artikel',
+          Belegnummer: 'KB-G002'
+        },
+        {
+          KassenID: kasseGraz.KassenID,
+          BenutzerID: adminUser.BenutzerID,
+          Buchungstyp: 'Einnahme',
+          Betrag: 246.50,
+          Zahlungsart: 'Bar',
+          Beschreibung: 'Tagesverkäufe',
+          Belegnummer: 'KB-G003'
+        }
+      ],
+      skipDuplicates: true,
+    });
+    console.log(`Created ${kassenbuchungen.count} Kassenbuchungen`);
+  }
+
+  // ========================================
+  // SHOP MODULE SEED
+  // ========================================
+
+  // Seed ShopKategorien (Shop Categories)
+  const shopKategorien = await prisma.shopKategorien.createMany({
+    data: [
+      {
+        Name: 'Lebensmittel',
+        Beschreibung: 'Frische Lebensmittel und Grundnahrungsmittel',
+        Slug: 'lebensmittel',
+        SortOrder: 1,
+        IstSichtbar: true,
+        MetaTitel: 'Lebensmittel online kaufen',
+        MetaBeschreibung: 'Frische Lebensmittel und Grundnahrungsmittel direkt zu Ihnen nach Hause.'
+      },
+      {
+        Name: 'Obst & Gemüse',
+        Beschreibung: 'Frisches Obst und Gemüse',
+        Slug: 'obst-gemuese',
+        SortOrder: 2,
+        IstSichtbar: true
+      },
+      {
+        Name: 'Milchprodukte',
+        Beschreibung: 'Milch, Käse, Joghurt und mehr',
+        Slug: 'milchprodukte',
+        SortOrder: 3,
+        IstSichtbar: true
+      },
+      {
+        Name: 'Getränke',
+        Beschreibung: 'Erfrischungsgetränke, Säfte und mehr',
+        Slug: 'getraenke',
+        SortOrder: 4,
+        IstSichtbar: true
+      },
+      {
+        Name: 'Elektronik',
+        Beschreibung: 'Computer, Laptops und Zubehör',
+        Slug: 'elektronik',
+        SortOrder: 5,
+        IstSichtbar: true
+      },
+      {
+        Name: 'Haushalt',
+        Beschreibung: 'Haushaltsprodukte und Reinigungsmittel',
+        Slug: 'haushalt',
+        SortOrder: 6,
+        IstSichtbar: true
+      }
+    ],
+    skipDuplicates: true,
+  });
+  console.log(`Created ${shopKategorien.count} ShopKategorien`);
+
+  // Fetch shop categories for products
+  const katLebensmittel = await prisma.shopKategorien.findFirst({ where: { Slug: 'lebensmittel' } });
+  const katObst = await prisma.shopKategorien.findFirst({ where: { Slug: 'obst-gemuese' } });
+  const katMilch = await prisma.shopKategorien.findFirst({ where: { Slug: 'milchprodukte' } });
+  const katElektronik = await prisma.shopKategorien.findFirst({ where: { Slug: 'elektronik' } });
+
+  if (katLebensmittel && katObst && katMilch && katElektronik) {
+    // Update parent categories
+    await prisma.shopKategorien.update({
+      where: { ShopKategorieID: katObst.ShopKategorieID },
+      data: { UebergeordneteKategorieID: katLebensmittel.ShopKategorieID }
+    });
+    await prisma.shopKategorien.update({
+      where: { ShopKategorieID: katMilch.ShopKategorieID },
+      data: { UebergeordneteKategorieID: katLebensmittel.ShopKategorieID }
+    });
+
+    // Seed ShopProdukte (Shop Products)
+    const shopProdukte = await prisma.shopProdukte.createMany({
+      data: [
+        {
+          ProduktID: apfel.ProduktID,
+          ShopKategorieID: katObst.ShopKategorieID,
+          Titel: 'Frischer roter Apfel',
+          Kurzbeschreibung: 'Knackig frische Äpfel aus der Region',
+          Langbeschreibung: 'Unsere frischen roten Äpfel stammen aus regionalem Anbau und werden täglich frisch geliefert. Perfekt für den täglichen Vitaminbedarf.',
+          Slug: 'frischer-roter-apfel',
+          SKU: 'SHOP-A001',
+          Preis: 0.50,
+          IstAktiv: true,
+          IstHervorgehoben: true,
+          Lagerbestand: 100,
+          MindestBestellmenge: 5,
+          Gewicht: 0.2,
+          MetaTitel: 'Frische Äpfel kaufen',
+          MetaBeschreibung: 'Regionale frische Äpfel direkt zu Ihnen nach Hause geliefert.'
+        },
+        {
+          ProduktID: brot.ProduktID,
+          ShopKategorieID: katLebensmittel.ShopKategorieID,
+          Titel: 'Vollkornbrot 500g',
+          Kurzbeschreibung: 'Gesundes Vollkornbrot aus der Bäckerei',
+          Langbeschreibung: 'Unser Vollkornbrot wird nach traditionellem Rezept gebacken und ist reich an Ballaststoffen.',
+          Slug: 'vollkornbrot-500g',
+          SKU: 'SHOP-B001',
+          Preis: 2.50,
+          IstAktiv: true,
+          Lagerbestand: 50,
+          MindestBestellmenge: 1,
+          Gewicht: 0.5
+        },
+        {
+          ProduktID: milch.ProduktID,
+          ShopKategorieID: katMilch.ShopKategorieID,
+          Titel: 'Frische Vollmilch 1L',
+          Kurzbeschreibung: 'Pasteurisierte Vollmilch',
+          Langbeschreibung: 'Unsere Vollmilch stammt von lokalen Bauernhöfen und wird täglich frisch geliefert. 3,5% Fettgehalt.',
+          Slug: 'vollmilch-1l',
+          SKU: 'SHOP-M001',
+          Preis: 1.29,
+          IstAktiv: true,
+          Lagerbestand: 200,
+          MindestBestellmenge: 1,
+          Gewicht: 1.0
+        },
+        {
+          ProduktID: zucker.ProduktID,
+          ShopKategorieID: katLebensmittel.ShopKategorieID,
+          Titel: 'Kristallzucker 1kg',
+          Kurzbeschreibung: 'Feiner weißer Kristallzucker',
+          Langbeschreibung: 'Hochwertiger Kristallzucker für alle Backzwecke.',
+          Slug: 'kristallzucker-1kg',
+          SKU: 'SHOP-Z001',
+          Preis: 1.99,
+          IstAktiv: true,
+          Lagerbestand: 75,
+          MindestBestellmenge: 1,
+          Gewicht: 1.0
+        },
+        {
+          ProduktID: laptop.ProduktID,
+          ShopKategorieID: katElektronik.ShopKategorieID,
+          Titel: 'High-End Laptop',
+          Kurzbeschreibung: 'Leistungsstarker Laptop für Profis',
+          Langbeschreibung: 'Ein moderner High-End Laptop mit den neuesten Spezifikationen für anspruchsvolle Anwendungen.',
+          Slug: 'high-end-laptop',
+          SKU: 'SHOP-L001',
+          Preis: 999.00,
+          UVP: 1199.00,
+          IstAktiv: true,
+          IstHervorgehoben: true,
+          Lagerbestand: 10,
+          MindestBestellmenge: 1,
+          Gewicht: 2.0,
+          MetaTitel: 'High-End Laptop kaufen',
+          MetaBeschreibung: 'Professioneller Laptop mit bester Ausstattung zu einem fairen Preis.'
+        }
+      ],
+      skipDuplicates: true,
+    });
+    console.log(`Created ${shopProdukte.count} ShopProdukte`);
+  }
 }
 
 main()

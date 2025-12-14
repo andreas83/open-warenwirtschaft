@@ -134,6 +134,57 @@
 /&gt;
             </template>
           </ComponentDemo>
+
+          <!-- FormSelect -->
+          <ComponentDemo
+            title="FormSelect"
+            description="A customizable select dropdown component with consistent styling, validation, and error handling."
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <FormSelect
+                  v-model="formSelectDemo.basic"
+                  label="Basic Select"
+                  :options="['Option 1', 'Option 2', 'Option 3']"
+                  placeholder="Choose an option"
+                />
+                <FormSelect
+                  v-model="formSelectDemo.withObjects"
+                  label="Select with Objects"
+                  :options="selectOptions"
+                  value-key="id"
+                  label-key="name"
+                  placeholder="Select a country"
+                />
+                <FormSelect
+                  v-model="formSelectDemo.required"
+                  label="Required Select"
+                  :options="['Yes', 'No', 'Maybe']"
+                  required
+                  placeholder="This field is required"
+                />
+                <FormSelect
+                  v-model="formSelectDemo.withError"
+                  label="Select with Error"
+                  :options="['Option A', 'Option B']"
+                  error="Please select a valid option"
+                />
+              </div>
+            </template>
+            <template #code>
+&lt;FormSelect
+  v-model="value"
+  label="Label"
+  :options="options"
+  value-key="id"
+  label-key="name"
+  placeholder="Select an option"
+  :required="true"
+  hint="Optional hint"
+  error="Optional error"
+/&gt;
+            </template>
+          </ComponentDemo>
         </ComponentSection>
 
         <!-- Button Components -->
@@ -186,6 +237,57 @@
 &gt;
   Button Text
 &lt;/LoadingButton&gt;
+            </template>
+          </ComponentDemo>
+        </ComponentSection>
+
+        <!-- Layout Components -->
+        <ComponentSection
+          id="layout-components"
+          title="Layout Components"
+          icon="i-mdi-view-dashboard"
+        >
+          <!-- Card -->
+          <ComponentDemo
+            title="Card"
+            description="A flexible container component for grouping related content with header and footer support."
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <Card title="Default Card">
+                  <p class="text-gray-600 dark:text-gray-400">This is a card with default styling and medium padding.</p>
+                </Card>
+                <Card variant="bordered" padding="lg">
+                  <template #header>
+                    <div class="flex items-center justify-between">
+                      <h3 class="text-lg font-semibold">Custom Header</h3>
+                      <Badge variant="success">Active</Badge>
+                    </div>
+                  </template>
+                  <p class="text-gray-600 dark:text-gray-400">This is a bordered card with large padding and custom header.</p>
+                  <template #footer>
+                    <div class="flex justify-end gap-2">
+                      <LoadingButton size="sm" variant="secondary">Cancel</LoadingButton>
+                      <LoadingButton size="sm">Save</LoadingButton>
+                    </div>
+                  </template>
+                </Card>
+                <Card variant="elevated" hoverable>
+                  <p class="text-gray-600 dark:text-gray-400">This is an elevated card with hover effect.</p>
+                </Card>
+              </div>
+            </template>
+            <template #code>
+&lt;Card
+  title="Card Title"
+  variant="default|bordered|elevated"
+  padding="none|sm|md|lg"
+  :hoverable="false"
+&gt;
+  Card content
+  &lt;template #header&gt;Custom header&lt;/template&gt;
+  &lt;template #footer&gt;Custom footer&lt;/template&gt;
+&lt;/Card&gt;
             </template>
           </ComponentDemo>
         </ComponentSection>
@@ -299,6 +401,126 @@
 /&gt;
             </template>
           </ComponentDemo>
+
+          <!-- Alert -->
+          <ComponentDemo
+            title="Alert"
+            description="Static alert component for displaying important messages with different severity levels."
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <Alert
+                  type="success"
+                  title="Success"
+                  message="Your changes have been saved successfully."
+                />
+                <Alert
+                  type="error"
+                  title="Error"
+                  message="There was an error processing your request."
+                  dismissible
+                />
+                <Alert
+                  type="warning"
+                  message="Your session will expire in 5 minutes."
+                />
+                <Alert
+                  type="info"
+                  variant="outlined"
+                  dismissible
+                >
+                  <strong>New feature available!</strong> Check out our latest updates in the dashboard.
+                </Alert>
+              </div>
+            </template>
+            <template #code>
+&lt;Alert
+  message="Alert message"
+  title="Optional title"
+  type="success|error|warning|info"
+  variant="filled|outlined|soft"
+  :dismissible="false"
+  @dismiss="handleDismiss"
+/&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- Badge -->
+          <ComponentDemo
+            title="Badge"
+            description="Small status indicators and labels for displaying metadata."
+          >
+            <template #preview>
+              <div class="space-y-4">
+                <div class="flex flex-wrap gap-2">
+                  <Badge>Default</Badge>
+                  <Badge variant="success">Success</Badge>
+                  <Badge variant="error">Error</Badge>
+                  <Badge variant="warning">Warning</Badge>
+                  <Badge variant="info">Info</Badge>
+                  <Badge variant="primary">Primary</Badge>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <Badge size="sm">Small</Badge>
+                  <Badge size="md">Medium</Badge>
+                  <Badge size="lg">Large</Badge>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <Badge icon="i-mdi-check" variant="success">Completed</Badge>
+                  <Badge icon="i-mdi-clock" variant="warning">Pending</Badge>
+                  <Badge icon="i-mdi-close" variant="error">Failed</Badge>
+                </div>
+              </div>
+            </template>
+            <template #code>
+&lt;Badge
+  variant="default|success|error|warning|info|primary"
+  size="sm|md|lg"
+  :rounded="true"
+  icon="i-mdi-check"
+&gt;
+  Badge Text
+&lt;/Badge&gt;
+            </template>
+          </ComponentDemo>
+
+          <!-- EmptyState -->
+          <ComponentDemo
+            title="EmptyState"
+            description="Display when there's no data to show, with optional actions."
+          >
+            <template #preview>
+              <div class="space-y-8">
+                <Card>
+                  <EmptyState
+                    title="No items found"
+                    description="Get started by creating your first item."
+                  >
+                    <LoadingButton>Create Item</LoadingButton>
+                  </EmptyState>
+                </Card>
+                <Card>
+                  <EmptyState
+                    title="No results"
+                    description="Try adjusting your search or filter to find what you're looking for."
+                    icon="i-mdi-magnify"
+                    icon-size="md"
+                  />
+                </Card>
+              </div>
+            </template>
+            <template #code>
+&lt;EmptyState
+  title="Title"
+  description="Description text"
+  icon="i-mdi-inbox"
+  icon-size="sm|md|lg"
+&gt;
+  &lt;!-- Optional action buttons --&gt;
+  &lt;LoadingButton&gt;Action&lt;/LoadingButton&gt;
+&lt;/EmptyState&gt;
+            </template>
+          </ComponentDemo>
         </ComponentSection>
 
         <!-- Navigation Components -->
@@ -385,6 +607,7 @@ const { t } = useI18n()
 const sections = [
   { id: 'form-components', title: t('components.sections.formComponents'), icon: 'i-mdi-form-textbox' },
   { id: 'button-components', title: t('components.sections.buttonComponents'), icon: 'i-mdi-gesture-tap-button' },
+  { id: 'layout-components', title: 'Layout Components', icon: 'i-mdi-view-dashboard' },
   { id: 'feedback-components', title: t('components.sections.feedbackComponents'), icon: 'i-mdi-message-alert' },
   { id: 'navigation-components', title: t('components.sections.navigationComponents'), icon: 'i-mdi-navigation' }
 ]
@@ -405,6 +628,21 @@ const formTextareaDemo = reactive({
   withMaxLength: '',
   customRows: ''
 })
+
+// Form Select Demo State
+const formSelectDemo = reactive({
+  basic: '',
+  withObjects: null,
+  required: '',
+  withError: ''
+})
+
+const selectOptions = [
+  { id: 1, name: 'Germany' },
+  { id: 2, name: 'Austria' },
+  { id: 3, name: 'Switzerland' },
+  { id: 4, name: 'France' }
+]
 
 // Pagination Demo State
 const paginationDemo = reactive({

@@ -26,11 +26,11 @@ This document tracks the implementation status of all modules in the Warenwirtsc
 | POS/Retail | 2 | 53% |
 | Restaurant | 5 | 48% |
 | Hotel | 4 | 85% |
-| Shop/E-Commerce | 4 | 44% |
+| Shop/E-Commerce | 4 | 81% |
 | Wholesale | 5 | 60% |
 | Configuration | 5 | 81% |
 | System | 3 | 70% |
-| **Overall** | **37** | **65%** |
+| **Overall** | **37** | **70%** |
 
 ---
 
@@ -512,14 +512,29 @@ This document tracks the implementation status of all modules in the Warenwirtsc
 
 ---
 
-### Webshop Frontend - 0% Not Started
+### Webshop Frontend - 85% Functional
 
-**Planned:**
-- Public storefront
-- Shopping cart
-- Checkout flow
-- Customer accounts
-- Payment integration
+| Aspect | Status |
+|--------|--------|
+| Pages | home, products, product detail, cart, checkout, order success |
+| API | warenkorb/validate |
+| Client | localStorage cart management |
+
+**Implemented:**
+- Public storefront with featured products
+- Product catalog with search, filtering, and pagination
+- Product detail page with reviews
+- Shopping cart with quantity management
+- Checkout flow with billing/shipping addresses
+- Order placement with validation
+- Multi-language support (DE/EN)
+- Responsive design
+
+**Missing:**
+- Customer accounts/authentication
+- Payment gateway integration
+- Order tracking
+- Wishlist functionality
 
 ---
 
@@ -791,4 +806,6 @@ These cross-cutting features are needed but not yet implemented:
 | 2025-12-14 | Added Shop Bestellungen detail page (40% → 65%) |
 | 2025-12-14 | Fixed Restaurant Bestellungen API to handle positions (75% → 80%) |
 | 2025-12-14 | Updated seed script with Hotel, Restaurant, POS, Shop data |
+| 2025-12-14 | Created complete customer-facing storefront (0% → 85%) |
+| 2025-12-14 | Shop/E-Commerce average completion: 44% → 81%, Overall: 65% → 70% |
 

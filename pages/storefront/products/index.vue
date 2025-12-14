@@ -6,19 +6,19 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <NuxtLink to="/storefront" class="text-2xl font-bold text-primary-600">
-              {{ $t('shop.storeName') }}
+              {{ $t('storefront.storeName') }}
             </NuxtLink>
           </div>
 
           <nav class="hidden md:flex space-x-8">
             <NuxtLink to="/storefront" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.home') }}
+              {{ $t('storefront.home') }}
             </NuxtLink>
             <NuxtLink to="/storefront/products" class="text-gray-700 hover:text-primary-600 font-semibold">
-              {{ $t('shop.products') }}
+              {{ $t('storefront.products') }}
             </NuxtLink>
             <NuxtLink to="/storefront/categories" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.categories') }}
+              {{ $t('storefront.categories') }}
             </NuxtLink>
           </nav>
 
@@ -39,17 +39,17 @@
         <!-- Sidebar Filters -->
         <aside class="w-full md:w-64 flex-shrink-0">
           <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $t('shop.filters') }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $t('storefront.filters') }}</h3>
 
             <!-- Search -->
             <div class="mb-6">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('shop.search') }}
+                {{ $t('storefront.search') }}
               </label>
               <input
                 v-model="filters.search"
                 type="text"
-                :placeholder="$t('shop.searchPlaceholder')"
+                :placeholder="$t('storefront.searchPlaceholder')"
                 class="input w-full"
                 @input="debouncedSearch"
               />
@@ -58,10 +58,10 @@
             <!-- Category Filter -->
             <div class="mb-6">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('shop.category') }}
+                {{ $t('storefront.category') }}
               </label>
               <select v-model="filters.categoryId" @change="loadProducts" class="input w-full">
-                <option :value="null">{{ $t('shop.allCategories') }}</option>
+                <option :value="null">{{ $t('storefront.allCategories') }}</option>
                 <option
                   v-for="category in categories"
                   :key="category.ShopKategorieID"
@@ -75,13 +75,13 @@
             <!-- Price Range -->
             <div class="mb-6">
               <label class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('shop.priceRange') }}
+                {{ $t('storefront.priceRange') }}
               </label>
               <div class="flex gap-2">
                 <input
                   v-model.number="filters.minPrice"
                   type="number"
-                  :placeholder="$t('shop.min')"
+                  :placeholder="$t('storefront.min')"
                   class="input w-full"
                   min="0"
                   @change="loadProducts"
@@ -89,7 +89,7 @@
                 <input
                   v-model.number="filters.maxPrice"
                   type="number"
-                  :placeholder="$t('shop.max')"
+                  :placeholder="$t('storefront.max')"
                   class="input w-full"
                   min="0"
                   @change="loadProducts"
@@ -99,7 +99,7 @@
 
             <!-- Reset Filters -->
             <button @click="resetFilters" class="btn-secondary w-full">
-              {{ $t('shop.resetFilters') }}
+              {{ $t('storefront.resetFilters') }}
             </button>
           </div>
         </aside>
@@ -108,17 +108,17 @@
         <main class="flex-1">
           <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-900">
-              {{ selectedCategoryName || $t('shop.allProducts') }}
+              {{ selectedCategoryName || $t('storefront.allProducts') }}
             </h1>
             <div class="flex items-center gap-4">
               <span class="text-sm text-gray-600">
-                {{ total }} {{ $t('shop.productsFound') }}
+                {{ total }} {{ $t('storefront.productsFound') }}
               </span>
               <select v-model="sortBy" @change="loadProducts" class="input">
-                <option value="default">{{ $t('shop.sortBy.default') }}</option>
-                <option value="price-asc">{{ $t('shop.sortBy.priceAsc') }}</option>
-                <option value="price-desc">{{ $t('shop.sortBy.priceDesc') }}</option>
-                <option value="name">{{ $t('shop.sortBy.name') }}</option>
+                <option value="default">{{ $t('storefront.sortBy.default') }}</option>
+                <option value="price-asc">{{ $t('storefront.sortBy.priceAsc') }}</option>
+                <option value="price-desc">{{ $t('storefront.sortBy.priceDesc') }}</option>
+                <option value="name">{{ $t('storefront.sortBy.name') }}</option>
               </select>
             </div>
           </div>
@@ -132,7 +132,7 @@
           </div>
 
           <div v-else-if="products.length === 0" class="text-center py-12 text-gray-600">
-            {{ $t('shop.noProductsFound') }}
+            {{ $t('storefront.noProductsFound') }}
           </div>
 
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -152,7 +152,7 @@
                 <div v-else class="i-mdi-image text-6xl text-gray-400"></div>
 
                 <div v-if="product.Angebotspreis" class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold">
-                  {{ $t('shop.sale') }}
+                  {{ $t('storefront.sale') }}
                 </div>
               </div>
 
@@ -188,7 +188,7 @@
                   @click.stop="addToCart(product)"
                   class="btn-primary w-full"
                 >
-                  {{ $t('shop.addToCart') }}
+                  {{ $t('storefront.addToCart') }}
                 </button>
               </div>
             </div>
@@ -202,11 +202,11 @@
               class="btn-secondary"
               :class="{ 'opacity-50 cursor-not-allowed': offset === 0 }"
             >
-              {{ $t('shop.previous') }}
+              {{ $t('storefront.previous') }}
             </button>
 
             <span class="px-4 py-2 text-gray-700">
-              {{ $t('shop.page') }} {{ currentPage }} {{ $t('shop.of') }} {{ totalPages }}
+              {{ $t('storefront.page') }} {{ currentPage }} {{ $t('storefront.of') }} {{ totalPages }}
             </span>
 
             <button
@@ -215,7 +215,7 @@
               class="btn-secondary"
               :class="{ 'opacity-50 cursor-not-allowed': offset + limit >= total }"
             >
-              {{ $t('shop.next') }}
+              {{ $t('storefront.next') }}
             </button>
           </div>
         </main>
@@ -225,7 +225,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 mt-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p>&copy; 2025 {{ $t('shop.storeName') }}. {{ $t('shop.allRightsReserved') }}</p>
+        <p>&copy; 2025 {{ $t('storefront.storeName') }}. {{ $t('storefront.allRightsReserved') }}</p>
       </div>
     </footer>
   </div>

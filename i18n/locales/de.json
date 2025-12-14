@@ -1,5 +1,5 @@
 {
-  "title": "Verwaltungssystem",
+  "title": "OPEN ERP",
   "common": {
     "close": "Schließen",
     "cancel": "Abbrechen",
@@ -59,6 +59,8 @@
     "last": "Letzte"
   },
   "menu": {
+    "navigation": "Navigation",
+    "restaurant": "Restaurant",
     "projects": "Projekte",
     "locations": "Standorte",
     "products": "Produkte",
@@ -531,6 +533,19 @@
       "tip": "Trinkgeld",
       "noOrders": "Keine Bestellungen vorhanden",
       "confirmDelete": "Möchten Sie diese Bestellung wirklich löschen?",
+      "tableInfo": "Tischinformation",
+      "capacity": "Kapazität",
+      "summary": "Zusammenfassung",
+      "itemCount": "Anzahl Positionen",
+      "subtotal": "Zwischensumme",
+      "vat": "MwSt.",
+      "cancelOrder": "Bestellung stornieren",
+      "startPreparing": "Zubereitung starten",
+      "cancel": "Abbrechen",
+      "statusUpdated": "Status aktualisiert",
+      "markServed": "Als serviert markieren",
+      "markCompleted": "Als abgeschlossen markieren",
+      "print": "Drucken",
       "status": {
         "open": "Offen",
         "inProgress": "In Bearbeitung",
@@ -913,7 +928,7 @@
       "subtitle": "Interaktive Übersicht aller wiederverwendbaren UX-Komponenten"
     }
   },
-  "shop": {
+  "storefront": {
     "storeName": "Online Shop",
     "home": "Startseite",
     "products": "Produkte",
@@ -934,6 +949,9 @@
     "searchPlaceholder": "Produkte suchen...",
     "category": "Kategorie",
     "allCategories": "Alle Kategorien",
+    "browseCategories": "Durchstöbern Sie unsere Produktkategorien",
+    "noCategories": "Keine Kategorien vorhanden",
+    "subcategories": "Unterkategorien",
     "priceRange": "Preisbereich",
     "min": "Min",
     "max": "Max",

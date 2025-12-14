@@ -6,19 +6,19 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <NuxtLink to="/storefront" class="text-2xl font-bold text-primary-600">
-              {{ $t('shop.storeName') }}
+              {{ $t('storefront.storeName') }}
             </NuxtLink>
           </div>
 
           <nav class="hidden md:flex space-x-8">
             <NuxtLink to="/storefront" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.home') }}
+              {{ $t('storefront.home') }}
             </NuxtLink>
             <NuxtLink to="/storefront/products" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.products') }}
+              {{ $t('storefront.products') }}
             </NuxtLink>
             <NuxtLink to="/storefront/categories" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.categories') }}
+              {{ $t('storefront.categories') }}
             </NuxtLink>
           </nav>
 
@@ -46,9 +46,9 @@
       <div v-else-if="product">
         <!-- Breadcrumb -->
         <nav class="text-sm text-gray-600 mb-6">
-          <NuxtLink to="/storefront" class="hover:text-primary-600">{{ $t('shop.home') }}</NuxtLink>
+          <NuxtLink to="/storefront" class="hover:text-primary-600">{{ $t('storefront.home') }}</NuxtLink>
           <span class="mx-2">/</span>
-          <NuxtLink to="/storefront/products" class="hover:text-primary-600">{{ $t('shop.products') }}</NuxtLink>
+          <NuxtLink to="/storefront/products" class="hover:text-primary-600">{{ $t('storefront.products') }}</NuxtLink>
           <span v-if="product.ShopKategorien" class="mx-2">/</span>
           <span v-if="product.ShopKategorien">{{ product.ShopKategorien.Name }}</span>
         </nav>
@@ -104,7 +104,7 @@
                   <div class="i-mdi-star-outline text-yellow-500 text-xl"></div>
                 </div>
                 <span class="text-sm text-gray-600">
-                  ({{ reviewCount }} {{ $t('shop.reviews') }})
+                  ({{ reviewCount }} {{ $t('storefront.reviews') }})
                 </span>
               </div>
 
@@ -117,14 +117,14 @@
                   <span class="text-3xl font-bold text-red-600">
                     {{ formatPrice(product.Angebotspreis) }}
                   </span>
-                  <span class="badge-danger">{{ $t('shop.sale') }}</span>
+                  <span class="badge-danger">{{ $t('storefront.sale') }}</span>
                 </div>
                 <div v-else class="text-3xl font-bold text-primary-600">
                   {{ formatPrice(product.Preis) }}
                 </div>
 
                 <div v-if="product.Produkte?.Umsatzsteuersaetze" class="text-sm text-gray-600 mt-1">
-                  {{ $t('shop.inclVat', { vat: product.Produkte.Umsatzsteuersaetze.Satz }) }}
+                  {{ $t('storefront.inclVat', { vat: product.Produkte.Umsatzsteuersaetze.Satz }) }}
                 </div>
               </div>
 
@@ -137,18 +137,18 @@
               <div class="mb-6">
                 <div v-if="product.Lagerbestand > 0" class="flex items-center text-green-600">
                   <div class="i-mdi-check-circle mr-2"></div>
-                  <span>{{ $t('shop.inStock') }} ({{ product.Lagerbestand }} {{ $t('shop.available') }})</span>
+                  <span>{{ $t('storefront.inStock') }} ({{ product.Lagerbestand }} {{ $t('storefront.available') }})</span>
                 </div>
                 <div v-else class="flex items-center text-red-600">
                   <div class="i-mdi-alert-circle mr-2"></div>
-                  <span>{{ $t('shop.outOfStock') }}</span>
+                  <span>{{ $t('storefront.outOfStock') }}</span>
                 </div>
               </div>
 
               <!-- Quantity Selector -->
               <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  {{ $t('shop.quantity') }}
+                  {{ $t('storefront.quantity') }}
                 </label>
                 <div class="flex items-center gap-3">
                   <button
@@ -183,35 +183,35 @@
                 :class="{ 'opacity-50 cursor-not-allowed': product.Lagerbestand <= 0 }"
               >
                 <div class="i-mdi-cart-plus mr-2"></div>
-                {{ $t('shop.addToCart') }}
+                {{ $t('storefront.addToCart') }}
               </button>
 
               <button @click="buyNow" class="btn-secondary btn-lg w-full">
-                {{ $t('shop.buyNow') }}
+                {{ $t('storefront.buyNow') }}
               </button>
             </div>
           </div>
 
           <!-- Product Description -->
           <div v-if="product.Beschreibung" class="mt-12 border-t pt-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('shop.description') }}</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('storefront.description') }}</h2>
             <div class="prose max-w-none text-gray-700" v-html="product.Beschreibung"></div>
           </div>
 
           <!-- Product Specifications -->
           <div v-if="product.Produkte" class="mt-12 border-t pt-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('shop.specifications') }}</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('storefront.specifications') }}</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div v-if="product.Produkte.Einheiten" class="flex justify-between py-2 border-b">
-                <span class="font-medium text-gray-700">{{ $t('shop.unit') }}:</span>
+                <span class="font-medium text-gray-700">{{ $t('storefront.unit') }}:</span>
                 <span class="text-gray-900">{{ product.Produkte.Einheiten.Name }}</span>
               </div>
               <div v-if="product.Gewicht" class="flex justify-between py-2 border-b">
-                <span class="font-medium text-gray-700">{{ $t('shop.weight') }}:</span>
+                <span class="font-medium text-gray-700">{{ $t('storefront.weight') }}:</span>
                 <span class="text-gray-900">{{ product.Gewicht }} kg</span>
               </div>
               <div v-if="product.Dimensionen" class="flex justify-between py-2 border-b">
-                <span class="font-medium text-gray-700">{{ $t('shop.dimensions') }}:</span>
+                <span class="font-medium text-gray-700">{{ $t('storefront.dimensions') }}:</span>
                 <span class="text-gray-900">{{ product.Dimensionen }}</span>
               </div>
             </div>
@@ -219,7 +219,7 @@
 
           <!-- Reviews Section -->
           <div v-if="product.ShopBewertungen && product.ShopBewertungen.length > 0" class="mt-12 border-t pt-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('shop.customerReviews') }}</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('storefront.customerReviews') }}</h2>
             <div class="space-y-6">
               <div
                 v-for="review in product.ShopBewertungen"
@@ -252,7 +252,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 mt-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p>&copy; 2025 {{ $t('shop.storeName') }}. {{ $t('shop.allRightsReserved') }}</p>
+        <p>&copy; 2025 {{ $t('storefront.storeName') }}. {{ $t('storefront.allRightsReserved') }}</p>
       </div>
     </footer>
   </div>

@@ -95,13 +95,13 @@ export function useActiveProject() {
 
 function getDefaultMenuItems(): MenuItem[] {
   return [
-    { to: '/projekte', icon: 'i-mdi-folder-multiple', label: 'menu.projects' },
+    { to: '/projekte', icon: 'i-mdi-briefcase', label: 'menu.projects' },
     { to: '/standorte', icon: 'i-mdi-map-marker', label: 'menu.locations' },
-    { to: '/produkte', icon: 'i-mdi-package', label: 'menu.products' },
-    { to: '/kategorien', icon: 'i-mdi-tag-multiple', label: 'menu.categories' },
+    { to: '/produkte', icon: 'i-mdi-cube', label: 'menu.products' },
+    { to: '/kategorien', icon: 'i-mdi-shape', label: 'menu.categories' },
     { to: '/kunden', icon: 'i-mdi-account-group', label: 'menu.customers' },
     { to: '/kundengruppen', icon: 'i-mdi-account-multiple', label: 'menu.customerGroups' },
-    { to: '/rechnungen', icon: 'i-mdi-receipt', label: 'menu.invoices' },
+    { to: '/rechnungen', icon: 'i-mdi-file-document', label: 'menu.invoices' },
     { to: '/bestellungen', icon: 'i-mdi-clipboard-list', label: 'menu.orders' },
     { to: '/lieferanten', icon: 'i-mdi-truck', label: 'menu.suppliers' },
     { to: '/kassen', icon: 'i-mdi-cash-register', label: 'menu.cashRegister' },
@@ -121,7 +121,7 @@ function getDefaultMenuItems(): MenuItem[] {
       children: [
         { to: '/zahlungen', icon: 'i-mdi-credit-card', label: 'menu.payments' },
         { to: '/rabatte', icon: 'i-mdi-percent', label: 'menu.discounts' },
-        { to: '/retouren', icon: 'i-mdi-package-variant-closed-remove', label: 'menu.returns' },
+        { to: '/retouren', icon: 'i-mdi-undo-variant', label: 'menu.returns' },
       ],
     },
     {
@@ -142,28 +142,28 @@ function getDefaultMenuItems(): MenuItem[] {
       label: 'restaurant.title',
       children: [
         { to: '/restaurant/tische', icon: 'i-mdi-table-furniture', label: 'restaurant.tables.title' },
-        { to: '/restaurant/reservierungen', icon: 'i-mdi-calendar-check', label: 'restaurant.reservations.title' },
+        { to: '/restaurant/reservierungen', icon: 'i-mdi-calendar-clock', label: 'restaurant.reservations.title' },
         { to: '/restaurant/bestellungen', icon: 'i-mdi-food', label: 'restaurant.orders.title' },
       ],
     },
     {
       to: '/hotel',
-      icon: 'i-mdi-hotel',
+      icon: 'i-mdi-bed',
       label: 'hotel.title',
       children: [
-        { to: '/hotel/zimmer', icon: 'i-mdi-bed', label: 'hotel.rooms.title' },
-        { to: '/hotel/zimmerkategorien', icon: 'i-mdi-tag-multiple', label: 'hotel.categories.title' },
-        { to: '/hotel/buchungen', icon: 'i-mdi-calendar-clock', label: 'hotel.bookings.title' },
+        { to: '/hotel/zimmer', icon: 'i-mdi-door', label: 'hotel.rooms.title' },
+        { to: '/hotel/zimmerkategorien', icon: 'i-mdi-star', label: 'hotel.categories.title' },
+        { to: '/hotel/buchungen', icon: 'i-mdi-calendar-check', label: 'hotel.bookings.title' },
       ],
     },
     {
       to: '/shop',
-      icon: 'i-mdi-shopping',
+      icon: 'i-mdi-store',
       label: 'shop.title',
       children: [
         { to: '/shop/bestellungen', icon: 'i-mdi-cart', label: 'shop.orders.title' },
-        { to: '/shop/kategorien', icon: 'i-mdi-folder-outline', label: 'shop.categories.title' },
-        { to: '/shop/produkte', icon: 'i-mdi-package-variant', label: 'shop.products.title' },
+        { to: '/shop/kategorien', icon: 'i-mdi-tag-multiple', label: 'shop.categories.title' },
+        { to: '/shop/produkte', icon: 'i-mdi-shopping', label: 'shop.products.title' },
       ],
     },
     { to: '/berichte', icon: 'i-mdi-chart-bar', label: 'menu.reports' },
@@ -172,7 +172,7 @@ function getDefaultMenuItems(): MenuItem[] {
       icon: 'i-mdi-cog',
       label: 'menu.settings',
       children: [
-        { to: '/umsatzsteuersaetze', icon: 'i-mdi-currency-eur', label: 'menu.vat' },
+        { to: '/umsatzsteuersaetze', icon: 'i-mdi-percent', label: 'menu.vat' },
         { to: '/einheiten', icon: 'i-mdi-ruler', label: 'menu.unit' },
       ],
     },
@@ -184,7 +184,7 @@ function buildMenuFromModules(modules: ModuleItem[]): MenuItem[] {
   const moduleMap = new Map(modules.map((m) => [m.modulName, m]))
 
   // Always include projects
-  menuItems.push({ to: '/projekte', icon: 'i-mdi-folder-multiple', label: 'menu.projects' })
+  menuItems.push({ to: '/projekte', icon: 'i-mdi-briefcase', label: 'menu.projects' })
 
   // Standard modules mapping
   const standardModules: { name: string; label: string }[] = [

@@ -15,22 +15,48 @@ export default defineNuxtConfig({
       optimizeTranslationDirective: false
     }
   },
+
   unocss: {
     uno: true,
     preflight: true,
+    icons: true,
     presets: [
-      // Using dynamic imports for compatibility with ES modules
       async () => (await import('@unocss/preset-wind')).default({
         dark: 'media'
       }),
       async () => (await import('@unocss/preset-icons')).default({
         scale: 1.2,
-        warn: true
+        warn: true,
+        extraProperties: {
+          'display': 'inline-block',
+          'vertical-align': 'middle',
+        }
       })
+    ],
+    safelist: [
+      'i-mdi-briefcase', 'i-mdi-map-marker', 'i-mdi-cube', 'i-mdi-shape',
+      'i-mdi-account-group', 'i-mdi-account-multiple', 'i-mdi-file-document',
+      'i-mdi-clipboard-list', 'i-mdi-truck', 'i-mdi-cash-register',
+      'i-mdi-warehouse', 'i-mdi-package-variant', 'i-mdi-swap-horizontal',
+      'i-mdi-finance', 'i-mdi-credit-card', 'i-mdi-percent', 'i-mdi-undo-variant',
+      'i-mdi-domain', 'i-mdi-file-document-edit', 'i-mdi-file-sign',
+      'i-mdi-account-tie', 'i-mdi-credit-card-check', 'i-mdi-truck-delivery',
+      'i-mdi-silverware-fork-knife', 'i-mdi-table-furniture', 'i-mdi-calendar-clock',
+      'i-mdi-food', 'i-mdi-bed', 'i-mdi-door', 'i-mdi-star', 'i-mdi-calendar-check',
+      'i-mdi-store', 'i-mdi-cart', 'i-mdi-tag-multiple', 'i-mdi-shopping',
+      'i-mdi-chart-bar', 'i-mdi-cog', 'i-mdi-ruler',
+      'i-mdi-plus', 'i-mdi-minus', 'i-mdi-close', 'i-mdi-check', 'i-mdi-pencil',
+      'i-mdi-delete', 'i-mdi-eye', 'i-mdi-chevron-down', 'i-mdi-chevron-up',
+      'i-mdi-chevron-left', 'i-mdi-chevron-right', 'i-mdi-menu', 'i-mdi-magnify',
+      'i-mdi-refresh', 'i-mdi-download', 'i-mdi-upload', 'i-mdi-printer',
+      'i-mdi-home', 'i-mdi-logout', 'i-mdi-login', 'i-mdi-account',
+      'i-mdi-account-circle', 'i-mdi-bell', 'i-mdi-calendar', 'i-mdi-clock',
+      'i-mdi-alert', 'i-mdi-loading', 'i-mdi-arrow-left', 'i-mdi-arrow-right',
+      'i-mdi-image', 'i-mdi-folder-multiple', 'i-mdi-close-circle',
+      'i-mdi-weather-sunny', 'i-mdi-weather-night', 'i-mdi-translate',
     ],
     theme: {
       colors: {
-        // Primary brand color - Indigo
         primary: {
           50: '#eef2ff',
           100: '#e0e7ff',
@@ -44,7 +70,6 @@ export default defineNuxtConfig({
           900: '#312e81',
           950: '#1e1b4b'
         },
-        // Secondary - Slate for neutral UI
         secondary: {
           50: '#f8fafc',
           100: '#f1f5f9',
@@ -58,7 +83,6 @@ export default defineNuxtConfig({
           900: '#0f172a',
           950: '#020617'
         },
-        // Success - Emerald
         success: {
           50: '#ecfdf5',
           100: '#d1fae5',
@@ -72,7 +96,6 @@ export default defineNuxtConfig({
           900: '#064e3b',
           950: '#022c22'
         },
-        // Warning - Amber
         warning: {
           50: '#fffbeb',
           100: '#fef3c7',
@@ -86,7 +109,6 @@ export default defineNuxtConfig({
           900: '#78350f',
           950: '#451a03'
         },
-        // Danger - Red
         danger: {
           50: '#fef2f2',
           100: '#fee2e2',
@@ -100,7 +122,6 @@ export default defineNuxtConfig({
           900: '#7f1d1d',
           950: '#450a0a'
         },
-        // Info - Sky blue
         info: {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -117,7 +138,6 @@ export default defineNuxtConfig({
       }
     },
     shortcuts: {
-      // Button shortcuts
       'btn': 'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2',
       'btn-primary': 'btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm',
       'btn-secondary': 'btn bg-white text-secondary-700 border border-secondary-300 hover:bg-secondary-50 focus:ring-primary-500 shadow-sm',
@@ -125,20 +145,16 @@ export default defineNuxtConfig({
       'btn-danger': 'btn bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500 shadow-sm',
       'btn-warning': 'btn bg-warning-500 text-white hover:bg-warning-600 focus:ring-warning-500 shadow-sm',
       'btn-ghost': 'btn text-secondary-700 hover:bg-secondary-100 focus:ring-secondary-500',
-      // Size shortcuts
       'btn-xs': 'px-2 py-1 text-xs',
       'btn-sm': 'px-3 py-1.5 text-sm',
       'btn-md': 'px-4 py-2 text-sm',
       'btn-lg': 'px-5 py-2.5 text-base',
       'btn-xl': 'px-6 py-3 text-lg',
-      // Card shortcuts
       'card': 'bg-white dark:bg-secondary-800 rounded-lg shadow-md',
       'card-header': 'px-6 py-4 border-b border-secondary-200 dark:border-secondary-700',
       'card-body': 'p-6',
       'card-footer': 'px-6 py-4 border-t border-secondary-200 dark:border-secondary-700 bg-secondary-50 dark:bg-secondary-900 rounded-b-lg',
-      // Input shortcuts
       'input': 'w-full px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-lg bg-white dark:bg-secondary-700 text-secondary-900 dark:text-secondary-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-      // Badge shortcuts
       'badge': 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
       'badge-primary': 'badge bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200',
       'badge-success': 'badge bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200',
@@ -147,5 +163,4 @@ export default defineNuxtConfig({
       'badge-info': 'badge bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-200'
     }
   },
-  // Server middleware will be automatically applied from server/middleware directory
 })

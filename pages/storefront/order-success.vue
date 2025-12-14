@@ -7,29 +7,29 @@
         </div>
 
         <h1 class="text-3xl font-bold text-gray-900 mb-4">
-          {{ $t('shop.orderSuccess') }}
+          {{ $t('storefront.orderSuccess') }}
         </h1>
 
         <p class="text-gray-600 mb-6">
-          {{ $t('shop.orderSuccessMessage') }}
+          {{ $t('storefront.orderSuccessMessage') }}
         </p>
 
         <div v-if="orderId" class="bg-gray-50 rounded-lg p-4 mb-6">
-          <p class="text-sm text-gray-600 mb-1">{{ $t('shop.orderNumber') }}</p>
+          <p class="text-sm text-gray-600 mb-1">{{ $t('storefront.orderNumber') }}</p>
           <p class="text-2xl font-bold text-primary-600">#{{ orderId }}</p>
         </div>
 
         <div class="space-y-4">
           <p class="text-gray-700">
-            {{ $t('shop.confirmationEmailSent') }}
+            {{ $t('storefront.confirmationEmailSent') }}
           </p>
 
           <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
             <NuxtLink to="/storefront" class="btn-primary">
-              {{ $t('shop.backToHome') }}
+              {{ $t('storefront.backToHome') }}
             </NuxtLink>
             <NuxtLink to="/storefront/products" class="btn-secondary">
-              {{ $t('shop.continueShopping') }}
+              {{ $t('storefront.continueShopping') }}
             </NuxtLink>
           </div>
         </div>

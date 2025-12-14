@@ -1,5 +1,5 @@
 {
-  "title": "Management System",
+  "title": "OPEN ERP",
   "common": {
     "close": "Close",
     "cancel": "Cancel",
@@ -59,6 +59,8 @@
     "last": "Last"
   },
   "menu": {
+    "navigation": "Navigation",
+    "restaurant": "Restaurant",
     "projects": "Projects",
     "locations": "Locations",
     "products": "Products",
@@ -531,6 +533,19 @@
       "tip": "Tip",
       "noOrders": "No orders available",
       "confirmDelete": "Do you really want to delete this order?",
+      "tableInfo": "Table Information",
+      "capacity": "Capacity",
+      "summary": "Summary",
+      "itemCount": "Number of Items",
+      "subtotal": "Subtotal",
+      "vat": "VAT",
+      "cancelOrder": "Cancel Order",
+      "startPreparing": "Start Preparing",
+      "cancel": "Cancel",
+      "statusUpdated": "Status Updated",
+      "markServed": "Mark as Served",
+      "markCompleted": "Mark as Completed",
+      "print": "Print",
       "status": {
         "open": "Open",
         "inProgress": "In Progress",
@@ -913,7 +928,7 @@
       "subtitle": "Interactive showcase of all reusable UX components"
     }
   },
-  "shop": {
+  "storefront": {
     "storeName": "Online Store",
     "home": "Home",
     "products": "Products",
@@ -934,6 +949,9 @@
     "searchPlaceholder": "Search products...",
     "category": "Category",
     "allCategories": "All Categories",
+    "browseCategories": "Browse our product categories",
+    "noCategories": "No categories available",
+    "subcategories": "Subcategories",
     "priceRange": "Price Range",
     "min": "Min",
     "max": "Max",

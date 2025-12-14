@@ -6,19 +6,19 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <NuxtLink to="/storefront" class="text-2xl font-bold text-primary-600">
-              {{ $t('shop.storeName') }}
+              {{ $t('storefront.storeName') }}
             </NuxtLink>
           </div>
 
           <nav class="hidden md:flex space-x-8">
             <NuxtLink to="/storefront" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.home') }}
+              {{ $t('storefront.home') }}
             </NuxtLink>
             <NuxtLink to="/storefront/products" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.products') }}
+              {{ $t('storefront.products') }}
             </NuxtLink>
             <NuxtLink to="/storefront/categories" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.categories') }}
+              {{ $t('storefront.categories') }}
             </NuxtLink>
           </nav>
 
@@ -38,20 +38,20 @@
     <section class="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">
-          {{ $t('shop.heroTitle') }}
+          {{ $t('storefront.heroTitle') }}
         </h1>
         <p class="text-xl mb-8 opacity-90">
-          {{ $t('shop.heroSubtitle') }}
+          {{ $t('storefront.heroSubtitle') }}
         </p>
         <NuxtLink to="/storefront/products" class="btn-primary btn-lg">
-          {{ $t('shop.shopNow') }}
+          {{ $t('storefront.shopNow') }}
         </NuxtLink>
       </div>
     </section>
 
     <!-- Featured Products -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-3xl font-bold text-gray-900 mb-8">{{ $t('shop.featuredProducts') }}</h2>
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">{{ $t('storefront.featuredProducts') }}</h2>
 
       <div v-if="loading" class="text-center py-12">
         <div class="i-mdi-loading animate-spin text-4xl text-primary-600"></div>
@@ -106,7 +106,7 @@
               @click.stop="addToCart(product)"
               class="btn-primary w-full mt-4"
             >
-              {{ $t('shop.addToCart') }}
+              {{ $t('storefront.addToCart') }}
             </button>
           </div>
         </div>
@@ -116,7 +116,7 @@
     <!-- Categories Section -->
     <section class="bg-gray-100 py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">{{ $t('shop.shopByCategory') }}</h2>
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">{{ $t('storefront.shopByCategory') }}</h2>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div
@@ -128,7 +128,7 @@
             <div class="i-mdi-tag text-4xl text-primary-600 mb-3"></div>
             <h3 class="font-semibold text-gray-900">{{ category.Name }}</h3>
             <p class="text-sm text-gray-600 mt-1">
-              {{ category._count?.ShopProdukte }} {{ $t('shop.products') }}
+              {{ category._count?.ShopProdukte }} {{ $t('storefront.products') }}
             </p>
           </div>
         </div>
@@ -138,7 +138,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p>&copy; 2025 {{ $t('shop.storeName') }}. {{ $t('shop.allRightsReserved') }}</p>
+        <p>&copy; 2025 {{ $t('storefront.storeName') }}. {{ $t('storefront.allRightsReserved') }}</p>
       </div>
     </footer>
   </div>

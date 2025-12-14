@@ -6,19 +6,19 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
             <NuxtLink to="/storefront" class="text-2xl font-bold text-primary-600">
-              {{ $t('shop.storeName') }}
+              {{ $t('storefront.storeName') }}
             </NuxtLink>
           </div>
 
           <nav class="hidden md:flex space-x-8">
             <NuxtLink to="/storefront" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.home') }}
+              {{ $t('storefront.home') }}
             </NuxtLink>
             <NuxtLink to="/storefront/products" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.products') }}
+              {{ $t('storefront.products') }}
             </NuxtLink>
             <NuxtLink to="/storefront/categories" class="text-gray-700 hover:text-primary-600">
-              {{ $t('shop.categories') }}
+              {{ $t('storefront.categories') }}
             </NuxtLink>
           </nav>
 
@@ -35,13 +35,13 @@
     </header>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ $t('shop.shoppingCart') }}</h1>
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ $t('storefront.shoppingCart') }}</h1>
 
       <div v-if="cartItems.length === 0" class="text-center py-12 bg-white rounded-lg shadow-md">
         <div class="i-mdi-cart-outline text-6xl text-gray-400 mb-4"></div>
-        <p class="text-gray-600 text-lg mb-6">{{ $t('shop.cartEmpty') }}</p>
+        <p class="text-gray-600 text-lg mb-6">{{ $t('storefront.cartEmpty') }}</p>
         <NuxtLink to="/storefront/products" class="btn-primary">
-          {{ $t('shop.continueShopping') }}
+          {{ $t('storefront.continueShopping') }}
         </NuxtLink>
       </div>
 
@@ -79,7 +79,7 @@
                       {{ formatPrice(item.Preis) }}
                     </span>
                     <span class="text-sm text-gray-600 ml-2">
-                      {{ $t('shop.perUnit') }}
+                      {{ $t('storefront.perUnit') }}
                     </span>
                   </div>
 
@@ -109,7 +109,7 @@
                       @click="removeItem(item)"
                       class="text-sm text-red-600 hover:text-red-800 mt-1"
                     >
-                      {{ $t('shop.remove') }}
+                      {{ $t('storefront.remove') }}
                     </button>
                   </div>
                 </div>
@@ -121,36 +121,36 @@
         <!-- Order Summary -->
         <div class="lg:col-span-1">
           <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">{{ $t('shop.orderSummary') }}</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-4">{{ $t('storefront.orderSummary') }}</h2>
 
             <div class="space-y-3 mb-6">
               <div class="flex justify-between text-gray-700">
-                <span>{{ $t('shop.subtotal') }} ({{ cartItems.length }} {{ $t('shop.items') }}):</span>
+                <span>{{ $t('storefront.subtotal') }} ({{ cartItems.length }} {{ $t('storefront.items') }}):</span>
                 <span class="font-semibold">{{ formatPrice(subtotal) }}</span>
               </div>
 
               <div class="flex justify-between text-gray-700">
-                <span>{{ $t('shop.vat') }}:</span>
+                <span>{{ $t('storefront.vat') }}:</span>
                 <span class="font-semibold">{{ formatPrice(vatTotal) }}</span>
               </div>
 
               <div class="flex justify-between text-gray-700">
-                <span>{{ $t('shop.shipping') }}:</span>
-                <span class="font-semibold">{{ shipping > 0 ? formatPrice(shipping) : $t('shop.free') }}</span>
+                <span>{{ $t('storefront.shipping') }}:</span>
+                <span class="font-semibold">{{ shipping > 0 ? formatPrice(shipping) : $t('storefront.free') }}</span>
               </div>
 
               <div class="border-t pt-3 flex justify-between text-lg font-bold text-gray-900">
-                <span>{{ $t('shop.total') }}:</span>
+                <span>{{ $t('storefront.total') }}:</span>
                 <span>{{ formatPrice(total) }}</span>
               </div>
             </div>
 
             <button @click="proceedToCheckout" class="btn-primary w-full btn-lg mb-3">
-              {{ $t('shop.proceedToCheckout') }}
+              {{ $t('storefront.proceedToCheckout') }}
             </button>
 
             <NuxtLink to="/storefront/products" class="btn-secondary w-full block text-center">
-              {{ $t('shop.continueShopping') }}
+              {{ $t('storefront.continueShopping') }}
             </NuxtLink>
           </div>
         </div>
@@ -160,7 +160,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8 mt-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p>&copy; 2025 {{ $t('shop.storeName') }}. {{ $t('shop.allRightsReserved') }}</p>
+        <p>&copy; 2025 {{ $t('storefront.storeName') }}. {{ $t('storefront.allRightsReserved') }}</p>
       </div>
     </footer>
   </div>

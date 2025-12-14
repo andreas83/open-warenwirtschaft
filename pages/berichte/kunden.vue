@@ -38,7 +38,7 @@
     </div>
 
     <div v-if="loading" class="text-center py-20">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       <p class="mt-4 text-gray-600">{{ $t('berichte.loading') }}</p>
     </div>
     <div v-else-if="error" class="text-center text-red-500 py-20">{{ error }}</div>
@@ -46,7 +46,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div class="bg-white rounded-lg shadow-md p-5">
           <p class="text-sm text-gray-600 mb-1">{{ $t('berichte.kunden.totalCustomers') }}</p>
-          <p class="text-2xl font-bold text-purple-600">{{ data.kpis.totalCustomers }}</p>
+          <p class="text-2xl font-bold text-indigo-600">{{ data.kpis.totalCustomers }}</p>
         </div>
         <div class="bg-white rounded-lg shadow-md p-5">
           <p class="text-sm text-gray-600 mb-1">{{ $t('berichte.kunden.activeCustomers') }}</p>

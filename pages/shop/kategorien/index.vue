@@ -2,15 +2,15 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $t('shop.categories.title') }}</h1>
-        <p class="text-gray-600 mt-1">{{ $t('shop.categories.subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-gray-800">{{ t('shop.categories.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('shop.categories.subtitle') }}</p>
       </div>
       <NuxtLink
         to="/shop/kategorien/create"
         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2"
       >
         <span class="i-mdi-plus text-xl"></span>
-        {{ $t('shop.categories.newCategory') }}
+        {{ t('shop.categories.newCategory') }}
       </NuxtLink>
     </div>
 
@@ -19,28 +19,28 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.search') }}
+            {{ t('common.search') }}
           </label>
           <input
             v-model="searchQuery"
             type="text"
-            :placeholder="$t('shop.categories.searchPlaceholder')"
+            :placeholder="t('shop.categories.searchPlaceholder')"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @input="debounceSearch"
           />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('shop.categories.visibility') }}
+            {{ t('shop.categories.visibility') }}
           </label>
           <select
             v-model="filterSichtbar"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadCategories"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="true">{{ $t('shop.categories.visible') }}</option>
-            <option value="false">{{ $t('shop.categories.hidden') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="true">{{ t('shop.categories.visible') }}</option>
+            <option value="false">{{ t('shop.categories.hidden') }}</option>
           </select>
         </div>
       </div>
@@ -57,25 +57,25 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.categories.name') }}
+              {{ t('shop.categories.name') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.categories.slug') }}
+              {{ t('shop.categories.slug') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.categories.parent') }}
+              {{ t('shop.categories.parent') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.categories.products') }}
+              {{ t('shop.categories.products') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('shop.categories.subcategories') }}
+              {{ t('shop.categories.subcategories') }}
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('common.status') }}
+              {{ t('common.status') }}
             </th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              {{ $t('common.actions') }}
+              {{ t('common.actions') }}
             </th>
           </tr>
         </thead>
@@ -111,7 +111,7 @@
                 :class="category.IstSichtbar ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
                 class="px-2 py-1 text-xs font-semibold rounded-full"
               >
-                {{ category.IstSichtbar ? $t('shop.categories.visible') : $t('shop.categories.hidden') }}
+                {{ category.IstSichtbar ? t('shop.categories.visible') : t('shop.categories.hidden') }}
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -119,13 +119,13 @@
                 :to="`/shop/kategorien/edit/${category.ShopKategorieID}`"
                 class="text-blue-600 hover:text-blue-900 mr-4"
               >
-                {{ $t('common.edit') }}
+                {{ t('common.edit') }}
               </NuxtLink>
               <button
                 @click="deleteCategory(category.ShopKategorieID)"
                 class="text-red-600 hover:text-red-900"
               >
-                {{ $t('common.delete') }}
+                {{ t('common.delete') }}
               </button>
             </td>
           </tr>
@@ -136,7 +136,7 @@
     <!-- Empty State -->
     <div v-if="!loading && categories.length === 0" class="text-center py-12 bg-white rounded-lg shadow-md">
       <span class="i-mdi-folder-outline text-6xl text-gray-400 mb-4"></span>
-      <p class="text-gray-500 text-lg">{{ $t('shop.categories.noCategories') }}</p>
+      <p class="text-gray-500 text-lg">{{ t('shop.categories.noCategories') }}</p>
     </div>
 
     <!-- Pagination -->
@@ -146,14 +146,14 @@
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.first') }}
+        {{ t('pagination.first') }}
       </button>
       <button
         @click="goToPage(offset - limit)"
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.previous') }}
+        {{ t('pagination.previous') }}
       </button>
       <span class="px-3 py-1">
         {{ Math.floor(offset / limit) + 1 }} / {{ Math.ceil(total / limit) }}
@@ -163,21 +163,21 @@
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.next') }}
+        {{ t('pagination.next') }}
       </button>
       <button
         @click="goToPage(Math.floor(total / limit) * limit)"
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.last') }}
+        {{ t('pagination.last') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-const { $t } = useNuxtApp()
+const { t } = useI18n()
 const loading = ref(true)
 const categories = ref([])
 const total = ref(0)
@@ -222,13 +222,13 @@ const goToPage = (newOffset) => {
 }
 
 const deleteCategory = async (id) => {
-  if (!confirm($t('shop.categories.confirmDelete'))) return
+  if (!confirm(t('shop.categories.confirmDelete'))) return
 
   try {
     await $fetch(`/api/shop/kategorien?id=${id}`, { method: 'DELETE' })
     await loadCategories()
   } catch (error) {
-    alert(error.data?.message || $t('common.error'))
+    alert(error.data?.message || t('common.error'))
   }
 }
 

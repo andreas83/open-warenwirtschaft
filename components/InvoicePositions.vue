@@ -20,26 +20,26 @@
               {{ allProdukte.find(p => p.ProduktID === position.ProduktID)?.Produktname || 'Unbekannt' }}
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-              <input v-if="editingPositionIndex === index" v-model="position.Menge" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
+              <input v-if="editingPositionIndex === index" v-model="position.Menge" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
               <span v-else>{{ position.Menge }}</span>
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-              <input v-if="editingPositionIndex === index" v-model="position.EinzelpreisNetto" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
+              <input v-if="editingPositionIndex === index" v-model="position.EinzelpreisNetto" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
               <span v-else>{{ Number(position.EinzelpreisNetto).toFixed(2) }} {{ rechnung.Waehrung || 'EUR' }}</span>
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-              <input v-if="editingPositionIndex === index" v-model="position.RabattBetragPosition" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
+              <input v-if="editingPositionIndex === index" v-model="position.RabattBetragPosition" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
               <span v-else>{{ position.RabattBetragPosition ? Number(position.RabattBetragPosition).toFixed(2) : '0.00' }} {{ rechnung.Waehrung || 'EUR' }}</span>
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
               {{ Number(position.GesamtpreisNettoPosition).toFixed(2) }} {{ rechnung.Waehrung || 'EUR' }}
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-              <input v-if="editingPositionIndex === index" v-model="position.MwSt_Satz" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
+              <input v-if="editingPositionIndex === index" v-model="position.MwSt_Satz" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @blur="saveEditedPosition(index)" />
               <span v-else>{{ position.MwSt_Satz }}%</span>
             </td>
             <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 flex gap-2">
-              <button type="button" @click="toggleEditPosition(index)" class="bg-teal-50 dark:bg-teal-900 text-teal-700 dark:text-teal-300 px-3 py-1 rounded-md hover:bg-teal-100 dark:hover:bg-teal-800 transition duration-200 text-sm font-medium">{{ editingPositionIndex === index ? 'Speichern' : 'Bearbeiten' }}</button>
+              <button type="button" @click="toggleEditPosition(index)" class="bg-indigo-50 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-md hover:bg-indigo-100 dark:hover:bg-indigo-800 transition duration-200 text-sm font-medium">{{ editingPositionIndex === index ? 'Speichern' : 'Bearbeiten' }}</button>
               <button type="button" @click="deletePosition(index)" class="bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-300 px-3 py-1 rounded-md hover:bg-red-100 dark:hover:bg-red-800 transition duration-200 text-sm font-medium">Löschen</button>
             </td>
           </tr>
@@ -66,11 +66,11 @@
           </div>
           <div>
             <label for="newMenge" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Menge</label>
-            <input id="newMenge" v-model="currentPosition.Menge" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+            <input id="newMenge" v-model="currentPosition.Menge" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
           </div>
           <div>
             <label for="newEinzelpreisNetto" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Einzelpreis Netto</label>
-            <input id="newEinzelpreisNetto" v-model="currentPosition.EinzelpreisNetto" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+            <input id="newEinzelpreisNetto" v-model="currentPosition.EinzelpreisNetto" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
           </div>
           <div>
             <label for="newRabatt" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Rabatt (optional)</label>
@@ -87,19 +87,19 @@
           </div>
           <div>
             <label for="newRabattProzent" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Rabatt Prozent (optional)</label>
-            <input id="newRabattProzent" v-model="currentPosition.RabattProzentPosition" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+            <input id="newRabattProzent" v-model="currentPosition.RabattProzentPosition" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </div>
           <div>
             <label for="newRabattBetrag" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Rabatt Betrag (optional)</label>
-            <input id="newRabattBetrag" v-model="currentPosition.RabattBetragPosition" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+            <input id="newRabattBetrag" v-model="currentPosition.RabattBetragPosition" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
           </div>
           <div>
             <label for="newMwstSatz" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">MwSt. Satz (%)</label>
-            <input id="newMwstSatz" v-model="currentPosition.MwSt_Satz" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+            <input id="newMwstSatz" v-model="currentPosition.MwSt_Satz" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
           </div>
           <div class="md:col-span-2">
             <label for="newBeschreibung" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Beschreibung (optional)</label>
-            <textarea id="newBeschreibung" v-model="currentPosition.Beschreibung" rows="2" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
+            <textarea id="newBeschreibung" v-model="currentPosition.Beschreibung" rows="2" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
           </div>
         </div>
         
@@ -110,7 +110,7 @@
               v-for="tab in tabs"
               :key="tab.id"
               type="button"
-              :class="['px-4 py-2 -mb-px', activeTab === tab.id ? 'border-b-2 border-teal-500 text-teal-500 dark:text-teal-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300']"
+              :class="['px-4 py-2 -mb-px', activeTab === tab.id ? 'border-b-2 border-indigo-500 text-indigo-500 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300']"
               @click="activeTab = tab.id"
             >
               {{ tab.label }}
@@ -161,7 +161,7 @@
                     <p><strong>Gültig ab:</strong> {{ formatDate(preis.GueltigAb) }}</p>
                     <p v-if="preis.GueltigBis"><strong>Gültig bis:</strong> {{ formatDate(preis.GueltigBis) }}</p>
                   </div>
-                  <button type="button" @click="applyPrice(preis)" class="bg-teal-500 dark:bg-teal-600 text-white px-3 py-1 rounded-md hover:bg-teal-600 dark:hover:bg-teal-700 transition duration-200 text-sm font-medium">Übernehmen</button>
+                  <button type="button" @click="applyPrice(preis)" class="bg-indigo-500 dark:bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-600 dark:hover:bg-indigo-700 transition duration-200 text-sm font-medium">Übernehmen</button>
                 </div>
               </div>
               <p v-else class="text-gray-500 dark:text-gray-400">Keine Preise verfügbar.</p>
@@ -171,7 +171,7 @@
         
         <div class="flex justify-end space-x-3 mt-4">
           <button type="button" @click="showNewPositionForm = false" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200 text-sm font-medium">Abbrechen</button>
-          <button type="button" @click="savePosition" class="bg-teal-500 dark:bg-teal-600 text-white px-5 py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-700 transition duration-200 text-sm font-medium">{{ currentPositionIndex >= 0 ? 'Speichern' : 'Hinzufügen' }}</button>
+          <button type="button" @click="savePosition" class="bg-indigo-500 dark:bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-600 dark:hover:bg-indigo-700 transition duration-200 text-sm font-medium">{{ currentPositionIndex >= 0 ? 'Speichern' : 'Hinzufügen' }}</button>
         </div>
       </div>
     </div>

@@ -1,63 +1,88 @@
 <template>
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <Breadcrumbs :crumbs="breadcrumbs" />
     <h2 class="text-2xl font-semibold mb-6 text-gray-700 dark:text-gray-200">Neuen Kunden erstellen</h2>
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-xl p-6 max-w-5xl mx-auto">
       <form @submit.prevent="saveKunde" class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="firmenname" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Firmenname (Name)</label>
-            <input id="firmenname" v-model="firmenname" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
-          </div>
-          <div>
-            <label for="kundennummer" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kundennummer</label>
-            <input id="kundennummer" v-model="kunde.Kundennummer" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
-          </div>
+          <FormInput
+            v-model="firmenname"
+            label="Firmenname (Name)"
+            type="text"
+            placeholder="Firmenname eingeben..."
+            required
+          />
+          <FormInput
+            v-model="kunde.Kundennummer"
+            label="Kundennummer"
+            type="text"
+            placeholder="Kundennummer eingeben..."
+            required
+          />
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label for="anrede" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Anrede</label>
-            <input id="anrede" v-model="kunde.Anrede" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
-          <div>
-            <label for="vorname" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Vorname</label>
-            <input id="vorname" v-model="kunde.Vorname" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
-          <div>
-            <label for="nachname" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Nachname</label>
-            <input id="nachname" v-model="kunde.Nachname" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
+          <FormInput
+            v-model="kunde.Anrede"
+            label="Anrede"
+            type="text"
+            placeholder="z.B. Herr, Frau..."
+          />
+          <FormInput
+            v-model="kunde.Vorname"
+            label="Vorname"
+            type="text"
+            placeholder="Vorname eingeben..."
+          />
+          <FormInput
+            v-model="kunde.Nachname"
+            label="Nachname"
+            type="text"
+            placeholder="Nachname eingeben..."
+          />
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="telefon" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Telefon</label>
-            <input id="telefon" v-model="kunde.Telefon" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
-          <div>
-            <label for="email" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Email</label>
-            <input id="email" v-model="kunde.Email" type="email" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
+          <FormInput
+            v-model="kunde.Telefon"
+            label="Telefon"
+            type="text"
+            placeholder="Telefonnummer eingeben..."
+          />
+          <FormInput
+            v-model="kunde.Email"
+            label="Email"
+            type="email"
+            placeholder="Email-Adresse eingeben..."
+          />
         </div>
-        <div>
-          <label for="adresse" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Adresse</label>
-          <textarea id="adresse" v-model="kunde.Adresse" rows="3" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
+        <FormTextarea
+          v-model="kunde.Adresse"
+          label="Adresse"
+          rows="3"
+          placeholder="Adresse eingeben..."
+        />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormInput
+            v-model="kunde.PLZ"
+            label="PLZ"
+            type="text"
+            placeholder="Postleitzahl eingeben..."
+          />
+          <FormInput
+            v-model="kunde.Ort"
+            label="Ort"
+            type="text"
+            placeholder="Ort eingeben..."
+          />
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormInput
+            v-model="kunde.Land"
+            label="Land"
+            type="text"
+            placeholder="Land eingeben..."
+          />
           <div>
-            <label for="plz" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">PLZ</label>
-            <input id="plz" v-model="kunde.PLZ" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
-          <div>
-            <label for="ort" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Ort</label>
-            <input id="ort" v-model="kunde.Ort" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="land" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Land</label>
-            <input id="land" v-model="kunde.Land" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
-          <div>
-            <label for="kundengruppe" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Kundengruppe</label>
+            <label for="kundengruppe" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kundengruppe</label>
             <Autocomplete
               id="kundengruppe"
               :items="kundengruppen"
@@ -71,32 +96,48 @@
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="umsatzsteuerID" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Umsatzsteuer ID</label>
-            <input id="umsatzsteuerID" v-model="kunde.UmsatzsteuerID" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" @input="validateVat">
-            <p v-if="vatError" class="text-red-500 text-sm mt-1">{{ vatError }}</p>
-          </div>
-          <div>
-            <label for="zahlungsbedingungen" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Zahlungsbedingungen</label>
-            <input id="zahlungsbedingungen" v-model="kunde.Zahlungsbedingungen" type="text" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-          </div>
+          <FormInput
+            v-model="kunde.UmsatzsteuerID"
+            label="Umsatzsteuer ID"
+            type="text"
+            placeholder="z.B. AT12345678"
+            :error="vatError"
+            @input="validateVat"
+          />
+          <FormInput
+            v-model="kunde.Zahlungsbedingungen"
+            label="Zahlungsbedingungen"
+            type="text"
+            placeholder="Zahlungsbedingungen eingeben..."
+          />
         </div>
         <div class="flex justify-end space-x-3 pt-6">
           <NuxtLink to="/kunden" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200 text-sm font-medium">Abbrechen</NuxtLink>
-          <button type="submit" class="bg-indigo-600 dark:bg-indigo-500 text-white px-5 py-2 rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-600 transition duration-200 text-sm font-medium">Speichern</button>
+          <LoadingButton type="submit" variant="primary" :loading="isSaving">
+            Speichern
+          </LoadingButton>
         </div>
       </form>
     </div>
+    <Toast
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      @close="toast.visible = false"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue'
-import Autocomplete from '~/components/Autocomplete.vue'
 
 const router = useRouter()
+
+const breadcrumbs = [
+  { label: 'Kunden', to: '/kunden' },
+  { label: 'Neuer Kunde' }
+]
 
 const kunde = ref({
   Kundennummer: '',
@@ -117,6 +158,12 @@ const kunde = ref({
 const kundengruppen = ref([])
 const kundengruppeSearch = ref('')
 const vatError = ref('')
+const isSaving = ref(false)
+const toast = ref({
+  visible: false,
+  message: '',
+  type: 'info'
+})
 
 async function fetchKundengruppen() {
   try {
@@ -146,8 +193,17 @@ function validateVat() {
   }
 }
 
+function showToast(message, type = 'info') {
+  toast.value = {
+    visible: true,
+    message,
+    type
+  }
+}
+
 async function saveKunde() {
   try {
+    isSaving.value = true
     // Ensure Firmenname is saved back to the correct field
     if (firmenname.value) {
       if (kunde.value.Firmenname !== undefined) {
@@ -160,14 +216,19 @@ async function saveKunde() {
       method: 'POST',
       body: kunde.value
     })
-    router.push('/kunden')
+    showToast('Kunde erfolgreich erstellt', 'success')
+    setTimeout(() => {
+      router.push('/kunden')
+    }, 1000)
   } catch (err) {
     console.error('Fehler beim Erstellen des Kunden:', err)
     if (err.status === 409) {
-      alert(err.data.message || 'Kundennummer bereits vorhanden. Bitte wählen Sie eine andere Kundennummer.')
+      showToast(err.data.message || 'Kundennummer bereits vorhanden. Bitte wählen Sie eine andere Kundennummer.', 'error')
     } else {
-      alert('Fehler beim Erstellen des Kunden: ' + (err.data?.message || err.message))
+      showToast('Fehler beim Erstellen des Kunden: ' + (err.data?.message || err.message), 'error')
     }
+  } finally {
+    isSaving.value = false
   }
 }
 

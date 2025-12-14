@@ -2,15 +2,15 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $t('hotel.rooms.title') }}</h1>
-        <p class="text-gray-600 mt-1">{{ $t('hotel.rooms.subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-gray-800">{{ t('hotel.rooms.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('hotel.rooms.subtitle') }}</p>
       </div>
       <NuxtLink
         to="/hotel/zimmer/create"
-        class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200 flex items-center gap-2"
+        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 flex items-center gap-2"
       >
         <span class="i-mdi-plus text-xl"></span>
-        {{ $t('hotel.rooms.newRoom') }}
+        {{ t('hotel.rooms.newRoom') }}
       </NuxtLink>
     </div>
 
@@ -18,41 +18,41 @@
     <div class="bg-white rounded-lg shadow-md p-4 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('common.search') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.search') }}</label>
           <input
             v-model="searchQuery"
             type="text"
-            :placeholder="$t('hotel.rooms.searchPlaceholder')"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            :placeholder="t('hotel.rooms.searchPlaceholder')"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @input="debounceSearch"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('hotel.rooms.category') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('hotel.rooms.category') }}</label>
           <select
             v-model="filterCategory"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @change="loadRooms"
           >
-            <option value="">{{ $t('common.all') }}</option>
+            <option value="">{{ t('common.all') }}</option>
             <option v-for="cat in categories" :key="cat.ZimmerkategorieID" :value="cat.ZimmerkategorieID">
               {{ cat.Name }}
             </option>
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('common.status') }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('common.status') }}</label>
           <select
             v-model="filterStatus"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             @change="loadRooms"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="Verfuegbar">{{ $t('hotel.rooms.status.available') }}</option>
-            <option value="Belegt">{{ $t('hotel.rooms.status.occupied') }}</option>
-            <option value="Reserviert">{{ $t('hotel.rooms.status.reserved') }}</option>
-            <option value="Reinigung">{{ $t('hotel.rooms.status.cleaning') }}</option>
-            <option value="Wartung">{{ $t('hotel.rooms.status.maintenance') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="Verfuegbar">{{ t('hotel.rooms.status.available') }}</option>
+            <option value="Belegt">{{ t('hotel.rooms.status.occupied') }}</option>
+            <option value="Reserviert">{{ t('hotel.rooms.status.reserved') }}</option>
+            <option value="Reinigung">{{ t('hotel.rooms.status.cleaning') }}</option>
+            <option value="Wartung">{{ t('hotel.rooms.status.maintenance') }}</option>
           </select>
         </div>
       </div>
@@ -60,7 +60,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
     </div>
 
     <!-- Rooms Table -->
@@ -68,12 +68,12 @@
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $t('hotel.rooms.roomNumber') }}</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $t('hotel.rooms.category') }}</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $t('hotel.rooms.floor') }}</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $t('common.status') }}</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $t('hotel.rooms.price') }}</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ $t('common.actions') }}</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ t('hotel.rooms.roomNumber') }}</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ t('hotel.rooms.category') }}</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ t('hotel.rooms.floor') }}</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ t('common.status') }}</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ t('hotel.rooms.price') }}</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ t('common.actions') }}</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -98,11 +98,11 @@
               <div class="text-sm text-gray-900">€ {{ parseFloat(room.PreisProNacht).toFixed(2) }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <NuxtLink :to="`/hotel/zimmer/edit/${room.ZimmerID}`" class="text-purple-600 hover:text-purple-900 mr-3">
-                {{ $t('common.edit') }}
+              <NuxtLink :to="`/hotel/zimmer/edit/${room.ZimmerID}`" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                {{ t('common.edit') }}
               </NuxtLink>
               <button @click="deleteRoom(room.ZimmerID)" class="text-red-600 hover:text-red-900">
-                {{ $t('common.delete') }}
+                {{ t('common.delete') }}
               </button>
             </td>
           </tr>
@@ -113,13 +113,13 @@
     <!-- Empty State -->
     <div v-if="!loading && rooms.length === 0" class="bg-white rounded-lg shadow-md p-12 text-center">
       <span class="i-mdi-bed text-6xl text-gray-300 mb-4"></span>
-      <p class="text-gray-500 text-lg">{{ $t('hotel.rooms.noRooms') }}</p>
+      <p class="text-gray-500 text-lg">{{ t('hotel.rooms.noRooms') }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-const { $t } = useNuxtApp()
+const { t } = useI18n()
 const loading = ref(true)
 const rooms = ref([])
 const categories = ref([])
@@ -154,7 +154,7 @@ async function loadRooms() {
     rooms.value = response.rooms || []
   } catch (error) {
     console.error('Error loading rooms:', error)
-    alert($t('hotel.rooms.errorLoading'))
+    alert(t('hotel.rooms.errorLoading'))
   } finally {
     loading.value = false
   }
@@ -168,14 +168,14 @@ function debounceSearch() {
 }
 
 async function deleteRoom(id) {
-  if (!confirm($t('hotel.rooms.confirmDelete'))) return
+  if (!confirm(t('hotel.rooms.confirmDelete'))) return
 
   try {
     await $fetch(`/api/hotel/zimmer?id=${id}`, { method: 'DELETE' })
     await loadRooms()
   } catch (error) {
     console.error('Error deleting room:', error)
-    alert(error.data?.message || $t('hotel.rooms.errorDeleting'))
+    alert(error.data?.message || t('hotel.rooms.errorDeleting'))
   }
 }
 
@@ -192,11 +192,11 @@ function getStatusClass(status) {
 
 function getStatusText(status) {
   const texts = {
-    'Verfuegbar': $t('hotel.rooms.status.available'),
-    'Belegt': $t('hotel.rooms.status.occupied'),
-    'Reserviert': $t('hotel.rooms.status.reserved'),
-    'Reinigung': $t('hotel.rooms.status.cleaning'),
-    'Wartung': $t('hotel.rooms.status.maintenance')
+    'Verfuegbar': t('hotel.rooms.status.available'),
+    'Belegt': t('hotel.rooms.status.occupied'),
+    'Reserviert': t('hotel.rooms.status.reserved'),
+    'Reinigung': t('hotel.rooms.status.cleaning'),
+    'Wartung': t('hotel.rooms.status.maintenance')
   }
   return texts[status] || status
 }

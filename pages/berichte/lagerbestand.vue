@@ -221,7 +221,7 @@ const getMovementTypeClass = (type) => {
     'Warenausgang': 'px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800',
     'Umlagerung': 'px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800',
     'Inventurkorrektur': 'px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800',
-    'Retoure': 'px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800',
+    'Retoure': 'px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800',
     'Schwund': 'px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800'
   }
   return classes[type] || 'px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800'

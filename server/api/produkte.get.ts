@@ -28,7 +28,8 @@ export default defineEventHandler(async (event) => {
             include: {
               Lieferanten: true
             }
-          }
+          },
+          Umsatzsteuersaetze: true
         }
       })
       if (!produkt) {
@@ -68,7 +69,8 @@ export default defineEventHandler(async (event) => {
               include: {
                 Lieferanten: true
               }
-            }
+            },
+            Umsatzsteuersaetze: true
           },
           take: limit,
           skip: offset
@@ -104,7 +106,8 @@ export default defineEventHandler(async (event) => {
             include: {
               Lieferanten: true
             }
-          }
+          },
+          Umsatzsteuersaetze: true
         },
           take: limit,
           skip: offset

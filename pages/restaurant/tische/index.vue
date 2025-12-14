@@ -2,15 +2,15 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $t('restaurant.tables.title') }}</h1>
-        <p class="text-gray-600 mt-1">{{ $t('restaurant.tables.subtitle') }}</p>
+        <h1 class="text-3xl font-bold text-gray-800">{{ t('restaurant.tables.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('restaurant.tables.subtitle') }}</p>
       </div>
       <NuxtLink
         to="/restaurant/tische/create"
         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center gap-2"
       >
         <span class="i-mdi-plus text-xl"></span>
-        {{ $t('restaurant.tables.newTable') }}
+        {{ t('restaurant.tables.newTable') }}
       </NuxtLink>
     </div>
 
@@ -19,26 +19,26 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.search') }}
+            {{ t('common.search') }}
           </label>
           <input
             v-model="searchQuery"
             type="text"
-            :placeholder="$t('restaurant.tables.searchPlaceholder')"
+            :placeholder="t('restaurant.tables.searchPlaceholder')"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @input="debounceSearch"
           />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('restaurant.tables.section') }}
+            {{ t('restaurant.tables.section') }}
           </label>
           <select
             v-model="filterBereich"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadTables"
           >
-            <option value="">{{ $t('common.all') }}</option>
+            <option value="">{{ t('common.all') }}</option>
             <option v-for="section in sections" :key="section.BereichID" :value="section.BereichID">
               {{ section.Name }}
             </option>
@@ -46,18 +46,18 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            {{ $t('common.status') }}
+            {{ t('common.status') }}
           </label>
           <select
             v-model="filterStatus"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             @change="loadTables"
           >
-            <option value="">{{ $t('common.all') }}</option>
-            <option value="Verfuegbar">{{ $t('restaurant.tables.status.available') }}</option>
-            <option value="Besetzt">{{ $t('restaurant.tables.status.occupied') }}</option>
-            <option value="Reserviert">{{ $t('restaurant.tables.status.reserved') }}</option>
-            <option value="Gesperrt">{{ $t('restaurant.tables.status.blocked') }}</option>
+            <option value="">{{ t('common.all') }}</option>
+            <option value="Verfuegbar">{{ t('restaurant.tables.status.available') }}</option>
+            <option value="Besetzt">{{ t('restaurant.tables.status.occupied') }}</option>
+            <option value="Reserviert">{{ t('restaurant.tables.status.reserved') }}</option>
+            <option value="Gesperrt">{{ t('restaurant.tables.status.blocked') }}</option>
           </select>
         </div>
       </div>
@@ -94,7 +94,7 @@
         <div class="flex items-center gap-4 text-sm text-gray-600">
           <div class="flex items-center gap-1">
             <span class="i-mdi-seat text-lg"></span>
-            <span>{{ table.Kapazitaet }} {{ $t('restaurant.tables.seats') }}</span>
+            <span>{{ table.Kapazitaet }} {{ t('restaurant.tables.seats') }}</span>
           </div>
         </div>
 
@@ -103,14 +103,14 @@
             @click.stop="deleteTable(table.TischID)"
             class="text-red-600 hover:text-red-800 text-sm font-medium"
           >
-            {{ $t('common.delete') }}
+            {{ t('common.delete') }}
           </button>
           <NuxtLink
             :to="`/restaurant/tische/edit/${table.TischID}`"
             @click.stop
             class="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
-            {{ $t('common.edit') }}
+            {{ t('common.edit') }}
           </NuxtLink>
         </div>
       </div>
@@ -119,7 +119,7 @@
     <!-- Empty State -->
     <div v-if="!loading && tables.length === 0" class="text-center py-12">
       <span class="i-mdi-table-furniture text-6xl text-gray-400 mb-4"></span>
-      <p class="text-gray-500 text-lg">{{ $t('restaurant.tables.noTables') }}</p>
+      <p class="text-gray-500 text-lg">{{ t('restaurant.tables.noTables') }}</p>
     </div>
 
     <!-- Pagination -->
@@ -129,14 +129,14 @@
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.first') }}
+        {{ t('pagination.first') }}
       </button>
       <button
         @click="goToPage(offset - limit)"
         :disabled="offset === 0"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.previous') }}
+        {{ t('pagination.previous') }}
       </button>
       <span class="px-3 py-1">
         {{ Math.floor(offset / limit) + 1 }} / {{ Math.ceil(total / limit) }}
@@ -146,21 +146,21 @@
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.next') }}
+        {{ t('pagination.next') }}
       </button>
       <button
         @click="goToPage(Math.floor(total / limit) * limit)"
         :disabled="offset + limit >= total"
         class="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ $t('pagination.last') }}
+        {{ t('pagination.last') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-const { $t } = useNuxtApp()
+const { t } = useI18n()
 const loading = ref(true)
 const tables = ref([])
 const sections = ref([])
@@ -217,13 +217,13 @@ const goToPage = (newOffset) => {
 }
 
 const deleteTable = async (id) => {
-  if (!confirm($t('restaurant.tables.confirmDelete'))) return
+  if (!confirm(t('restaurant.tables.confirmDelete'))) return
 
   try {
     await $fetch(`/api/restaurant/tische?id=${id}`, { method: 'DELETE' })
     await loadTables()
   } catch (error) {
-    alert(error.data?.message || $t('common.error'))
+    alert(error.data?.message || t('common.error'))
   }
 }
 
@@ -239,10 +239,10 @@ const getStatusClass = (status) => {
 
 const getStatusText = (status) => {
   const texts = {
-    Verfuegbar: $t('restaurant.tables.status.available'),
-    Besetzt: $t('restaurant.tables.status.occupied'),
-    Reserviert: $t('restaurant.tables.status.reserved'),
-    Gesperrt: $t('restaurant.tables.status.blocked')
+    Verfuegbar: t('restaurant.tables.status.available'),
+    Besetzt: t('restaurant.tables.status.occupied'),
+    Reserviert: t('restaurant.tables.status.reserved'),
+    Gesperrt: t('restaurant.tables.status.blocked')
   }
   return texts[status] || status
 }

@@ -8,26 +8,26 @@ datasource db {
 }
 
 model Benutzer {
-  BenutzerID      Int               @id @default(autoincrement())
-  Benutzername    String            @unique(map: "Benutzername") @db.VarChar(50)
-  PasswortHash    String            @db.VarChar(255)
-  Vorname         String?           @db.VarChar(100)
-  Nachname        String?           @db.VarChar(100)
-  Rolle           String            @db.VarChar(50)
-  Erstelldatum    DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung DateTime?         @default(now()) @db.Timestamp(0)
-  IstAktiv        Boolean?          @default(true)
-  Bestellungen    Bestellungen[]
-  Lagerbewegungen Lagerbewegungen[]
-  Rechnungen      Rechnungen[]
-  Retouren        Retouren[]
-  Zahlungen       Zahlungen[]
-  Kassenbuchungen Kassenbuchungen[]
-  Reservierungen  Reservierungen[]
+  BenutzerID             Int                      @id @default(autoincrement())
+  Benutzername           String                   @unique(map: "Benutzername") @db.VarChar(50)
+  PasswortHash           String                   @db.VarChar(255)
+  Vorname                String?                  @db.VarChar(100)
+  Nachname               String?                  @db.VarChar(100)
+  Rolle                  String                   @db.VarChar(50)
+  Erstelldatum           DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung        DateTime?                @default(now()) @db.Timestamp(0)
+  IstAktiv               Boolean?                 @default(true)
+  Bestellungen           Bestellungen[]
+  Lagerbewegungen        Lagerbewegungen[]
+  Rechnungen             Rechnungen[]
+  Retouren               Retouren[]
+  Zahlungen              Zahlungen[]
+  Kassenbuchungen        Kassenbuchungen[]
+  Reservierungen         Reservierungen[]
   RestaurantBestellungen RestaurantBestellungen[]
-  Angebote        Angebote[]
-  HotelBuchungen  HotelBuchungen[]
-  HotelZusatzleistungen HotelZusatzleistungen[]
+  Angebote               Angebote[]
+  HotelBuchungen         HotelBuchungen[]
+  HotelZusatzleistungen  HotelZusatzleistungen[]
 }
 
 model Bestand {
@@ -145,33 +145,33 @@ model Gutschriften {
 }
 
 model Kunden {
-  KundenID              Int                     @id @default(autoincrement())
-  Kundennummer          String?                 @unique(map: "Kundennummer") @db.VarChar(50)
-  KundengruppeID        Int?
-  Firmenname            String?                 @db.VarChar(255)
-  Anrede                Kunden_Anrede?
-  Vorname               String?                 @db.VarChar(100)
-  Nachname              String?                 @db.VarChar(100)
-  Adresse               String                  @db.VarChar(255)
-  PLZ                   String                  @db.VarChar(10)
-  Ort                   String                  @db.VarChar(100)
-  Land                  String                  @db.VarChar(100)
-  Telefon               String?                 @db.VarChar(50)
-  Email                 String?                 @unique(map: "Email") @db.VarChar(255)
-  UmsatzsteuerID        String?                 @db.VarChar(20)
-  Kundenstatus          Kunden_Kundenstatus?    @default(Aktiv)
-  Zahlungsbedingungen   String?                 @db.Text
-  Erstelldatum          DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung       DateTime?               @default(now()) @db.Timestamp(0)
-  Bestellungen          Bestellungen[]
-  Gutschriften          Gutschriften[]
-  Kundengruppen         Kundengruppen?          @relation(fields: [KundengruppeID], references: [KundengruppeID], onDelete: NoAction, onUpdate: NoAction, map: "Kunden_ibfk_1")
-  KundenRabattAnwendung KundenRabattAnwendung[]
-  Kundenkarten          Kundenkarten[]
-  Rechnungen            Rechnungen[]
-  Retouren              Retouren[]
-  Kassenbuchungen       Kassenbuchungen[]
-  Reservierungen        Reservierungen[]
+  KundenID               Int                      @id @default(autoincrement())
+  Kundennummer           String?                  @unique(map: "Kundennummer") @db.VarChar(50)
+  KundengruppeID         Int?
+  Firmenname             String?                  @db.VarChar(255)
+  Anrede                 Kunden_Anrede?
+  Vorname                String?                  @db.VarChar(100)
+  Nachname               String?                  @db.VarChar(100)
+  Adresse                String                   @db.VarChar(255)
+  PLZ                    String                   @db.VarChar(10)
+  Ort                    String                   @db.VarChar(100)
+  Land                   String                   @db.VarChar(100)
+  Telefon                String?                  @db.VarChar(50)
+  Email                  String?                  @unique(map: "Email") @db.VarChar(255)
+  UmsatzsteuerID         String?                  @db.VarChar(20)
+  Kundenstatus           Kunden_Kundenstatus?     @default(Aktiv)
+  Zahlungsbedingungen    String?                  @db.Text
+  Erstelldatum           DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung        DateTime?                @default(now()) @db.Timestamp(0)
+  Bestellungen           Bestellungen[]
+  Gutschriften           Gutschriften[]
+  Kundengruppen          Kundengruppen?           @relation(fields: [KundengruppeID], references: [KundengruppeID], onDelete: NoAction, onUpdate: NoAction, map: "Kunden_ibfk_1")
+  KundenRabattAnwendung  KundenRabattAnwendung[]
+  Kundenkarten           Kundenkarten[]
+  Rechnungen             Rechnungen[]
+  Retouren               Retouren[]
+  Kassenbuchungen        Kassenbuchungen[]
+  Reservierungen         Reservierungen[]
   RestaurantBestellungen RestaurantBestellungen[]
   Preisvertraege        Preisvertraege[]
   KundenVertreter       KundenVertreter[]
@@ -182,6 +182,14 @@ model Kunden {
   ShopBewertungen       ShopBewertungen[]
   HotelBuchungen        HotelBuchungen[]
   Adressen              Adressen[]
+  Preisvertraege         Preisvertraege[]
+  KundenVertreter        KundenVertreter[]
+  Kreditlimits           Kreditlimits?
+  Angebote               Angebote[]
+  ShopWarenkorb          ShopWarenkorb[]
+  ShopBestellungen       ShopBestellungen[]
+  ShopBewertungen        ShopBewertungen[]
+  HotelBuchungen         HotelBuchungen[]
 
   @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
   @@index([Nachname, Vorname], map: "idx_kunden_name")
@@ -350,31 +358,32 @@ model ProduktZuKategorie {
 }
 
 model Produkte {
-  ProduktID           Int                   @id @default(autoincrement())
-  Produktname         String                @db.VarChar(255)
-  Beschreibung        String?               @db.Text
-  Artikelnummer       String                @unique(map: "Artikelnummer") @db.VarChar(50)
-  EAN_Code            String?               @unique(map: "EAN_Code") @db.VarChar(50)
-  EinheitID           Int
-  UmsatzsteuersatzID  Int
-  Hersteller          String?               @db.VarChar(255)
-  Gewicht             Decimal?              @db.Decimal(10, 3)
-  Volumen             Decimal?              @db.Decimal(10, 3)
-  Erstelldatum        DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?             @default(now()) @db.Timestamp(0)
-  Bestand             Bestand[]
-  Bestellpositionen   Bestellpositionen[]
-  Preise              Preise[]
-  ProduktLieferanten  ProduktLieferanten[]
-  ProduktZuKategorie  ProduktZuKategorie[]
-  Umsatzsteuersaetze  Umsatzsteuersaetze    @relation(fields: [UmsatzsteuersatzID], references: [UmsatzsteuersatzID], onDelete: NoAction, onUpdate: NoAction, map: "Produkte_ibfk_1")
-  Einheiten           Einheiten             @relation(fields: [EinheitID], references: [EinheitID], onDelete: NoAction, onUpdate: NoAction, map: "Produkte_ibfk_2")
-  Rechnungspositionen Rechnungspositionen[]
-  Retourenpositionen  Retourenpositionen[]
-  ProduktBilder       ProduktBilder[]
+  ProduktID                   Int                           @id @default(autoincrement())
+  Produktname                 String                        @db.VarChar(255)
+  Beschreibung                String?                       @db.Text
+  Artikelnummer               String                        @unique(map: "Artikelnummer") @db.VarChar(50)
+  EAN_Code                    String?                       @unique(map: "EAN_Code") @db.VarChar(50)
+  EinheitID                   Int
+  UmsatzsteuersatzID          Int
+  Hersteller                  String?                       @db.VarChar(255)
+  Gewicht                     Decimal?                      @db.Decimal(10, 3)
+  Volumen                     Decimal?                      @db.Decimal(10, 3)
+  Erstelldatum                DateTime?                     @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung             DateTime?                     @default(now()) @db.Timestamp(0)
+  Bestand                     Bestand[]
+  Bestellpositionen           Bestellpositionen[]
+  Preise                      Preise[]
+  ProduktLieferanten          ProduktLieferanten[]
+  ProduktZuKategorie          ProduktZuKategorie[]
+  Umsatzsteuersaetze          Umsatzsteuersaetze            @relation(fields: [UmsatzsteuersatzID], references: [UmsatzsteuersatzID], onDelete: NoAction, onUpdate: NoAction, map: "Produkte_ibfk_1")
+  Einheiten                   Einheiten                     @relation(fields: [EinheitID], references: [EinheitID], onDelete: NoAction, onUpdate: NoAction, map: "Produkte_ibfk_2")
+  Rechnungspositionen         Rechnungspositionen[]
+  Retourenpositionen          Retourenpositionen[]
+  ProduktBilder               ProduktBilder[]
   RestaurantBestellpositionen RestaurantBestellpositionen[]
-  Vertragspositionen  Vertragspositionen[]
-  Angebotspositionen  Angebotspositionen[]
+  Vertragspositionen          Vertragspositionen[]
+  Angebotspositionen          Angebotspositionen[]
+  shopProduktes               ShopProdukte[]
 
   @@index([EinheitID], map: "idx_produkte_einheitid")
   @@index([Produktname], map: "idx_produkte_name")
@@ -382,22 +391,22 @@ model Produkte {
 }
 
 model ProduktBilder {
-  BildID          Int       @id @default(autoincrement())
-  ProduktID       Int
-  BildPfad        String    @db.VarChar(255)
-  IstHauptbild    Boolean   @default(false)
-  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
-  Produkte        Produkte  @relation(fields: [ProduktID], references: [ProduktID], onDelete: Cascade, onUpdate: NoAction, map: "ProduktBilder_ibfk_1")
+  BildID       Int       @id @default(autoincrement())
+  ProduktID    Int
+  BildPfad     String    @db.VarChar(255)
+  IstHauptbild Boolean   @default(false)
+  Erstelldatum DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Produkte     Produkte  @relation(fields: [ProduktID], references: [ProduktID], onDelete: Cascade, onUpdate: NoAction, map: "ProduktBilder_ibfk_1")
 
   @@index([ProduktID], map: "idx_produktbilder_produktid")
 }
 
 model KategorieBilder {
-  BildID          Int               @id @default(autoincrement())
-  KategorieID     Int
-  BildPfad        String            @db.VarChar(255)
-  IstHauptbild    Boolean           @default(false)
-  Erstelldatum    DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  BildID            Int               @id @default(autoincrement())
+  KategorieID       Int
+  BildPfad          String            @db.VarChar(255)
+  IstHauptbild      Boolean           @default(false)
+  Erstelldatum      DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
   Produktkategorien Produktkategorien @relation(fields: [KategorieID], references: [KategorieID], onDelete: Cascade, onUpdate: NoAction, map: "KategorieBilder_ibfk_1")
 
   @@index([KategorieID], map: "idx_kategoriebilder_kategorieid")
@@ -453,38 +462,38 @@ model Rabattstaffeln {
 }
 
 model Rechnungen {
-  RechnungsID           Int                        @id @default(autoincrement())
-  BestellID             Int?
-  KundenID              Int
-  ErstelltVonBenutzerID Int?
-  Rechnungsnummer       String                     @unique(map: "Rechnungsnummer") @db.VarChar(50)
-  Rechnungsdatum        DateTime                   @db.Date
-  Faelligkeitsdatum     DateTime                   @db.Date
-  Rechnungsadresse      String?                    @db.Text
-  Zahlungsstatus        Rechnungen_Zahlungsstatus? @default(Offen)
-  GesamtbetragNetto     Decimal                    @db.Decimal(10, 2)
-  MwSt_Gesamt           Decimal?                   @db.Decimal(10, 2)
-  GesamtrabattBetrag    Decimal?                   @default(0.00) @db.Decimal(10, 2)
-  GesamtbetragBrutto    Decimal                    @db.Decimal(10, 2)
-  Mahnstufe             Int?                       @default(0)
-  Waehrung              String?                    @default("EUR") @db.VarChar(3)
-  Kommentare            String?                    @db.Text
-  StorniertAm           DateTime?                  @db.Timestamp(0)
-  Erstelldatum          DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung       DateTime?                  @default(now()) @db.Timestamp(0)
-  Gutschriften          Gutschriften[]
-  Benutzer              Benutzer?                  @relation(fields: [ErstelltVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_1")
-  Kunden                Kunden                     @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_2")
-  Bestellungen          Bestellungen?              @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_3")
-  RechnungsRabatte      RechnungsRabatte[]
-  Rechnungspositionen   Rechnungspositionen[]
-  Retouren              Retouren[]
-  Zahlungen             Zahlungen[]
-  Kassenbuchungen       Kassenbuchungen[]
+  RechnungsID            Int                        @id @default(autoincrement())
+  BestellID              Int?
+  KundenID               Int
+  ErstelltVonBenutzerID  Int?
+  Rechnungsnummer        String                     @unique(map: "Rechnungsnummer") @db.VarChar(50)
+  Rechnungsdatum         DateTime                   @db.Date
+  Faelligkeitsdatum      DateTime                   @db.Date
+  Rechnungsadresse       String?                    @db.Text
+  Zahlungsstatus         Rechnungen_Zahlungsstatus? @default(Offen)
+  GesamtbetragNetto      Decimal                    @db.Decimal(10, 2)
+  MwSt_Gesamt            Decimal?                   @db.Decimal(10, 2)
+  GesamtrabattBetrag     Decimal?                   @default(0.00) @db.Decimal(10, 2)
+  GesamtbetragBrutto     Decimal                    @db.Decimal(10, 2)
+  Mahnstufe              Int?                       @default(0)
+  Waehrung               String?                    @default("EUR") @db.VarChar(3)
+  Kommentare             String?                    @db.Text
+  StorniertAm            DateTime?                  @db.Timestamp(0)
+  Erstelldatum           DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung        DateTime?                  @default(now()) @db.Timestamp(0)
+  Gutschriften           Gutschriften[]
+  Benutzer               Benutzer?                  @relation(fields: [ErstelltVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_1")
+  Kunden                 Kunden                     @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_2")
+  Bestellungen           Bestellungen?              @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Rechnungen_ibfk_3")
+  RechnungsRabatte       RechnungsRabatte[]
+  Rechnungspositionen    Rechnungspositionen[]
+  Retouren               Retouren[]
+  Zahlungen              Zahlungen[]
+  Kassenbuchungen        Kassenbuchungen[]
   RestaurantBestellungen RestaurantBestellungen[]
-  Provisionen           Provisionen[]
-  Mahnungen             Mahnungen[]
-  HotelBuchungen        HotelBuchungen[]
+  Provisionen            Provisionen[]
+  Mahnungen              Mahnungen[]
+  HotelBuchungen         HotelBuchungen[]
 
   @@index([BestellID], map: "BestellID")
   @@index([ErstelltVonBenutzerID], map: "ErstelltVonBenutzerID")
@@ -768,40 +777,40 @@ enum Adressen_AdressTyp {
 }
 
 model Kassen {
-  KassenID           Int                  @id @default(autoincrement())
-  Kassenbezeichnung  String               @db.VarChar(100)
-  StandortID         Int?
-  Kassennummer       String               @unique(map: "Kassennummer") @db.VarChar(50)
-  Anfangsbestand     Decimal              @default(0.00) @db.Decimal(10, 2)
-  AktuellerBestand   Decimal              @default(0.00) @db.Decimal(10, 2)
-  Waehrung           String?              @default("EUR") @db.VarChar(3)
-  Status             Kassen_Status?       @default(Aktiv)
-  Erstelldatum       DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung    DateTime?            @default(now()) @db.Timestamp(0)
-  Standorte          Standorte?           @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Kassen_ibfk_1")
-  Kassenbuchungen    Kassenbuchungen[]
+  KassenID          Int               @id @default(autoincrement())
+  Kassenbezeichnung String            @db.VarChar(100)
+  StandortID        Int?
+  Kassennummer      String            @unique(map: "Kassennummer") @db.VarChar(50)
+  Anfangsbestand    Decimal           @default(0.00) @db.Decimal(10, 2)
+  AktuellerBestand  Decimal           @default(0.00) @db.Decimal(10, 2)
+  Waehrung          String?           @default("EUR") @db.VarChar(3)
+  Status            Kassen_Status?    @default(Aktiv)
+  Erstelldatum      DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung   DateTime?         @default(now()) @db.Timestamp(0)
+  Standorte         Standorte?        @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Kassen_ibfk_1")
+  Kassenbuchungen   Kassenbuchungen[]
 
   @@index([StandortID], map: "idx_kassen_standortid")
 }
 
 model Kassenbuchungen {
-  BuchungsID          Int                        @id @default(autoincrement())
-  KassenID            Int
-  BenutzerID          Int?
-  RechnungsID         Int?
-  Buchungsdatum       DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  Buchungstyp         Kassenbuchungen_Buchungstyp
-  Betrag              Decimal                    @db.Decimal(10, 2)
-  Zahlungsart         Kassenbuchungen_Zahlungsart
-  Beschreibung        String?                    @db.Text
-  Belegnummer         String?                    @db.VarChar(100)
-  KundenID            Int?
-  Erstelldatum        DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?                  @default(now()) @db.Timestamp(0)
-  Kassen              Kassen                     @relation(fields: [KassenID], references: [KassenID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_1")
-  Benutzer            Benutzer?                  @relation(fields: [BenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_2")
-  Rechnungen          Rechnungen?                @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_3")
-  Kunden              Kunden?                    @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_4")
+  BuchungsID      Int                         @id @default(autoincrement())
+  KassenID        Int
+  BenutzerID      Int?
+  RechnungsID     Int?
+  Buchungsdatum   DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Buchungstyp     Kassenbuchungen_Buchungstyp
+  Betrag          Decimal                     @db.Decimal(10, 2)
+  Zahlungsart     Kassenbuchungen_Zahlungsart
+  Beschreibung    String?                     @db.Text
+  Belegnummer     String?                     @db.VarChar(100)
+  KundenID        Int?
+  Erstelldatum    DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?                   @default(now()) @db.Timestamp(0)
+  Kassen          Kassen                      @relation(fields: [KassenID], references: [KassenID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_1")
+  Benutzer        Benutzer?                   @relation(fields: [BenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_2")
+  Rechnungen      Rechnungen?                 @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_3")
+  Kunden          Kunden?                     @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Kassenbuchungen_ibfk_4")
 
   @@index([KassenID], map: "idx_kassenbuchungen_kassenid")
   @@index([BenutzerID], map: "idx_kassenbuchungen_benutzerid")
@@ -827,22 +836,22 @@ enum Kassenbuchungen_Buchungstyp {
 enum Kassenbuchungen_Zahlungsart {
   Bar
   Kreditkarte
-  EC_Karte        @map("EC-Karte")
+  EC_Karte    @map("EC-Karte")
   Gutschein
   Sonstige
 }
 
 // Module System with Audience Templates
 model Projekt {
-  ProjektID       Int              @id @default(autoincrement())
-  ProjektName     String           @db.VarChar(255)
-  Beschreibung    String?          @db.Text
+  ProjektID          Int             @id @default(autoincrement())
+  ProjektName        String          @db.VarChar(255)
+  Beschreibung       String?         @db.Text
   AudienceTemplateID Int?
-  Firmenname      String?          @db.VarChar(255)
-  Branche         String?          @db.VarChar(100)
-  Status          Projekt_Status?  @default(Aktiv)
-  Erstelldatum    DateTime?        @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung DateTime?        @default(now()) @db.Timestamp(0)
+  Firmenname         String?         @db.VarChar(255)
+  Branche            String?         @db.VarChar(100)
+  Status             Projekt_Status? @default(Aktiv)
+  Erstelldatum       DateTime?       @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung    DateTime?       @default(now()) @db.Timestamp(0)
 
   AudienceTemplate AudienceTemplate? @relation(fields: [AudienceTemplateID], references: [TemplateID], onDelete: NoAction, onUpdate: NoAction, map: "Projekt_ibfk_1")
   ProjektModule    ProjektModule[]
@@ -851,47 +860,47 @@ model Projekt {
 }
 
 model AudienceTemplate {
-  TemplateID      Int                     @id @default(autoincrement())
-  Name            String                  @unique(map: "Name") @db.VarChar(100)
-  DisplayName     String                  @db.VarChar(150)
-  Beschreibung    String?                 @db.Text
-  Icon            String?                 @db.VarChar(100)
-  Farbe           String?                 @db.VarChar(50)
-  SortOrder       Int?                    @default(0)
-  IstAktiv        Boolean?                @default(true)
-  Erstelldatum    DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung DateTime?               @default(now()) @db.Timestamp(0)
+  TemplateID      Int       @id @default(autoincrement())
+  Name            String    @unique(map: "Name") @db.VarChar(100)
+  DisplayName     String    @db.VarChar(150)
+  Beschreibung    String?   @db.Text
+  Icon            String?   @db.VarChar(100)
+  Farbe           String?   @db.VarChar(50)
+  SortOrder       Int?      @default(0)
+  IstAktiv        Boolean?  @default(true)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
 
   ModuleKonfigurationen ModuleKonfiguration[]
   Projekte              Projekt[]
 }
 
 model ModuleDefinition {
-  ModulID         Int                     @id @default(autoincrement())
-  ModulName       String                  @unique(map: "ModulName") @db.VarChar(100)
-  DisplayName     String                  @db.VarChar(150)
-  Beschreibung    String?                 @db.Text
-  Icon            String?                 @db.VarChar(100)
-  Kategorie       String?                 @db.VarChar(100)
-  Route           String?                 @db.VarChar(255)
-  SortOrder       Int?                    @default(0)
-  IstSystem       Boolean?                @default(false)
-  IstAktiv        Boolean?                @default(true)
-  Erstelldatum    DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung DateTime?               @default(now()) @db.Timestamp(0)
+  ModulID         Int       @id @default(autoincrement())
+  ModulName       String    @unique(map: "ModulName") @db.VarChar(100)
+  DisplayName     String    @db.VarChar(150)
+  Beschreibung    String?   @db.Text
+  Icon            String?   @db.VarChar(100)
+  Kategorie       String?   @db.VarChar(100)
+  Route           String?   @db.VarChar(255)
+  SortOrder       Int?      @default(0)
+  IstSystem       Boolean?  @default(false)
+  IstAktiv        Boolean?  @default(true)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
 
   ModuleKonfigurationen ModuleKonfiguration[]
   ProjektModule         ProjektModule[]
 }
 
 model ModuleKonfiguration {
-  KonfigID        Int                            @id @default(autoincrement())
-  TemplateID      Int
-  ModulID         Int
-  Prioritaet      ModuleKonfiguration_Prioritaet @default(Optional)
-  IstAktiviert    Boolean?                       @default(true)
-  Beschreibung    String?                        @db.Text
-  Erstelldatum    DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  KonfigID     Int                            @id @default(autoincrement())
+  TemplateID   Int
+  ModulID      Int
+  Prioritaet   ModuleKonfiguration_Prioritaet @default(Optional)
+  IstAktiviert Boolean?                       @default(true)
+  Beschreibung String?                        @db.Text
+  Erstelldatum DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
 
   AudienceTemplate AudienceTemplate @relation(fields: [TemplateID], references: [TemplateID], onDelete: Cascade, onUpdate: NoAction, map: "ModuleKonfiguration_ibfk_1")
   ModulDefinition  ModuleDefinition @relation(fields: [ModulID], references: [ModulID], onDelete: Cascade, onUpdate: NoAction, map: "ModuleKonfiguration_ibfk_2")
@@ -924,7 +933,7 @@ enum Projekt_Status {
 }
 
 enum ModuleKonfiguration_Prioritaet {
-  Erforderlich  @map("Erforderlich")
+  Erforderlich @map("Erforderlich")
   Wichtig
   Optional
   Versteckt
@@ -942,7 +951,7 @@ model Tischbereiche {
   Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
   LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
 
-  Standorte       Standorte?        @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Tischbereiche_ibfk_1")
+  Standorte        Standorte?         @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Tischbereiche_ibfk_1")
   RestaurantTische RestaurantTische[]
 
   @@index([StandortID], map: "idx_tischbereiche_standortid")
@@ -962,8 +971,8 @@ model RestaurantTische {
   Erstelldatum    DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
   LetzteAenderung DateTime?                @default(now()) @db.Timestamp(0)
 
-  Tischbereiche        Tischbereiche?         @relation(fields: [BereichID], references: [BereichID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantTische_ibfk_1")
-  Reservierungen       Reservierungen[]
+  Tischbereiche          Tischbereiche?           @relation(fields: [BereichID], references: [BereichID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantTische_ibfk_1")
+  Reservierungen         Reservierungen[]
   RestaurantBestellungen RestaurantBestellungen[]
 
   @@index([BereichID], map: "idx_restauranttische_bereichid")
@@ -971,20 +980,20 @@ model RestaurantTische {
 }
 
 model Reservierungen {
-  ReservierungsID Int                      @id @default(autoincrement())
-  TischID         Int
-  KundenID        Int?
-  Gastname        String                   @db.VarChar(255)
-  Telefon         String?                  @db.VarChar(50)
-  Email           String?                  @db.VarChar(255)
-  PersonenAnzahl  Int
-  Reservierungsdatum DateTime              @db.DateTime
-  Dauer           Int?                     @default(120)
-  Status          Reservierungen_Status?   @default(Bestaetigt)
-  Notizen         String?                  @db.Text
+  ReservierungsID      Int                    @id @default(autoincrement())
+  TischID              Int
+  KundenID             Int?
+  Gastname             String                 @db.VarChar(255)
+  Telefon              String?                @db.VarChar(50)
+  Email                String?                @db.VarChar(255)
+  PersonenAnzahl       Int
+  Reservierungsdatum   DateTime               @db.DateTime
+  Dauer                Int?                   @default(120)
+  Status               Reservierungen_Status? @default(Bestaetigt)
+  Notizen              String?                @db.Text
   ErfasstVonBenutzerID Int?
-  Erstelldatum    DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung DateTime?                @default(now()) @db.Timestamp(0)
+  Erstelldatum         DateTime?              @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung      DateTime?              @default(now()) @db.Timestamp(0)
 
   RestaurantTische RestaurantTische @relation(fields: [TischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "Reservierungen_ibfk_1")
   Kunden           Kunden?          @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Reservierungen_ibfk_2")
@@ -998,24 +1007,24 @@ model Reservierungen {
 }
 
 model RestaurantBestellungen {
-  RestaurantBestellID Int                            @id @default(autoincrement())
+  RestaurantBestellID Int                                 @id @default(autoincrement())
   TischID             Int
   KundenID            Int?
   BenutzerID          Int?
-  Bestellnummer       String?                        @unique(map: "Bestellnummer_Restaurant") @db.VarChar(50)
-  Bestelldatum        DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
-  PersonenAnzahl      Int?                           @default(1)
-  Status              RestaurantBestellungen_Status? @default(Offen)
-  GesamtbetragNetto   Decimal?                       @default(0.00) @db.Decimal(10, 2)
-  GesamtbetragBrutto  Decimal?                       @default(0.00) @db.Decimal(10, 2)
-  MwStGesamt          Decimal?                       @default(0.00) @db.Decimal(10, 2)
-  Trinkgeld           Decimal?                       @default(0.00) @db.Decimal(10, 2)
+  Bestellnummer       String?                             @unique(map: "Bestellnummer_Restaurant") @db.VarChar(50)
+  Bestelldatum        DateTime?                           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  PersonenAnzahl      Int?                                @default(1)
+  Status              RestaurantBestellungen_Status?      @default(Offen)
+  GesamtbetragNetto   Decimal?                            @default(0.00) @db.Decimal(10, 2)
+  GesamtbetragBrutto  Decimal?                            @default(0.00) @db.Decimal(10, 2)
+  MwStGesamt          Decimal?                            @default(0.00) @db.Decimal(10, 2)
+  Trinkgeld           Decimal?                            @default(0.00) @db.Decimal(10, 2)
   Zahlungsart         RestaurantBestellungen_Zahlungsart?
   RechnungsID         Int?
-  Notizen             String?                        @db.Text
-  AbgeschlossenAm     DateTime?                      @db.Timestamp(0)
-  Erstelldatum        DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?                      @default(now()) @db.Timestamp(0)
+  Notizen             String?                             @db.Text
+  AbgeschlossenAm     DateTime?                           @db.Timestamp(0)
+  Erstelldatum        DateTime?                           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?                           @default(now()) @db.Timestamp(0)
 
   RestaurantTische            RestaurantTische              @relation(fields: [TischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_1")
   Kunden                      Kunden?                       @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_2")
@@ -1032,22 +1041,22 @@ model RestaurantBestellungen {
 }
 
 model RestaurantBestellpositionen {
-  PositionID              Int                                  @id @default(autoincrement())
-  RestaurantBestellID     Int
-  ProduktID               Int
-  Menge                   Decimal                              @db.Decimal(10, 2)
-  EinzelpreisNetto        Decimal                              @db.Decimal(10, 2)
-  GesamtpreisNetto        Decimal                              @db.Decimal(10, 2)
-  MwStSatz                Decimal                              @db.Decimal(5, 2)
-  MwStBetrag              Decimal                              @db.Decimal(10, 2)
-  Status                  RestaurantBestellpositionen_Status?  @default(Bestellt)
-  Notizen                 String?                              @db.Text
-  KuecheNotizen           String?                              @db.Text
-  BestelltUm              DateTime?                            @default(dbgenerated("(now())")) @db.Timestamp(0)
-  ZubereitetUm            DateTime?                            @db.Timestamp(0)
-  ServiertUm              DateTime?                            @db.Timestamp(0)
-  Erstelldatum            DateTime?                            @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung         DateTime?                            @default(now()) @db.Timestamp(0)
+  PositionID          Int                                 @id @default(autoincrement())
+  RestaurantBestellID Int
+  ProduktID           Int
+  Menge               Decimal                             @db.Decimal(10, 2)
+  EinzelpreisNetto    Decimal                             @db.Decimal(10, 2)
+  GesamtpreisNetto    Decimal                             @db.Decimal(10, 2)
+  MwStSatz            Decimal                             @db.Decimal(5, 2)
+  MwStBetrag          Decimal                             @db.Decimal(10, 2)
+  Status              RestaurantBestellpositionen_Status? @default(Bestellt)
+  Notizen             String?                             @db.Text
+  KuecheNotizen       String?                             @db.Text
+  BestelltUm          DateTime?                           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  ZubereitetUm        DateTime?                           @db.Timestamp(0)
+  ServiertUm          DateTime?                           @db.Timestamp(0)
+  Erstelldatum        DateTime?                           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?                           @default(now()) @db.Timestamp(0)
 
   RestaurantBestellungen RestaurantBestellungen @relation(fields: [RestaurantBestellID], references: [RestaurantBestellID], onDelete: Cascade, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_1")
   Produkte               Produkte               @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_2")
@@ -1091,49 +1100,51 @@ enum RestaurantBestellpositionen_Status {
 enum RestaurantBestellungen_Zahlungsart {
   Bar
   Kreditkarte
-  EC_Karte @map("EC-Karte")
+  EC_Karte    @map("EC-Karte")
   Rechnung
   Gutschein
+}
+
 // ========================================
 // WHOLESALE MODULE EXTENSIONS
 // ========================================
 
 // Price Contract Management
 model Preisvertraege {
-  VertragsID          Int                        @id @default(autoincrement())
+  VertragsID          Int                    @id @default(autoincrement())
   KundenID            Int
-  Vertragsnummer      String                     @unique(map: "Vertragsnummer") @db.VarChar(50)
-  Vertragsbezeichnung String                     @db.VarChar(255)
-  Beschreibung        String?                    @db.Text
-  GueltigAb           DateTime                   @db.Date
-  GueltigBis          DateTime?                  @db.Date
-  Status              Preisvertraege_Status?     @default(Aktiv)
-  Zahlungsbedingungen String?                    @db.Text
-  Mindestabnahme      Decimal?                   @db.Decimal(10, 2)
-  Waehrung            String?                    @default("EUR") @db.VarChar(3)
-  Kommentare          String?                    @db.Text
-  Erstelldatum        DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?                  @default(now()) @db.Timestamp(0)
+  Vertragsnummer      String                 @unique(map: "Vertragsnummer") @db.VarChar(50)
+  Vertragsbezeichnung String                 @db.VarChar(255)
+  Beschreibung        String?                @db.Text
+  GueltigAb           DateTime               @db.Date
+  GueltigBis          DateTime?              @db.Date
+  Status              Preisvertraege_Status? @default(Aktiv)
+  Zahlungsbedingungen String?                @db.Text
+  Mindestabnahme      Decimal?               @db.Decimal(10, 2)
+  Waehrung            String?                @default("EUR") @db.VarChar(3)
+  Kommentare          String?                @db.Text
+  Erstelldatum        DateTime?              @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime?              @default(now()) @db.Timestamp(0)
 
-  Kunden              Kunden                     @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Preisvertraege_ibfk_1")
-  Vertragspositionen  Vertragspositionen[]
+  Kunden             Kunden               @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Preisvertraege_ibfk_1")
+  Vertragspositionen Vertragspositionen[]
 
   @@index([KundenID], map: "idx_preisvertraege_kundenid")
   @@index([GueltigAb, GueltigBis], map: "idx_preisvertraege_gueltigkeit")
 }
 
 model Vertragspositionen {
-  VertragspositionID  Int             @id @default(autoincrement())
-  VertragsID          Int
-  ProduktID           Int
-  MengeAb             Decimal         @db.Decimal(10, 2)
-  MengeBis            Decimal?        @db.Decimal(10, 2)
-  Vertragspreis       Decimal         @db.Decimal(10, 2)
-  Waehrung            String?         @default("EUR") @db.VarChar(3)
-  Erstelldatum        DateTime?       @default(dbgenerated("(now())")) @db.Timestamp(0)
+  VertragspositionID Int       @id @default(autoincrement())
+  VertragsID         Int
+  ProduktID          Int
+  MengeAb            Decimal   @db.Decimal(10, 2)
+  MengeBis           Decimal?  @db.Decimal(10, 2)
+  Vertragspreis      Decimal   @db.Decimal(10, 2)
+  Waehrung           String?   @default("EUR") @db.VarChar(3)
+  Erstelldatum       DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  Preisvertraege      Preisvertraege  @relation(fields: [VertragsID], references: [VertragsID], onDelete: Cascade, onUpdate: NoAction, map: "Vertragspositionen_ibfk_1")
-  Produkte            Produkte        @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Vertragspositionen_ibfk_2")
+  Preisvertraege Preisvertraege @relation(fields: [VertragsID], references: [VertragsID], onDelete: Cascade, onUpdate: NoAction, map: "Vertragspositionen_ibfk_1")
+  Produkte       Produkte       @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Vertragspositionen_ibfk_2")
 
   @@index([VertragsID], map: "idx_vertragspositionen_vertragsid")
   @@index([ProduktID], map: "idx_vertragspositionen_produktid")
@@ -1141,59 +1152,59 @@ model Vertragspositionen {
 
 // Sales Representatives Management
 model Vertreter {
-  VertreterID         Int                     @id @default(autoincrement())
-  Vertreternummer     String                  @unique(map: "Vertreternummer") @db.VarChar(50)
-  Vorname             String                  @db.VarChar(100)
-  Nachname            String                  @db.VarChar(100)
-  Email               String                  @unique(map: "VertreterEmail") @db.VarChar(255)
-  Telefon             String?                 @db.VarChar(50)
-  Gebiet              String?                 @db.VarChar(255)
-  Provisionssatz      Decimal?                @db.Decimal(5, 2)
-  Status              Vertreter_Status?       @default(Aktiv)
-  Einstellungsdatum   DateTime?               @db.Date
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+  VertreterID       Int               @id @default(autoincrement())
+  Vertreternummer   String            @unique(map: "Vertreternummer") @db.VarChar(50)
+  Vorname           String            @db.VarChar(100)
+  Nachname          String            @db.VarChar(100)
+  Email             String            @unique(map: "VertreterEmail") @db.VarChar(255)
+  Telefon           String?           @db.VarChar(50)
+  Gebiet            String?           @db.VarChar(255)
+  Provisionssatz    Decimal?          @db.Decimal(5, 2)
+  Status            Vertreter_Status? @default(Aktiv)
+  Einstellungsdatum DateTime?         @db.Date
+  Erstelldatum      DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung   DateTime?         @default(now()) @db.Timestamp(0)
 
-  KundenVertreter     KundenVertreter[]
-  Provisionen         Provisionen[]
+  KundenVertreter KundenVertreter[]
+  Provisionen     Provisionen[]
 
   @@index([Vertreternummer], map: "idx_vertreter_vertreternummer")
 }
 
 model KundenVertreter {
-  KundenVertreterID   Int               @id @default(autoincrement())
-  KundenID            Int
-  VertreterID         Int
-  GueltigAb           DateTime          @default(dbgenerated("(now())")) @db.Timestamp(0)
-  GueltigBis          DateTime?         @db.Timestamp(0)
-  IstPrimaer          Boolean?          @default(true)
-  Erstelldatum        DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  KundenVertreterID Int       @id @default(autoincrement())
+  KundenID          Int
+  VertreterID       Int
+  GueltigAb         DateTime  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  GueltigBis        DateTime? @db.Timestamp(0)
+  IstPrimaer        Boolean?  @default(true)
+  Erstelldatum      DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  Kunden              Kunden            @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "KundenVertreter_ibfk_1")
-  Vertreter           Vertreter         @relation(fields: [VertreterID], references: [VertreterID], onDelete: Cascade, onUpdate: NoAction, map: "KundenVertreter_ibfk_2")
+  Kunden    Kunden    @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "KundenVertreter_ibfk_1")
+  Vertreter Vertreter @relation(fields: [VertreterID], references: [VertreterID], onDelete: Cascade, onUpdate: NoAction, map: "KundenVertreter_ibfk_2")
 
   @@index([KundenID], map: "idx_kundenvertreter_kundenid")
   @@index([VertreterID], map: "idx_kundenvertreter_vertreterid")
 }
 
 model Provisionen {
-  ProvisionID         Int               @id @default(autoincrement())
-  VertreterID         Int
-  RechnungsID         Int?
-  BestellID           Int?
-  Provisionsbetrag    Decimal           @db.Decimal(10, 2)
-  Provisionssatz      Decimal           @db.Decimal(5, 2)
-  Berechnungsbasis    Decimal           @db.Decimal(10, 2)
-  Berechnungsdatum    DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
-  Auszahlungsdatum    DateTime?         @db.Date
-  Status              Provisionen_Status? @default(Berechnet)
-  Waehrung            String?           @default("EUR") @db.VarChar(3)
-  Kommentare          String?           @db.Text
-  Erstelldatum        DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  ProvisionID      Int                 @id @default(autoincrement())
+  VertreterID      Int
+  RechnungsID      Int?
+  BestellID        Int?
+  Provisionsbetrag Decimal             @db.Decimal(10, 2)
+  Provisionssatz   Decimal             @db.Decimal(5, 2)
+  Berechnungsbasis Decimal             @db.Decimal(10, 2)
+  Berechnungsdatum DateTime?           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Auszahlungsdatum DateTime?           @db.Date
+  Status           Provisionen_Status? @default(Berechnet)
+  Waehrung         String?             @default("EUR") @db.VarChar(3)
+  Kommentare       String?             @db.Text
+  Erstelldatum     DateTime?           @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  Vertreter           Vertreter         @relation(fields: [VertreterID], references: [VertreterID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_1")
-  Rechnungen          Rechnungen?       @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_2")
-  Bestellungen        Bestellungen?     @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_3")
+  Vertreter    Vertreter     @relation(fields: [VertreterID], references: [VertreterID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_1")
+  Rechnungen   Rechnungen?   @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_2")
+  Bestellungen Bestellungen? @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Provisionen_ibfk_3")
 
   @@index([VertreterID], map: "idx_provisionen_vertreterid")
   @@index([RechnungsID], map: "idx_provisionen_rechnungsid")
@@ -1202,41 +1213,41 @@ model Provisionen {
 
 // Credit Management
 model Kreditlimits {
-  KreditlimitID       Int                     @id @default(autoincrement())
-  KundenID            Int                     @unique(map: "unique_kunde_kreditlimit")
-  Kreditlimit         Decimal                 @db.Decimal(10, 2)
-  AktuelleSchuld      Decimal                 @default(0.00) @db.Decimal(10, 2)
-  Waehrung            String?                 @default("EUR") @db.VarChar(3)
-  Kreditsperre        Boolean?                @default(false)
-  Sperrgrund          String?                 @db.Text
-  LetztePruefung      DateTime?               @db.Timestamp(0)
-  Zahlungsziel        Int?                    @default(30)
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+  KreditlimitID   Int       @id @default(autoincrement())
+  KundenID        Int       @unique(map: "unique_kunde_kreditlimit")
+  Kreditlimit     Decimal   @db.Decimal(10, 2)
+  AktuelleSchuld  Decimal   @default(0.00) @db.Decimal(10, 2)
+  Waehrung        String?   @default("EUR") @db.VarChar(3)
+  Kreditsperre    Boolean?  @default(false)
+  Sperrgrund      String?   @db.Text
+  LetztePruefung  DateTime? @db.Timestamp(0)
+  Zahlungsziel    Int?      @default(30)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
 
-  Kunden              Kunden                  @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "Kreditlimits_ibfk_1")
-  Mahnungen           Mahnungen[]
+  Kunden    Kunden      @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "Kreditlimits_ibfk_1")
+  Mahnungen Mahnungen[]
 
   @@index([KundenID], map: "idx_kreditlimits_kundenid")
 }
 
 model Mahnungen {
-  MahnungID           Int                     @id @default(autoincrement())
-  KreditlimitID       Int
-  RechnungsID         Int
-  Mahnstufe           Int                     @default(1)
-  Mahnungsnummer      String                  @unique(map: "Mahnungsnummer") @db.VarChar(50)
-  Mahnungsdatum       DateTime                @db.Date
-  Mahnbetrag          Decimal                 @db.Decimal(10, 2)
-  Mahngebuehr         Decimal?                @default(0.00) @db.Decimal(10, 2)
-  Status              Mahnungen_Status?       @default(Offen)
-  Faelligkeitsdatum   DateTime                @db.Date
-  Waehrung            String?                 @default("EUR") @db.VarChar(3)
-  Kommentare          String?                 @db.Text
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  MahnungID         Int               @id @default(autoincrement())
+  KreditlimitID     Int
+  RechnungsID       Int
+  Mahnstufe         Int               @default(1)
+  Mahnungsnummer    String            @unique(map: "Mahnungsnummer") @db.VarChar(50)
+  Mahnungsdatum     DateTime          @db.Date
+  Mahnbetrag        Decimal           @db.Decimal(10, 2)
+  Mahngebuehr       Decimal?          @default(0.00) @db.Decimal(10, 2)
+  Status            Mahnungen_Status? @default(Offen)
+  Faelligkeitsdatum DateTime          @db.Date
+  Waehrung          String?           @default("EUR") @db.VarChar(3)
+  Kommentare        String?           @db.Text
+  Erstelldatum      DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  Kreditlimits        Kreditlimits            @relation(fields: [KreditlimitID], references: [KreditlimitID], onDelete: NoAction, onUpdate: NoAction, map: "Mahnungen_ibfk_1")
-  Rechnungen          Rechnungen              @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Mahnungen_ibfk_2")
+  Kreditlimits Kreditlimits @relation(fields: [KreditlimitID], references: [KreditlimitID], onDelete: NoAction, onUpdate: NoAction, map: "Mahnungen_ibfk_1")
+  Rechnungen   Rechnungen   @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Mahnungen_ibfk_2")
 
   @@index([KreditlimitID], map: "idx_mahnungen_kreditlimitid")
   @@index([RechnungsID], map: "idx_mahnungen_rechnungsid")
@@ -1262,6 +1273,23 @@ model Lieferungen {
   Touren              Touren?                 @relation(fields: [TourID], references: [TourID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_2")
   Adressen            Adressen?               @relation(fields: [LieferadresseID], references: [AdressID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_3")
   Liefernachweise     Liefernachweise[]
+  LieferungID          Int                 @id @default(autoincrement())
+  BestellID            Int
+  Liefernummer         String              @unique(map: "Liefernummer") @db.VarChar(50)
+  Lieferdatum          DateTime?           @db.Date
+  GeplantesLieferdatum DateTime?           @db.Date
+  LieferadresseID      Int?
+  TourID               Int?
+  Status               Lieferungen_Status? @default(Geplant)
+  TrackingNummer       String?             @db.VarChar(100)
+  Lieferant            String?             @db.VarChar(255)
+  Kommentare           String?             @db.Text
+  Erstelldatum         DateTime?           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung      DateTime?           @default(now()) @db.Timestamp(0)
+
+  Bestellungen    Bestellungen      @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_1")
+  Touren          Touren?           @relation(fields: [TourID], references: [TourID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_2")
+  Liefernachweise Liefernachweise[]
 
   @@index([BestellID], map: "idx_lieferungen_bestellid")
   @@index([TourID], map: "idx_lieferungen_tourid")
@@ -1269,65 +1297,65 @@ model Lieferungen {
 }
 
 model Touren {
-  TourID              Int                     @id @default(autoincrement())
-  Tournummer          String                  @unique(map: "Tournummer") @db.VarChar(50)
-  Tourbezeichnung     String                  @db.VarChar(255)
-  Tourdatum           DateTime                @db.Date
-  FahrerName          String?                 @db.VarChar(255)
-  Fahrzeug            String?                 @db.VarChar(100)
-  Status              Touren_Status?          @default(Geplant)
-  Startzeit           DateTime?               @db.Timestamp(0)
-  Endzeit             DateTime?               @db.Timestamp(0)
-  GesamtKilometer     Decimal?                @db.Decimal(10, 2)
-  Kommentare          String?                 @db.Text
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+  TourID          Int            @id @default(autoincrement())
+  Tournummer      String         @unique(map: "Tournummer") @db.VarChar(50)
+  Tourbezeichnung String         @db.VarChar(255)
+  Tourdatum       DateTime       @db.Date
+  FahrerName      String?        @db.VarChar(255)
+  Fahrzeug        String?        @db.VarChar(100)
+  Status          Touren_Status? @default(Geplant)
+  Startzeit       DateTime?      @db.Timestamp(0)
+  Endzeit         DateTime?      @db.Timestamp(0)
+  GesamtKilometer Decimal?       @db.Decimal(10, 2)
+  Kommentare      String?        @db.Text
+  Erstelldatum    DateTime?      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?      @default(now()) @db.Timestamp(0)
 
-  Lieferungen         Lieferungen[]
+  Lieferungen Lieferungen[]
 
   @@index([Tourdatum], map: "idx_touren_tourdatum")
 }
 
 model Liefernachweise {
-  LiefernachweisID    Int                     @id @default(autoincrement())
-  LieferungID         Int
-  EmpfaengerName      String                  @db.VarChar(255)
-  Empfangsdatum       DateTime                @db.Timestamp(0)
-  UnterschriftPfad    String?                 @db.VarChar(255)
-  FotoPfad            String?                 @db.VarChar(255)
-  Anmerkungen         String?                 @db.Text
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LiefernachweisID Int       @id @default(autoincrement())
+  LieferungID      Int
+  EmpfaengerName   String    @db.VarChar(255)
+  Empfangsdatum    DateTime  @db.Timestamp(0)
+  UnterschriftPfad String?   @db.VarChar(255)
+  FotoPfad         String?   @db.VarChar(255)
+  Anmerkungen      String?   @db.Text
+  Erstelldatum     DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  Lieferungen         Lieferungen             @relation(fields: [LieferungID], references: [LieferungID], onDelete: Cascade, onUpdate: NoAction, map: "Liefernachweise_ibfk_1")
+  Lieferungen Lieferungen @relation(fields: [LieferungID], references: [LieferungID], onDelete: Cascade, onUpdate: NoAction, map: "Liefernachweise_ibfk_1")
 
   @@index([LieferungID], map: "idx_liefernachweise_lieferungid")
 }
 
 // Quote & Proposal System
 model Angebote {
-  AngebotID           Int                     @id @default(autoincrement())
-  KundenID            Int
+  AngebotID             Int              @id @default(autoincrement())
+  KundenID              Int
   ErstelltVonBenutzerID Int?
-  Angebotsnummer      String                  @unique(map: "Angebotsnummer") @db.VarChar(50)
-  Angebotstitel       String                  @db.VarChar(255)
-  Angebotsdatum       DateTime                @db.Date
-  Gueltigkeitsdatum   DateTime                @db.Date
-  Status              Angebote_Status?        @default(Entwurf)
-  GesamtsummeNetto    Decimal?                @db.Decimal(10, 2)
-  MwSt_Gesamt         Decimal?                @db.Decimal(10, 2)
-  GesamtsummeBrutto   Decimal?                @db.Decimal(10, 2)
-  Waehrung            String?                 @default("EUR") @db.VarChar(3)
-  Zahlungsbedingungen String?                 @db.Text
-  Lieferbedingungen   String?                 @db.Text
-  Kommentare          String?                 @db.Text
-  BestellID           Int?
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?               @default(now()) @db.Timestamp(0)
+  Angebotsnummer        String           @unique(map: "Angebotsnummer") @db.VarChar(50)
+  Angebotstitel         String           @db.VarChar(255)
+  Angebotsdatum         DateTime         @db.Date
+  Gueltigkeitsdatum     DateTime         @db.Date
+  Status                Angebote_Status? @default(Entwurf)
+  GesamtsummeNetto      Decimal?         @db.Decimal(10, 2)
+  MwSt_Gesamt           Decimal?         @db.Decimal(10, 2)
+  GesamtsummeBrutto     Decimal?         @db.Decimal(10, 2)
+  Waehrung              String?          @default("EUR") @db.VarChar(3)
+  Zahlungsbedingungen   String?          @db.Text
+  Lieferbedingungen     String?          @db.Text
+  Kommentare            String?          @db.Text
+  BestellID             Int?
+  Erstelldatum          DateTime?        @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung       DateTime?        @default(now()) @db.Timestamp(0)
 
-  Kunden              Kunden                  @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_1")
-  Benutzer            Benutzer?               @relation(fields: [ErstelltVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_2")
-  Bestellungen        Bestellungen?           @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_3")
-  Angebotspositionen  Angebotspositionen[]
+  Kunden             Kunden               @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_1")
+  Benutzer           Benutzer?            @relation(fields: [ErstelltVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_2")
+  Bestellungen       Bestellungen?        @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Angebote_ibfk_3")
+  Angebotspositionen Angebotspositionen[]
 
   @@index([KundenID], map: "idx_angebote_kundenid")
   @@index([ErstelltVonBenutzerID], map: "idx_angebote_benutzerid")
@@ -1335,22 +1363,22 @@ model Angebote {
 }
 
 model Angebotspositionen {
-  AngebotspositionsID Int                     @id @default(autoincrement())
+  AngebotspositionsID Int       @id @default(autoincrement())
   AngebotID           Int
   ProduktID           Int
-  Positionsnummer     Int                     @default(1)
-  Menge               Decimal                 @db.Decimal(10, 2)
-  EinzelpreisNetto    Decimal                 @db.Decimal(10, 2)
-  RabattProzent       Decimal?                @default(0.00) @db.Decimal(5, 2)
-  RabattBetrag        Decimal?                @default(0.00) @db.Decimal(10, 2)
-  GesamtpreisNetto    Decimal                 @db.Decimal(10, 2)
-  MwSt_Satz           Decimal                 @db.Decimal(5, 2)
-  MwSt_Betrag         Decimal                 @db.Decimal(10, 2)
-  Beschreibung        String?                 @db.Text
-  Erstelldatum        DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Positionsnummer     Int       @default(1)
+  Menge               Decimal   @db.Decimal(10, 2)
+  EinzelpreisNetto    Decimal   @db.Decimal(10, 2)
+  RabattProzent       Decimal?  @default(0.00) @db.Decimal(5, 2)
+  RabattBetrag        Decimal?  @default(0.00) @db.Decimal(10, 2)
+  GesamtpreisNetto    Decimal   @db.Decimal(10, 2)
+  MwSt_Satz           Decimal   @db.Decimal(5, 2)
+  MwSt_Betrag         Decimal   @db.Decimal(10, 2)
+  Beschreibung        String?   @db.Text
+  Erstelldatum        DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  Angebote            Angebote                @relation(fields: [AngebotID], references: [AngebotID], onDelete: Cascade, onUpdate: NoAction, map: "Angebotspositionen_ibfk_1")
-  Produkte            Produkte                @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Angebotspositionen_ibfk_2")
+  Angebote Angebote @relation(fields: [AngebotID], references: [AngebotID], onDelete: Cascade, onUpdate: NoAction, map: "Angebotspositionen_ibfk_1")
+  Produkte Produkte @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "Angebotspositionen_ibfk_2")
 
   @@index([AngebotID], map: "idx_angebotspositionen_angebotid")
   @@index([ProduktID], map: "idx_angebotspositionen_produktid")
@@ -1386,7 +1414,7 @@ enum Mahnungen_Status {
 
 enum Lieferungen_Status {
   Geplant
-  In_Vorbereitung   @map("In Vorbereitung")
+  In_Vorbereitung @map("In Vorbereitung")
   Unterwegs
   Zugestellt
   Fehlgeschlagen
@@ -1394,7 +1422,7 @@ enum Lieferungen_Status {
 
 enum Touren_Status {
   Geplant
-  In_Durchfuehrung  @map("In Durchführung")
+  In_Durchfuehrung @map("In Durchführung")
   Abgeschlossen
   Storniert
 }
@@ -1414,22 +1442,22 @@ enum Angebote_Status {
 
 // Shop Categories
 model ShopKategorien {
-  ShopKategorieID               Int                  @id @default(autoincrement())
-  Name                          String               @db.VarChar(100)
-  Beschreibung                  String?              @db.Text
-  UebergeordneteKategorieID     Int?
-  Slug                          String               @unique(map: "ShopKategorieSlug") @db.VarChar(150)
-  BildPfad                      String?              @db.VarChar(255)
-  SortOrder                     Int?                 @default(0)
-  IstSichtbar                   Boolean?             @default(true)
-  MetaTitel                     String?              @db.VarChar(255)
-  MetaBeschreibung              String?              @db.Text
-  Erstelldatum                  DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime?            @default(now()) @db.Timestamp(0)
+  ShopKategorieID           Int       @id @default(autoincrement())
+  Name                      String    @db.VarChar(100)
+  Beschreibung              String?   @db.Text
+  UebergeordneteKategorieID Int?
+  Slug                      String    @unique(map: "ShopKategorieSlug") @db.VarChar(150)
+  BildPfad                  String?   @db.VarChar(255)
+  SortOrder                 Int?      @default(0)
+  IstSichtbar               Boolean?  @default(true)
+  MetaTitel                 String?   @db.VarChar(255)
+  MetaBeschreibung          String?   @db.Text
+  Erstelldatum              DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung           DateTime? @default(now()) @db.Timestamp(0)
 
-  ShopKategorien                ShopKategorien?      @relation("ShopKategorienToShopKategorien", fields: [UebergeordneteKategorieID], references: [ShopKategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ShopKategorien_ibfk_1")
-  other_ShopKategorien          ShopKategorien[]     @relation("ShopKategorienToShopKategorien")
-  ShopProdukte                  ShopProdukte[]
+  ShopKategorien       ShopKategorien?  @relation("ShopKategorienToShopKategorien", fields: [UebergeordneteKategorieID], references: [ShopKategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ShopKategorien_ibfk_1")
+  other_ShopKategorien ShopKategorien[] @relation("ShopKategorienToShopKategorien")
+  ShopProdukte         ShopProdukte[]
 
   @@index([UebergeordneteKategorieID], map: "idx_shopkategorien_uebergeordnet")
   @@index([Slug], map: "idx_shopkategorien_slug")
@@ -1437,42 +1465,42 @@ model ShopKategorien {
 
 // Shop Products (Online Shop specific products)
 model ShopProdukte {
-  ShopProduktID                 Int                     @id @default(autoincrement())
-  ProduktID                     Int
-  ShopKategorieID               Int?
-  Titel                         String                  @db.VarChar(255)
-  Kurzbeschreibung              String?                 @db.Text
-  Langbeschreibung              String?                 @db.Text
-  Slug                          String                  @unique(map: "ShopProduktSlug") @db.VarChar(255)
-  SKU                           String?                 @unique(map: "ShopProduktSKU") @db.VarChar(100)
-  Preis                         Decimal                 @db.Decimal(10, 2)
-  UVP                           Decimal?                @db.Decimal(10, 2)
-  IstAktiv                      Boolean?                @default(true)
-  IstHervorgehoben              Boolean?                @default(false)
-  Lagerbestand                  Int?                    @default(0)
-  MindestBestellmenge           Int?                    @default(1)
-  MaximalBestellmenge           Int?
-  Gewicht                       Decimal?                @db.Decimal(10, 3)
-  Breite                        Decimal?                @db.Decimal(10, 2)
-  Hoehe                         Decimal?                @db.Decimal(10, 2)
-  Tiefe                         Decimal?                @db.Decimal(10, 2)
-  HauptbildPfad                 String?                 @db.VarChar(255)
-  BilderJSON                    String?                 @db.Text
-  AttributeJSON                 String?                 @db.Text
-  MetaTitel                     String?                 @db.VarChar(255)
-  MetaBeschreibung              String?                 @db.Text
-  SortOrder                     Int?                    @default(0)
-  Aufrufe                       Int?                    @default(0)
-  Bewertung                     Decimal?                @db.Decimal(3, 2)
-  AnzahlBewertungen             Int?                    @default(0)
-  Erstelldatum                  DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime?               @default(now()) @db.Timestamp(0)
+  ShopProduktID       Int       @id @default(autoincrement())
+  ProduktID           Int
+  ShopKategorieID     Int?
+  Titel               String    @db.VarChar(255)
+  Kurzbeschreibung    String?   @db.Text
+  Langbeschreibung    String?   @db.Text
+  Slug                String    @unique(map: "ShopProduktSlug") @db.VarChar(255)
+  SKU                 String?   @unique(map: "ShopProduktSKU") @db.VarChar(100)
+  Preis               Decimal   @db.Decimal(10, 2)
+  UVP                 Decimal?  @db.Decimal(10, 2)
+  IstAktiv            Boolean?  @default(true)
+  IstHervorgehoben    Boolean?  @default(false)
+  Lagerbestand        Int?      @default(0)
+  MindestBestellmenge Int?      @default(1)
+  MaximalBestellmenge Int?
+  Gewicht             Decimal?  @db.Decimal(10, 3)
+  Breite              Decimal?  @db.Decimal(10, 2)
+  Hoehe               Decimal?  @db.Decimal(10, 2)
+  Tiefe               Decimal?  @db.Decimal(10, 2)
+  HauptbildPfad       String?   @db.VarChar(255)
+  BilderJSON          String?   @db.Text
+  AttributeJSON       String?   @db.Text
+  MetaTitel           String?   @db.VarChar(255)
+  MetaBeschreibung    String?   @db.Text
+  SortOrder           Int?      @default(0)
+  Aufrufe             Int?      @default(0)
+  Bewertung           Decimal?  @db.Decimal(3, 2)
+  AnzahlBewertungen   Int?      @default(0)
+  Erstelldatum        DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung     DateTime? @default(now()) @db.Timestamp(0)
 
-  Produkte                      Produkte                @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopProdukte_ibfk_1")
-  ShopKategorien                ShopKategorien?         @relation(fields: [ShopKategorieID], references: [ShopKategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ShopProdukte_ibfk_2")
-  ShopBestellpositionen         ShopBestellpositionen[]
-  ShopWarenkorbpositionen       ShopWarenkorbpositionen[]
-  ShopBewertungen               ShopBewertungen[]
+  Produkte                Produkte                  @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopProdukte_ibfk_1")
+  ShopKategorien          ShopKategorien?           @relation(fields: [ShopKategorieID], references: [ShopKategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ShopProdukte_ibfk_2")
+  ShopBestellpositionen   ShopBestellpositionen[]
+  ShopWarenkorbpositionen ShopWarenkorbpositionen[]
+  ShopBewertungen         ShopBewertungen[]
 
   @@index([ProduktID], map: "idx_shopprodukte_produktid")
   @@index([ShopKategorieID], map: "idx_shopprodukte_kategorieid")
@@ -1482,15 +1510,15 @@ model ShopProdukte {
 
 // Shopping Cart
 model ShopWarenkorb {
-  WarenkorbID                   Int                       @id @default(autoincrement())
-  KundenID                      Int?
-  SessionID                     String?                   @db.VarChar(255)
-  Status                        ShopWarenkorb_Status?     @default(Aktiv)
-  Erstelldatum                  DateTime?                 @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime?                 @default(now()) @db.Timestamp(0)
+  WarenkorbID     Int                   @id @default(autoincrement())
+  KundenID        Int?
+  SessionID       String?               @db.VarChar(255)
+  Status          ShopWarenkorb_Status? @default(Aktiv)
+  Erstelldatum    DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?             @default(now()) @db.Timestamp(0)
 
-  Kunden                        Kunden?                   @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "ShopWarenkorb_ibfk_1")
-  ShopWarenkorbpositionen       ShopWarenkorbpositionen[]
+  Kunden                  Kunden?                   @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "ShopWarenkorb_ibfk_1")
+  ShopWarenkorbpositionen ShopWarenkorbpositionen[]
 
   @@index([KundenID], map: "idx_shopwarenkorb_kundenid")
   @@index([SessionID], map: "idx_shopwarenkorb_sessionid")
@@ -1498,17 +1526,17 @@ model ShopWarenkorb {
 
 // Shopping Cart Items
 model ShopWarenkorbpositionen {
-  WarenkorbpositionsID          Int                @id @default(autoincrement())
-  WarenkorbID                   Int
-  ShopProduktID                 Int
-  Menge                         Int                @default(1)
-  Preis                         Decimal            @db.Decimal(10, 2)
-  AttributeJSON                 String?            @db.Text
-  Erstelldatum                  DateTime?          @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime?          @default(now()) @db.Timestamp(0)
+  WarenkorbpositionsID Int       @id @default(autoincrement())
+  WarenkorbID          Int
+  ShopProduktID        Int
+  Menge                Int       @default(1)
+  Preis                Decimal   @db.Decimal(10, 2)
+  AttributeJSON        String?   @db.Text
+  Erstelldatum         DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung      DateTime? @default(now()) @db.Timestamp(0)
 
-  ShopWarenkorb                 ShopWarenkorb      @relation(fields: [WarenkorbID], references: [WarenkorbID], onDelete: Cascade, onUpdate: NoAction, map: "ShopWarenkorbpositionen_ibfk_1")
-  ShopProdukte                  ShopProdukte       @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopWarenkorbpositionen_ibfk_2")
+  ShopWarenkorb ShopWarenkorb @relation(fields: [WarenkorbID], references: [WarenkorbID], onDelete: Cascade, onUpdate: NoAction, map: "ShopWarenkorbpositionen_ibfk_1")
+  ShopProdukte  ShopProdukte  @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopWarenkorbpositionen_ibfk_2")
 
   @@index([WarenkorbID], map: "idx_shopwarenkorbpositionen_warenkorbid")
   @@index([ShopProduktID], map: "idx_shopwarenkorbpositionen_produktid")
@@ -1516,62 +1544,62 @@ model ShopWarenkorbpositionen {
 
 // Shop Orders
 model ShopBestellungen {
-  ShopBestellID                 Int                         @id @default(autoincrement())
-  KundenID                      Int
-  Bestellnummer                 String                      @unique(map: "ShopBestellnummer") @db.VarChar(50)
-  Bestelldatum                  DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
-  Status                        ShopBestellungen_Status?    @default(Neu)
-  Zahlungsstatus                ShopBestellungen_Zahlungsstatus? @default(Ausstehend)
-  Versandstatus                 ShopBestellungen_Versandstatus?  @default(NichtVersendet)
-  Zahlungsart                   ShopBestellungen_Zahlungsart?
-  Versandart                    String?                     @db.VarChar(100)
+  ShopBestellID  Int                              @id @default(autoincrement())
+  KundenID       Int
+  Bestellnummer  String                           @unique(map: "ShopBestellnummer") @db.VarChar(50)
+  Bestelldatum   DateTime?                        @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Status         ShopBestellungen_Status?         @default(Neu)
+  Zahlungsstatus ShopBestellungen_Zahlungsstatus? @default(Ausstehend)
+  Versandstatus  ShopBestellungen_Versandstatus?  @default(NichtVersendet)
+  Zahlungsart    ShopBestellungen_Zahlungsart?
+  Versandart     String?                          @db.VarChar(100)
 
   // Customer Information
-  RechnungsVorname              String                      @db.VarChar(100)
-  RechnungsNachname             String                      @db.VarChar(100)
-  RechnungsFirma                String?                     @db.VarChar(255)
-  RechnungsAdresse              String                      @db.VarChar(255)
-  RechnungsPLZ                  String                      @db.VarChar(10)
-  RechnungsOrt                  String                      @db.VarChar(100)
-  RechnungsLand                 String                      @db.VarChar(100)
-  RechnungsTelefon              String?                     @db.VarChar(50)
-  RechnungsEmail                String                      @db.VarChar(255)
+  RechnungsVorname  String  @db.VarChar(100)
+  RechnungsNachname String  @db.VarChar(100)
+  RechnungsFirma    String? @db.VarChar(255)
+  RechnungsAdresse  String  @db.VarChar(255)
+  RechnungsPLZ      String  @db.VarChar(10)
+  RechnungsOrt      String  @db.VarChar(100)
+  RechnungsLand     String  @db.VarChar(100)
+  RechnungsTelefon  String? @db.VarChar(50)
+  RechnungsEmail    String  @db.VarChar(255)
 
-  LieferungVorname              String                      @db.VarChar(100)
-  LieferungNachname             String                      @db.VarChar(100)
-  LieferungFirma                String?                     @db.VarChar(255)
-  LieferungAdresse              String                      @db.VarChar(255)
-  LieferungPLZ                  String                      @db.VarChar(10)
-  LieferungOrt                  String                      @db.VarChar(100)
-  LieferungLand                 String                      @db.VarChar(100)
-  LieferungTelefon              String?                     @db.VarChar(50)
+  LieferungVorname  String  @db.VarChar(100)
+  LieferungNachname String  @db.VarChar(100)
+  LieferungFirma    String? @db.VarChar(255)
+  LieferungAdresse  String  @db.VarChar(255)
+  LieferungPLZ      String  @db.VarChar(10)
+  LieferungOrt      String  @db.VarChar(100)
+  LieferungLand     String  @db.VarChar(100)
+  LieferungTelefon  String? @db.VarChar(50)
 
   // Pricing
-  ZwischensummeNetto            Decimal                     @db.Decimal(10, 2)
-  Versandkosten                 Decimal?                    @default(0.00) @db.Decimal(10, 2)
-  RabattBetrag                  Decimal?                    @default(0.00) @db.Decimal(10, 2)
-  RabattCode                    String?                     @db.VarChar(50)
-  MwStGesamt                    Decimal                     @db.Decimal(10, 2)
-  GesamtsummeBrutto             Decimal                     @db.Decimal(10, 2)
-  Waehrung                      String?                     @default("EUR") @db.VarChar(3)
+  ZwischensummeNetto Decimal  @db.Decimal(10, 2)
+  Versandkosten      Decimal? @default(0.00) @db.Decimal(10, 2)
+  RabattBetrag       Decimal? @default(0.00) @db.Decimal(10, 2)
+  RabattCode         String?  @db.VarChar(50)
+  MwStGesamt         Decimal  @db.Decimal(10, 2)
+  GesamtsummeBrutto  Decimal  @db.Decimal(10, 2)
+  Waehrung           String?  @default("EUR") @db.VarChar(3)
 
   // Additional Information
-  KundenNotizen                 String?                     @db.Text
-  InterneNotizen                String?                     @db.Text
-  IPAdresse                     String?                     @db.VarChar(45)
-  UserAgent                     String?                     @db.VarChar(255)
+  KundenNotizen  String? @db.Text
+  InterneNotizen String? @db.Text
+  IPAdresse      String? @db.VarChar(45)
+  UserAgent      String? @db.VarChar(255)
 
   // Tracking
-  TrackingNummer                String?                     @db.VarChar(100)
-  VersandDatum                  DateTime?                   @db.Timestamp(0)
-  ZugesteltDatum                DateTime?                   @db.Timestamp(0)
+  TrackingNummer String?   @db.VarChar(100)
+  VersandDatum   DateTime? @db.Timestamp(0)
+  ZugesteltDatum DateTime? @db.Timestamp(0)
 
-  Erstelldatum                  DateTime?                   @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime?                   @default(now()) @db.Timestamp(0)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
 
-  Kunden                        Kunden                      @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBestellungen_ibfk_1")
-  ShopBestellpositionen         ShopBestellpositionen[]
-  ShopZahlungen                 ShopZahlungen[]
+  Kunden                Kunden                  @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBestellungen_ibfk_1")
+  ShopBestellpositionen ShopBestellpositionen[]
+  ShopZahlungen         ShopZahlungen[]
 
   @@index([KundenID], map: "idx_shopbestellungen_kundenid")
   @@index([Bestelldatum], map: "idx_shopbestellungen_bestelldatum")
@@ -1581,21 +1609,21 @@ model ShopBestellungen {
 
 // Shop Order Items
 model ShopBestellpositionen {
-  ShopBestellpositionsID        Int                 @id @default(autoincrement())
-  ShopBestellID                 Int
-  ShopProduktID                 Int
-  Produktname                   String              @db.VarChar(255)
-  SKU                           String?             @db.VarChar(100)
-  Menge                         Int
-  EinzelpreisNetto              Decimal             @db.Decimal(10, 2)
-  GesamtpreisNetto              Decimal             @db.Decimal(10, 2)
-  MwStSatz                      Decimal             @db.Decimal(5, 2)
-  MwStBetrag                    Decimal             @db.Decimal(10, 2)
-  AttributeJSON                 String?             @db.Text
-  Erstelldatum                  DateTime?           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  ShopBestellpositionsID Int       @id @default(autoincrement())
+  ShopBestellID          Int
+  ShopProduktID          Int
+  Produktname            String    @db.VarChar(255)
+  SKU                    String?   @db.VarChar(100)
+  Menge                  Int
+  EinzelpreisNetto       Decimal   @db.Decimal(10, 2)
+  GesamtpreisNetto       Decimal   @db.Decimal(10, 2)
+  MwStSatz               Decimal   @db.Decimal(5, 2)
+  MwStBetrag             Decimal   @db.Decimal(10, 2)
+  AttributeJSON          String?   @db.Text
+  Erstelldatum           DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  ShopBestellungen              ShopBestellungen    @relation(fields: [ShopBestellID], references: [ShopBestellID], onDelete: Cascade, onUpdate: NoAction, map: "ShopBestellpositionen_ibfk_1")
-  ShopProdukte                  ShopProdukte        @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBestellpositionen_ibfk_2")
+  ShopBestellungen ShopBestellungen @relation(fields: [ShopBestellID], references: [ShopBestellID], onDelete: Cascade, onUpdate: NoAction, map: "ShopBestellpositionen_ibfk_1")
+  ShopProdukte     ShopProdukte     @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBestellpositionen_ibfk_2")
 
   @@index([ShopBestellID], map: "idx_shopbestellpositionen_bestellid")
   @@index([ShopProduktID], map: "idx_shopbestellpositionen_produktid")
@@ -1603,19 +1631,19 @@ model ShopBestellpositionen {
 
 // Shop Payments
 model ShopZahlungen {
-  ShopZahlungID                 Int                          @id @default(autoincrement())
-  ShopBestellID                 Int
-  Betrag                        Decimal                      @db.Decimal(10, 2)
-  Waehrung                      String?                      @default("EUR") @db.VarChar(3)
-  Zahlungsart                   ShopZahlungen_Zahlungsart
-  TransaktionsID                String?                      @db.VarChar(255)
-  Status                        ShopZahlungen_Status?        @default(Ausstehend)
-  ZahlungsdatumErhalten         DateTime?                    @db.Timestamp(0)
-  PaymentProviderAntwort        String?                      @db.Text
-  Kommentare                    String?                      @db.Text
-  Erstelldatum                  DateTime?                    @default(dbgenerated("(now())")) @db.Timestamp(0)
+  ShopZahlungID          Int                       @id @default(autoincrement())
+  ShopBestellID          Int
+  Betrag                 Decimal                   @db.Decimal(10, 2)
+  Waehrung               String?                   @default("EUR") @db.VarChar(3)
+  Zahlungsart            ShopZahlungen_Zahlungsart
+  TransaktionsID         String?                   @db.VarChar(255)
+  Status                 ShopZahlungen_Status?     @default(Ausstehend)
+  ZahlungsdatumErhalten  DateTime?                 @db.Timestamp(0)
+  PaymentProviderAntwort String?                   @db.Text
+  Kommentare             String?                   @db.Text
+  Erstelldatum           DateTime?                 @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  ShopBestellungen              ShopBestellungen             @relation(fields: [ShopBestellID], references: [ShopBestellID], onDelete: Cascade, onUpdate: NoAction, map: "ShopZahlungen_ibfk_1")
+  ShopBestellungen ShopBestellungen @relation(fields: [ShopBestellID], references: [ShopBestellID], onDelete: Cascade, onUpdate: NoAction, map: "ShopZahlungen_ibfk_1")
 
   @@index([ShopBestellID], map: "idx_shopzahlungen_bestellid")
   @@index([TransaktionsID], map: "idx_shopzahlungen_transaktionid")
@@ -1623,21 +1651,21 @@ model ShopZahlungen {
 
 // Product Reviews
 model ShopBewertungen {
-  BewertungID                   Int                     @id @default(autoincrement())
-  ShopProduktID                 Int
-  KundenID                      Int?
-  Bewertername                  String                  @db.VarChar(255)
-  Email                         String?                 @db.VarChar(255)
-  Bewertung                     Int
-  Titel                         String?                 @db.VarChar(255)
-  Kommentar                     String?                 @db.Text
-  Status                        ShopBewertungen_Status? @default(Ausstehend)
-  IstVerifizierterKauf          Boolean?                @default(false)
-  Erstelldatum                  DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime?               @default(now()) @db.Timestamp(0)
+  BewertungID          Int                     @id @default(autoincrement())
+  ShopProduktID        Int
+  KundenID             Int?
+  Bewertername         String                  @db.VarChar(255)
+  Email                String?                 @db.VarChar(255)
+  Bewertung            Int
+  Titel                String?                 @db.VarChar(255)
+  Kommentar            String?                 @db.Text
+  Status               ShopBewertungen_Status? @default(Ausstehend)
+  IstVerifizierterKauf Boolean?                @default(false)
+  Erstelldatum         DateTime?               @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung      DateTime?               @default(now()) @db.Timestamp(0)
 
-  ShopProdukte                  ShopProdukte            @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: Cascade, onUpdate: NoAction, map: "ShopBewertungen_ibfk_1")
-  Kunden                        Kunden?                 @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBewertungen_ibfk_2")
+  ShopProdukte ShopProdukte @relation(fields: [ShopProduktID], references: [ShopProduktID], onDelete: Cascade, onUpdate: NoAction, map: "ShopBewertungen_ibfk_1")
+  Kunden       Kunden?      @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "ShopBewertungen_ibfk_2")
 
   @@index([ShopProduktID], map: "idx_shopbewertungen_produktid")
   @@index([KundenID], map: "idx_shopbewertungen_kundenid")
@@ -1646,14 +1674,14 @@ model ShopBewertungen {
 
 // Shop Settings
 model ShopEinstellungen {
-  EinstellungID                 Int       @id @default(autoincrement())
-  SchluesselName                String    @unique(map: "ShopEinstellungSchluessel") @db.VarChar(100)
-  Wert                          String?   @db.Text
-  Typ                           String?   @db.VarChar(50)
-  Beschreibung                  String?   @db.Text
-  Kategorie                     String?   @db.VarChar(100)
-  Erstelldatum                  DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung               DateTime? @default(now()) @db.Timestamp(0)
+  EinstellungID   Int       @id @default(autoincrement())
+  SchluesselName  String    @unique(map: "ShopEinstellungSchluessel") @db.VarChar(100)
+  Wert            String?   @db.Text
+  Typ             String?   @db.VarChar(50)
+  Beschreibung    String?   @db.Text
+  Kategorie       String?   @db.VarChar(100)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
 
   @@index([Kategorie], map: "idx_shopeinstellungen_kategorie")
 }
@@ -1667,24 +1695,24 @@ enum ShopWarenkorb_Status {
 
 enum ShopBestellungen_Status {
   Neu
-  In_Bearbeitung    @map("In Bearbeitung")
+  In_Bearbeitung @map("In Bearbeitung")
   Versendet
   Zugestellt
   Abgeschlossen
   Storniert
-  Rueckgabe         @map("Rückgabe")
+  Rueckgabe      @map("Rückgabe")
 }
 
 enum ShopBestellungen_Zahlungsstatus {
   Ausstehend
   Bezahlt
   Teilbezahlt
-  Rueckerstattet    @map("Rückerstattet")
+  Rueckerstattet @map("Rückerstattet")
   Fehlgeschlagen
 }
 
 enum ShopBestellungen_Versandstatus {
-  NichtVersendet    @map("Nicht Versendet")
+  NichtVersendet @map("Nicht Versendet")
   Vorbereitung
   Versendet
   Unterwegs
@@ -1717,7 +1745,7 @@ enum ShopZahlungen_Status {
   Autorisiert
   Erfasst
   Fehlgeschlagen
-  Rueckerstattet    @map("Rückerstattet")
+  Rueckerstattet @map("Rückerstattet")
   Storniert
 }
 
@@ -1734,43 +1762,43 @@ enum ShopBewertungen_Status {
 
 // Room Categories
 model Zimmerkategorien {
-  ZimmerkategorieID   Int       @id @default(autoincrement())
-  Name                String    @db.VarChar(100)
-  Beschreibung        String?   @db.Text
-  Grundpreis          Decimal   @db.Decimal(10, 2)
-  MaxPersonen         Int       @default(2)
-  Ausstattung         String?   @db.Text // JSON field for amenities
-  Groesse             Decimal?  @db.Decimal(10, 2) // Size in sqm
-  BildURL             String?   @db.VarChar(255)
-  SortierReihenfolge  Int?      @default(0)
-  IstAktiv            Boolean?  @default(true)
-  Erstelldatum        DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime? @default(now()) @db.Timestamp(0)
+  ZimmerkategorieID  Int       @id @default(autoincrement())
+  Name               String    @db.VarChar(100)
+  Beschreibung       String?   @db.Text
+  Grundpreis         Decimal   @db.Decimal(10, 2)
+  MaxPersonen        Int       @default(2)
+  Ausstattung        String?   @db.Text // JSON field for amenities
+  Groesse            Decimal?  @db.Decimal(10, 2) // Size in sqm
+  BildURL            String?   @db.VarChar(255)
+  SortierReihenfolge Int?      @default(0)
+  IstAktiv           Boolean?  @default(true)
+  Erstelldatum       DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung    DateTime? @default(now()) @db.Timestamp(0)
 
-  Zimmer              Zimmer[]
+  Zimmer Zimmer[]
 
   @@index([IstAktiv], map: "idx_zimmerkategorien_aktiv")
 }
 
 // Hotel Rooms
 model Zimmer {
-  ZimmerID            Int                   @id @default(autoincrement())
-  Zimmernummer        String                @db.VarChar(50)
-  ZimmerkategorieID   Int
-  StandortID          Int?
-  Etage               Int?
-  Status              Zimmer_Status?        @default(Verfuegbar)
-  Beschreibung        String?               @db.Text
-  Ausstattung         String?               @db.Text // JSON field for room-specific amenities
-  PreisProNacht       Decimal               @db.Decimal(10, 2)
-  MaxPersonen         Int                   @default(2)
-  IstRaucherZimmer    Boolean?              @default(false)
-  IstBarrierfrei      Boolean?              @default(false)
-  IstAktiv            Boolean?              @default(true)
-  LetzteReinigung     DateTime?             @db.Timestamp(0)
-  Notizen             String?               @db.Text
-  Erstelldatum        DateTime?             @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?             @default(now()) @db.Timestamp(0)
+  ZimmerID          Int            @id @default(autoincrement())
+  Zimmernummer      String         @db.VarChar(50)
+  ZimmerkategorieID Int
+  StandortID        Int?
+  Etage             Int?
+  Status            Zimmer_Status? @default(Verfuegbar)
+  Beschreibung      String?        @db.Text
+  Ausstattung       String?        @db.Text // JSON field for room-specific amenities
+  PreisProNacht     Decimal        @db.Decimal(10, 2)
+  MaxPersonen       Int            @default(2)
+  IstRaucherZimmer  Boolean?       @default(false)
+  IstBarrierfrei    Boolean?       @default(false)
+  IstAktiv          Boolean?       @default(true)
+  LetzteReinigung   DateTime?      @db.Timestamp(0)
+  Notizen           String?        @db.Text
+  Erstelldatum      DateTime?      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung   DateTime?      @default(now()) @db.Timestamp(0)
 
   Zimmerkategorien    Zimmerkategorien      @relation(fields: [ZimmerkategorieID], references: [ZimmerkategorieID], onDelete: NoAction, onUpdate: NoAction, map: "Zimmer_ibfk_1")
   Standorte           Standorte?            @relation(fields: [StandortID], references: [StandortID], onDelete: NoAction, onUpdate: NoAction, map: "Zimmer_ibfk_2")
@@ -1784,38 +1812,38 @@ model Zimmer {
 
 // Hotel Bookings
 model HotelBuchungen {
-  BuchungsID          Int                        @id @default(autoincrement())
-  Buchungsnummer      String                     @unique(map: "Buchungsnummer_Hotel") @db.VarChar(50)
-  KundenID            Int?
-  Gastname            String                     @db.VarChar(255)
-  Email               String?                    @db.VarChar(255)
-  Telefon             String?                    @db.VarChar(50)
-  CheckInDatum        DateTime                   @db.DateTime
-  CheckOutDatum       DateTime                   @db.DateTime
-  AnzahlErwachsene    Int                        @default(1)
-  AnzahlKinder        Int?                       @default(0)
-  Status              HotelBuchungen_Status?     @default(Bestaetigt)
-  GesamtpreisNetto    Decimal                    @default(0.00) @db.Decimal(10, 2)
-  GesamtpreisBrutto   Decimal                    @default(0.00) @db.Decimal(10, 2)
-  MwStGesamt          Decimal                    @default(0.00) @db.Decimal(10, 2)
-  Anzahlung           Decimal?                   @default(0.00) @db.Decimal(10, 2)
-  RechnungsID         Int?
-  Zahlungsart         HotelBuchungen_Zahlungsart?
-  Zahlungsstatus      HotelBuchungen_Zahlungsstatus? @default(Ausstehend)
-  BesondereWuensche   String?                    @db.Text
-  InterneNotizen      String?                    @db.Text
-  CheckInZeit         DateTime?                  @db.Timestamp(0)
-  CheckOutZeit        DateTime?                  @db.Timestamp(0)
+  BuchungsID           Int                            @id @default(autoincrement())
+  Buchungsnummer       String                         @unique(map: "Buchungsnummer_Hotel") @db.VarChar(50)
+  KundenID             Int?
+  Gastname             String                         @db.VarChar(255)
+  Email                String?                        @db.VarChar(255)
+  Telefon              String?                        @db.VarChar(50)
+  CheckInDatum         DateTime                       @db.DateTime
+  CheckOutDatum        DateTime                       @db.DateTime
+  AnzahlErwachsene     Int                            @default(1)
+  AnzahlKinder         Int?                           @default(0)
+  Status               HotelBuchungen_Status?         @default(Bestaetigt)
+  GesamtpreisNetto     Decimal                        @default(0.00) @db.Decimal(10, 2)
+  GesamtpreisBrutto    Decimal                        @default(0.00) @db.Decimal(10, 2)
+  MwStGesamt           Decimal                        @default(0.00) @db.Decimal(10, 2)
+  Anzahlung            Decimal?                       @default(0.00) @db.Decimal(10, 2)
+  RechnungsID          Int?
+  Zahlungsart          HotelBuchungen_Zahlungsart?
+  Zahlungsstatus       HotelBuchungen_Zahlungsstatus? @default(Ausstehend)
+  BesondereWuensche    String?                        @db.Text
+  InterneNotizen       String?                        @db.Text
+  CheckInZeit          DateTime?                      @db.Timestamp(0)
+  CheckOutZeit         DateTime?                      @db.Timestamp(0)
   ErfasstVonBenutzerID Int?
-  Erstelldatum        DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?                  @default(now()) @db.Timestamp(0)
+  Erstelldatum         DateTime?                      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung      DateTime?                      @default(now()) @db.Timestamp(0)
 
-  Kunden              Kunden?                    @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_1")
-  Rechnungen          Rechnungen?                @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_2")
-  Benutzer            Benutzer?                  @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_3")
-  HotelBuchungszimmer HotelBuchungszimmer[]
+  Kunden                Kunden?                 @relation(fields: [KundenID], references: [KundenID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_1")
+  Rechnungen            Rechnungen?             @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_2")
+  Benutzer              Benutzer?               @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungen_ibfk_3")
+  HotelBuchungszimmer   HotelBuchungszimmer[]
   HotelZusatzleistungen HotelZusatzleistungen[]
-  HotelGaeste         HotelGaeste[]
+  HotelGaeste           HotelGaeste[]
 
   @@index([KundenID], map: "idx_hotelbuchungen_kundenid")
   @@index([RechnungsID], map: "idx_hotelbuchungen_rechnungsid")
@@ -1827,21 +1855,21 @@ model HotelBuchungen {
 
 // Booking Rooms (Many-to-Many relationship)
 model HotelBuchungszimmer {
-  BuchungszimmerID    Int            @id @default(autoincrement())
-  BuchungsID          Int
-  ZimmerID            Int
-  CheckInDatum        DateTime       @db.DateTime
-  CheckOutDatum       DateTime       @db.DateTime
-  PreisProNacht       Decimal        @db.Decimal(10, 2)
-  AnzahlNaechte       Int
-  GesamtpreisNetto    Decimal        @db.Decimal(10, 2)
-  MwStSatz            Decimal        @db.Decimal(5, 2)
-  MwStBetrag          Decimal        @db.Decimal(10, 2)
-  Notizen             String?        @db.Text
-  Erstelldatum        DateTime?      @default(dbgenerated("(now())")) @db.Timestamp(0)
+  BuchungszimmerID Int       @id @default(autoincrement())
+  BuchungsID       Int
+  ZimmerID         Int
+  CheckInDatum     DateTime  @db.DateTime
+  CheckOutDatum    DateTime  @db.DateTime
+  PreisProNacht    Decimal   @db.Decimal(10, 2)
+  AnzahlNaechte    Int
+  GesamtpreisNetto Decimal   @db.Decimal(10, 2)
+  MwStSatz         Decimal   @db.Decimal(5, 2)
+  MwStBetrag       Decimal   @db.Decimal(10, 2)
+  Notizen          String?   @db.Text
+  Erstelldatum     DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  HotelBuchungen      HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelBuchungszimmer_ibfk_1")
-  Zimmer              Zimmer         @relation(fields: [ZimmerID], references: [ZimmerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungszimmer_ibfk_2")
+  HotelBuchungen HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelBuchungszimmer_ibfk_1")
+  Zimmer         Zimmer         @relation(fields: [ZimmerID], references: [ZimmerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelBuchungszimmer_ibfk_2")
 
   @@index([BuchungsID], map: "idx_hotelbuchungszimmer_buchungid")
   @@index([ZimmerID], map: "idx_hotelbuchungszimmer_zimmerid")
@@ -1849,26 +1877,26 @@ model HotelBuchungszimmer {
 
 // Hotel Guests (additional guest information for bookings)
 model HotelGaeste {
-  GastID              Int            @id @default(autoincrement())
-  BuchungsID          Int
-  Vorname             String         @db.VarChar(100)
-  Nachname            String         @db.VarChar(100)
-  Geburtsdatum        DateTime?      @db.Date
-  Nationalitaet       String?        @db.VarChar(100)
-  AusweisnummerTyp    String?        @db.VarChar(50)  // Passport, ID Card, etc.
-  Ausweisnummer       String?        @db.VarChar(100)
-  Email               String?        @db.VarChar(255)
-  Telefon             String?        @db.VarChar(50)
-  Adresse             String?        @db.VarChar(255)
-  Stadt               String?        @db.VarChar(100)
-  PLZ                 String?        @db.VarChar(20)
-  Land                String?        @db.VarChar(100)
-  IstHauptgast        Boolean?       @default(false)
-  Notizen             String?        @db.Text
-  Erstelldatum        DateTime?      @default(dbgenerated("(now())")) @db.Timestamp(0)
-  LetzteAenderung     DateTime?      @default(now()) @db.Timestamp(0)
+  GastID           Int       @id @default(autoincrement())
+  BuchungsID       Int
+  Vorname          String    @db.VarChar(100)
+  Nachname         String    @db.VarChar(100)
+  Geburtsdatum     DateTime? @db.Date
+  Nationalitaet    String?   @db.VarChar(100)
+  AusweisnummerTyp String?   @db.VarChar(50) // Passport, ID Card, etc.
+  Ausweisnummer    String?   @db.VarChar(100)
+  Email            String?   @db.VarChar(255)
+  Telefon          String?   @db.VarChar(50)
+  Adresse          String?   @db.VarChar(255)
+  Stadt            String?   @db.VarChar(100)
+  PLZ              String?   @db.VarChar(20)
+  Land             String?   @db.VarChar(100)
+  IstHauptgast     Boolean?  @default(false)
+  Notizen          String?   @db.Text
+  Erstelldatum     DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung  DateTime? @default(now()) @db.Timestamp(0)
 
-  HotelBuchungen      HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelGaeste_ibfk_1")
+  HotelBuchungen HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelGaeste_ibfk_1")
 
   @@index([BuchungsID], map: "idx_hotelgaeste_buchungid")
   @@index([Nachname], map: "idx_hotelgaeste_nachname")
@@ -1876,23 +1904,23 @@ model HotelGaeste {
 
 // Additional Services (room service, minibar, etc.)
 model HotelZusatzleistungen {
-  ZusatzleistungID    Int                               @id @default(autoincrement())
-  BuchungsID          Int
-  Bezeichnung         String                            @db.VarChar(255)
-  Beschreibung        String?                           @db.Text
-  Typ                 HotelZusatzleistungen_Typ?        @default(Sonstiges)
-  Preis               Decimal                           @db.Decimal(10, 2)
-  Menge               Decimal                           @default(1) @db.Decimal(10, 2)
-  GesamtpreisNetto    Decimal                           @db.Decimal(10, 2)
-  MwStSatz            Decimal                           @db.Decimal(5, 2)
-  MwStBetrag          Decimal                           @db.Decimal(10, 2)
-  Datum               DateTime                          @db.DateTime
+  ZusatzleistungID     Int                        @id @default(autoincrement())
+  BuchungsID           Int
+  Bezeichnung          String                     @db.VarChar(255)
+  Beschreibung         String?                    @db.Text
+  Typ                  HotelZusatzleistungen_Typ? @default(Sonstiges)
+  Preis                Decimal                    @db.Decimal(10, 2)
+  Menge                Decimal                    @default(1) @db.Decimal(10, 2)
+  GesamtpreisNetto     Decimal                    @db.Decimal(10, 2)
+  MwStSatz             Decimal                    @db.Decimal(5, 2)
+  MwStBetrag           Decimal                    @db.Decimal(10, 2)
+  Datum                DateTime                   @db.DateTime
   ErfasstVonBenutzerID Int?
-  Notizen             String?                           @db.Text
-  Erstelldatum        DateTime?                         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  Notizen              String?                    @db.Text
+  Erstelldatum         DateTime?                  @default(dbgenerated("(now())")) @db.Timestamp(0)
 
-  HotelBuchungen      HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelZusatzleistungen_ibfk_1")
-  Benutzer            Benutzer?      @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelZusatzleistungen_ibfk_2")
+  HotelBuchungen HotelBuchungen @relation(fields: [BuchungsID], references: [BuchungsID], onDelete: Cascade, onUpdate: NoAction, map: "HotelZusatzleistungen_ibfk_1")
+  Benutzer       Benutzer?      @relation(fields: [ErfasstVonBenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "HotelZusatzleistungen_ibfk_2")
 
   @@index([BuchungsID], map: "idx_hotelzusatzleistungen_buchungid")
   @@index([ErfasstVonBenutzerID], map: "idx_hotelzusatzleistungen_benutzerid")
@@ -1922,7 +1950,7 @@ enum HotelBuchungen_Status {
 enum HotelBuchungen_Zahlungsart {
   Bar
   Kreditkarte
-  EC_Karte @map("EC-Karte")
+  EC_Karte     @map("EC-Karte")
   Rechnung
   Vorkasse
   PayPal

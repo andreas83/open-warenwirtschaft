@@ -4,21 +4,24 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   try {
+    // Convert etage to integer or null
+    const etage = body.etage !== '' && body.etage != null ? parseInt(body.etage) : null
+
     const room = await prisma.zimmer.create({
       data: {
         Zimmernummer: body.zimmernummer,
         ZimmerkategorieID: body.zimmerkategorieID,
-        StandortID: body.standortID,
-        Etage: body.etage,
+        StandortID: body.standortID || null,
+        Etage: isNaN(etage) ? null : etage,
         Status: body.status || 'Verfuegbar',
-        Beschreibung: body.beschreibung,
+        Beschreibung: body.beschreibung || null,
         Ausstattung: body.ausstattung ? JSON.stringify(body.ausstattung) : null,
         PreisProNacht: body.preisProNacht,
         MaxPersonen: body.maxPersonen || 2,
         IstRaucherZimmer: body.istRaucherZimmer || false,
         IstBarrierfrei: body.istBarrierfrei || false,
         IstAktiv: body.istAktiv !== undefined ? body.istAktiv : true,
-        Notizen: body.notizen
+        Notizen: body.notizen || null
       },
       include: {
         Zimmerkategorien: true,

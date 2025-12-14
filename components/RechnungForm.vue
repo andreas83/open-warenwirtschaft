@@ -58,7 +58,7 @@
 
           <div class="flex justify-end space-x-3 pt-6">
             <NuxtLink to="/rechnungen" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200 text-sm font-medium">Abbrechen</NuxtLink>
-            <button type="submit" class="bg-teal-500 dark:bg-teal-600 text-white px-5 py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-700 transition duration-200 text-sm font-medium">{{ mode === 'create' ? 'Erstellen' : 'Speichern' }}</button>
+            <button type="submit" class="bg-indigo-500 dark:bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-600 dark:hover:bg-indigo-700 transition duration-200 text-sm font-medium">{{ mode === 'create' ? 'Erstellen' : 'Speichern' }}</button>
           </div>
         </form>
       </div>
@@ -92,15 +92,15 @@
             </div>
             <div>
               <label for="angewendeterWert" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Angewendeter Wert (optional, %)</label>
-              <input id="angewendeterWert" v-model="currentRabatt.AngewendeterWert" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+              <input id="angewendeterWert" v-model="currentRabatt.AngewendeterWert" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
             </div>
             <div>
               <label for="angewendeterBetrag" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Angewendeter Betrag</label>
-              <input id="angewendeterBetrag" v-model="currentRabatt.AngewendeterBetrag" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
+              <input id="angewendeterBetrag" v-model="currentRabatt.AngewendeterBetrag" type="number" step="0.01" class="w-full border border-gray-200 dark:border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" required>
             </div>
             <div class="flex justify-end space-x-3">
               <button type="button" @click="closeRabattModal" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200 text-sm font-medium">Abbrechen</button>
-              <button type="submit" class="bg-teal-500 dark:bg-teal-600 text-white px-5 py-2 rounded-md hover:bg-teal-600 dark:hover:bg-teal-700 transition duration-200 text-sm font-medium">Speichern</button>
+              <button type="submit" class="bg-indigo-500 dark:bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-600 dark:hover:bg-indigo-700 transition duration-200 text-sm font-medium">Speichern</button>
             </div>
           </form>
         </div>

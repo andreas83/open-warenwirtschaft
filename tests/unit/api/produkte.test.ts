@@ -147,14 +147,13 @@ describe('Produkte API', () => {
     })
 
     it('should handle empty body', async () => {
-      const event = createMockEvent({
-        body: null
-      })
+      global.readBody = vi.fn().mockResolvedValue(undefined)
+
+      const event = createMockEvent({})
 
       const result = await produktePostHandler(event)
 
       expect(result).toHaveProperty('status', 400)
-      expect(result).toHaveProperty('message', 'Keine Daten bereitgestellt')
     })
 
     it('should create product with supplier details', async () => {

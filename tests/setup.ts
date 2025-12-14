@@ -1,4 +1,11 @@
 import { vi } from 'vitest'
+import { ref, computed, reactive, readonly } from 'vue'
+
+// Make Vue composables globally available (Nuxt auto-imports)
+global.ref = ref
+global.computed = computed
+global.reactive = reactive
+global.readonly = readonly
 
 // Mock Nuxt auto-imports
 global.defineEventHandler = (handler: any) => handler

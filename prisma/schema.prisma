@@ -110,10 +110,14 @@ model Bestellungen {
 }
 
 model Einheiten {
-  EinheitID Int        @id @default(autoincrement())
-  Name      String     @unique(map: "Name") @db.VarChar(50)
-  Symbol    String     @unique(map: "Symbol") @db.VarChar(10)
-  Produkte  Produkte[]
+  EinheitID       Int        @id @default(autoincrement())
+  Name            String     @unique(map: "Name") @db.VarChar(50)
+  Symbol          String     @unique(map: "Symbol") @db.VarChar(10)
+  Beschreibung    String?    @db.Text
+  IstAktiv        Boolean?   @default(true)
+  Erstelldatum    DateTime?  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?  @default(now()) @db.Timestamp(0)
+  Produkte        Produkte[]
 }
 
 model Gutschriften {
@@ -177,9 +181,35 @@ model Kunden {
   ShopBestellungen      ShopBestellungen[]
   ShopBewertungen       ShopBewertungen[]
   HotelBuchungen        HotelBuchungen[]
+  Adressen              Adressen[]
 
   @@index([KundengruppeID], map: "idx_kunden_kundengruppeid")
   @@index([Nachname, Vorname], map: "idx_kunden_name")
+}
+
+model Adressen {
+  AdressID        Int                @id @default(autoincrement())
+  KundenID        Int
+  AdressTyp       Adressen_AdressTyp @default(Lieferadresse)
+  Firmenname      String?            @db.VarChar(255)
+  Ansprechpartner String?            @db.VarChar(255)
+  Adresse         String             @db.VarChar(255)
+  Adresszusatz    String?            @db.VarChar(255)
+  PLZ             String             @db.VarChar(10)
+  Ort             String             @db.VarChar(100)
+  Land            String             @db.VarChar(100)
+  Telefon         String?            @db.VarChar(50)
+  Email           String?            @db.VarChar(255)
+  IstStandard     Boolean?           @default(false)
+  IstAktiv        Boolean?           @default(true)
+  Erstelldatum    DateTime?          @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?          @default(now()) @db.Timestamp(0)
+
+  Kunden          Kunden             @relation(fields: [KundenID], references: [KundenID], onDelete: Cascade, onUpdate: NoAction, map: "Adressen_ibfk_1")
+  Lieferungen     Lieferungen[]
+
+  @@index([KundenID], map: "idx_adressen_kundenid")
+  @@index([AdressTyp], map: "idx_adressen_adresstyp")
 }
 
 model KundenRabattAnwendung {
@@ -257,9 +287,14 @@ model Lieferanten {
   Telefon            String?              @db.VarChar(20)
   Email              String?              @db.VarChar(255)
   UmsatzsteuerID     String?              @db.VarChar(20)
+  IstAktiv           Boolean?             @default(true)
+  Zahlungsziel       Int?                 @default(30)
+  Bemerkungen        String?              @db.Text
   Erstelldatum       DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
   LetzteAenderung    DateTime?            @default(now()) @db.Timestamp(0)
   ProduktLieferanten ProduktLieferanten[]
+
+  @@index([Firmenname], map: "idx_lieferanten_firmenname")
 }
 
 model Preise {
@@ -289,6 +324,10 @@ model ProduktLieferanten {
   Mindestbestellmenge      Int?
   PreisBeimLieferanten     Decimal?    @db.Decimal(10, 2)
   WaehrungLieferant        String?     @db.VarChar(3)
+  IstHauptlieferant        Boolean?    @default(false)
+  IstAktiv                 Boolean?    @default(true)
+  Erstelldatum             DateTime?   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung          DateTime?   @default(now()) @db.Timestamp(0)
   Produkte                 Produkte    @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktLieferanten_ibfk_1")
   Lieferanten              Lieferanten @relation(fields: [LieferantenID], references: [LieferantenID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktLieferanten_ibfk_2")
 
@@ -299,6 +338,10 @@ model ProduktLieferanten {
 model ProduktZuKategorie {
   ProduktID         Int
   KategorieID       Int
+  IstHauptkategorie Boolean?          @default(true)
+  SortOrder         Int?              @default(0)
+  Erstelldatum      DateTime?         @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung   DateTime?         @default(now()) @db.Timestamp(0)
   Produkte          Produkte          @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktZuKategorie_ibfk_1")
   Produktkategorien Produktkategorien @relation(fields: [KategorieID], references: [KategorieID], onDelete: NoAction, onUpdate: NoAction, map: "ProduktZuKategorie_ibfk_2")
 
@@ -566,6 +609,9 @@ model Umsatzsteuersaetze {
   Name               String     @unique(map: "Name") @db.VarChar(50)
   Steuersatz         Decimal    @db.Decimal(5, 2)
   Beschreibung       String?    @db.Text
+  Land               String?    @default("DE") @db.VarChar(3)
+  IstStandard        Boolean?   @default(false)
+  IstAktiv           Boolean?   @default(true)
   Erstelldatum       DateTime?  @default(dbgenerated("(now())")) @db.Timestamp(0)
   LetzteAenderung    DateTime?  @default(now()) @db.Timestamp(0)
   Produkte           Produkte[]
@@ -712,6 +758,13 @@ enum Kunden_Kundenstatus {
   Aktiv
   Inaktiv
   Gesperrt
+}
+
+enum Adressen_AdressTyp {
+  Rechnungsadresse
+  Lieferadresse
+  Abhol_Adresse @map("Abhol-Adresse")
+  Sonstige
 }
 
 model Kassen {
@@ -1207,10 +1260,12 @@ model Lieferungen {
 
   Bestellungen        Bestellungen            @relation(fields: [BestellID], references: [BestellID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_1")
   Touren              Touren?                 @relation(fields: [TourID], references: [TourID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_2")
+  Adressen            Adressen?               @relation(fields: [LieferadresseID], references: [AdressID], onDelete: NoAction, onUpdate: NoAction, map: "Lieferungen_ibfk_3")
   Liefernachweise     Liefernachweise[]
 
   @@index([BestellID], map: "idx_lieferungen_bestellid")
   @@index([TourID], map: "idx_lieferungen_tourid")
+  @@index([LieferadresseID], map: "idx_lieferungen_lieferadresseid")
 }
 
 model Touren {

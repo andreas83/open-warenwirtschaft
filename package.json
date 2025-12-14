@@ -8,7 +8,11 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "seed": "node --experimental-strip-types prisma/seed.ts"
+    "seed": "node --experimental-strip-types prisma/seed.ts",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@faker-js/faker": "^9.8.0",
@@ -30,9 +34,15 @@
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/svg-spinners": "^1.2.2",
+    "@nuxt/test-utils": "^3.21.0",
     "@unocss/nuxt": "^66.2.3",
     "@unocss/preset-icons": "^66.3.1",
     "@unocss/preset-wind4": "^66.3.1",
-    "unocss": "^66.2.3"
+    "@vitest/ui": "^4.0.15",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^20.0.11",
+    "jsdom": "^27.3.0",
+    "unocss": "^66.2.3",
+    "vitest": "^4.0.15"
   }
 }

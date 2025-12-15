@@ -8,6 +8,7 @@
           <span class="i-mdi-magnify w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2"
                 :class="{'text-gray-400': !darkMode, 'text-gray-500': darkMode}"></span>
           <input
+            ref="searchInputRef"
             v-model="searchQuery"
             type="text"
             :placeholder="$t('pos.searchProducts')"
@@ -117,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
   darkMode: {
@@ -133,6 +134,7 @@ const selectedCategory = ref(null)
 const products = ref([])
 const categories = ref([])
 const loading = ref(false)
+const searchInputRef = ref(null)
 let searchTimeout = null
 
 function formatPrice(product) {
@@ -216,6 +218,33 @@ async function fetchCategories() {
   }
 }
 
+// Keyboard shortcuts
+function handleKeyboard(event) {
+  // F2 or Ctrl+K - Focus search
+  if (event.key === 'F2' || (event.ctrlKey && event.key === 'k')) {
+    event.preventDefault()
+    searchInputRef.value?.focus()
+  }
+
+  // F3 - Clear search
+  if (event.key === 'F3') {
+    event.preventDefault()
+    clearSearch()
+    searchInputRef.value?.focus()
+  }
+
+  // Number keys 0-9 for category selection (when not in input)
+  if (event.target.tagName !== 'INPUT' && /^[0-9]$/.test(event.key)) {
+    event.preventDefault()
+    const num = parseInt(event.key)
+    if (num === 0) {
+      selectedCategory.value = null
+    } else if (categories.value[num - 1]) {
+      selectedCategory.value = categories.value[num - 1].KategorieID
+    }
+  }
+}
+
 watch(selectedCategory, () => {
   fetchProducts()
 })
@@ -223,6 +252,11 @@ watch(selectedCategory, () => {
 onMounted(() => {
   fetchProducts()
   fetchCategories()
+  window.addEventListener('keydown', handleKeyboard)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyboard)
 })
 </script>
 

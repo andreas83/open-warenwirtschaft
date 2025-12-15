@@ -23,14 +23,14 @@ This document tracks the implementation status of all modules in the Warenwirtsc
 | Category | Modules | Avg. Completion |
 |----------|---------|-----------------|
 | Core Modules | 9 | 82% |
-| POS/Retail | 2 | 53% |
+| POS/Retail | 2 | 73% |
 | Restaurant | 5 | 48% |
 | Hotel | 4 | 85% |
 | Shop/E-Commerce | 4 | 81% |
 | Wholesale | 5 | 60% |
 | Configuration | 5 | 81% |
 | System | 3 | 70% |
-| **Overall** | **37** | **70%** |
+| **Overall** | **37** | **72%** |
 
 ---
 
@@ -252,26 +252,35 @@ This document tracks the implementation status of all modules in the Warenwirtsc
 
 ---
 
-### POS Terminal - 30% In Progress
+### POS Terminal - 70% Functional
 
 | Aspect | Status |
 |--------|--------|
-| Pages | pos/[id] (emerging) |
+| Pages | pos/[id] (fully functional) |
 | Components | PosCart, PosProductSearch, PosPayment |
 | Layout | pos.vue |
+| Documentation | POS_SYSTEM.md (comprehensive) |
 
 **Implemented:**
-- Basic POS layout
-- Product search component
-- Cart component
-- Payment component
+- Full POS layout with dark mode and fullscreen
+- Product search with category filtering and debounce
+- Complete cart management with quantity controls
+- Multi-method payment processing (Cash, EC, Credit, Voucher)
+- Change calculation for cash payments
+- Success modal with invoice details
+- Real-time cash register balance updates
+- Comprehensive keyboard shortcuts (F2, F3, F5-F8, Ctrl+X/+/-/D, ESC, Enter)
+- Category selection via number keys (0-9)
+- Touch-optimized interface
+- Responsive design (mobile to desktop)
+- Complete transaction handling with inventory updates
 
 **Missing:**
-- Barcode scanner integration
-- Touch-optimized interface
-- Keyboard shortcuts
-- Quick product buttons
-- Customer display
+- Barcode scanner integration (hardware)
+- Quick product favorites/buttons
+- Customer selection in POS
+- Receipt printing
+- Customer display (second screen)
 
 ---
 
@@ -808,4 +817,7 @@ These cross-cutting features are needed but not yet implemented:
 | 2025-12-14 | Updated seed script with Hotel, Restaurant, POS, Shop data |
 | 2025-12-14 | Created complete customer-facing storefront (0% → 85%) |
 | 2025-12-14 | Shop/E-Commerce average completion: 44% → 81%, Overall: 65% → 70% |
+| 2025-12-15 | Created comprehensive POS documentation (docs/POS_SYSTEM.md) |
+| 2025-12-15 | Implemented full keyboard shortcuts for POS Terminal (30% → 70%) |
+| 2025-12-15 | POS/Retail average completion: 53% → 73%, Overall: 70% → 72% |
 

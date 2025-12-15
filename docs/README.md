@@ -4,6 +4,30 @@ This directory contains strategic documentation for the open-warenwirtschaft ERP
 
 ## Available Documents
 
+### [POS System Documentation](./POS_SYSTEM.md) ⭐ NEW
+Complete guide to the Point of Sale (POS) Terminal system, including:
+- Architecture overview and component structure
+- Complete feature list with implementation details
+- Step-by-step setup and user guide
+- API reference for checkout endpoint
+- Comprehensive keyboard shortcuts
+- Troubleshooting guide
+- Future enhancement roadmap
+
+**Perfect for:**
+- Retail store operators
+- Restaurant quick service
+- Pop-up shops and market stalls
+- Anyone needing fast checkout capabilities
+
+### [Module Implementation Status](./MODULE_STATUS.md)
+Comprehensive tracking of all module implementation progress:
+- Status tracking for 37 modules across 8 categories
+- Current completion percentages
+- Implemented and missing features per module
+- Critical missing features list
+- Detailed changelog
+
 ### [Target Audiences Analysis](./target-audiences-analysis.md)
 Comprehensive analysis of 8 different target audience segments, including:
 - Detailed business profiles
@@ -30,6 +54,20 @@ Visual mapping of which modules are critical, important, or optional for each ta
 - Quick start guides for each audience type
 - Decision-making framework
 
+### [Wholesale Module Documentation](./WHOLESALE_MODULE.md)
+Detailed documentation for wholesale/B2B features:
+- Price contracts and customer-specific pricing
+- Sales representatives and commission tracking
+- Credit management and dunning
+- Delivery tours and logistics
+- Quote/proposal system
+
+### [UX Components Guide](./UX_COMPONENTS.md)
+Reference for reusable UI components and patterns used throughout the application.
+
+### [Module System Architecture](./MODULE_SYSTEM.md)
+Technical documentation on the dynamic module activation system and audience templates.
+
 ## How to Use These Documents
 
 ### For Product Planning
@@ -55,13 +93,15 @@ Both documents include strategic recommendations on:
 - Comprehensive inventory management
 - Robust invoicing and payment tracking
 - Multi-location support
-- Recent cash register module addition
+- **Functional POS Terminal** with keyboard shortcuts (NEW ⭐)
+- Complete e-commerce storefront
+- Hotel and restaurant modules at 80%+ completion
 
 ### Biggest Opportunities
-1. **Retail Enhancement** - 70% ready, needs POS optimization
-2. **Wholesale B2B** - 80% ready, needs contract pricing
-3. **E-commerce Integration** - 50% ready, needs webshop connectors
-4. **Vertical Specialization** - Restaurant, Manufacturing, or Service markets
+1. **Retail Enhancement** - 85% ready, POS now functional with keyboard shortcuts
+2. **Wholesale B2B** - 80% ready, needs contract pricing automation
+3. **E-commerce Integration** - 85% ready, storefront complete, needs payment gateway
+4. **Vertical Specialization** - Restaurant (48%), Manufacturing, or Service markets
 
 ### Recommended Next Steps
 1. Choose primary target audience

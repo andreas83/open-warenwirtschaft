@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, computed, inject, onMounted } from 'vue'
+import { ref, computed, inject, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 
 definePageMeta({
@@ -219,8 +219,65 @@ async function fetchKasse() {
   }
 }
 
+// Keyboard shortcuts
+function handleKeyboard(event) {
+  // Don't trigger shortcuts when typing in inputs
+  if (event.target.tagName === 'INPUT') return
+
+  // F5 - Cash payment
+  if (event.key === 'F5') {
+    event.preventDefault()
+    // Will be handled by PosPayment component
+  }
+
+  // F11 - Fullscreen (handled by browser, but we can track state)
+  if (event.key === 'F11') {
+    event.preventDefault()
+    document.documentElement.requestFullscreen().catch(() => {})
+  }
+
+  // ESC - Close success modal
+  if (event.key === 'Escape' && showSuccess.value) {
+    event.preventDefault()
+    closeSuccessModal()
+  }
+
+  // Ctrl+X - Clear cart
+  if (event.ctrlKey && event.key === 'x' && cart.value.length > 0) {
+    event.preventDefault()
+    if (confirm('Warenkorb leeren?')) {
+      clearCart()
+    }
+  }
+
+  // Ctrl++ - Increase last item quantity
+  if (event.ctrlKey && event.key === '+' && cart.value.length > 0) {
+    event.preventDefault()
+    const lastIndex = cart.value.length - 1
+    updateQuantity(lastIndex, cart.value[lastIndex].menge + 1)
+  }
+
+  // Ctrl+- - Decrease last item quantity
+  if (event.ctrlKey && event.key === '-' && cart.value.length > 0) {
+    event.preventDefault()
+    const lastIndex = cart.value.length - 1
+    updateQuantity(lastIndex, cart.value[lastIndex].menge - 1)
+  }
+
+  // Ctrl+D - Remove last item
+  if (event.ctrlKey && event.key === 'd' && cart.value.length > 0) {
+    event.preventDefault()
+    removeItem(cart.value.length - 1)
+  }
+}
+
 onMounted(() => {
   fetchKasse()
+  window.addEventListener('keydown', handleKeyboard)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyboard)
 })
 </script>
 

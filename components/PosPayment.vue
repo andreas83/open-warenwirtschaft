@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
   total: {
@@ -108,6 +108,42 @@ const paymentMethods = [
 
 const selectedMethod = ref('Bar')
 const receivedAmount = ref(0)
+
+// Keyboard shortcuts for payment methods
+function handleKeyboard(event) {
+  // Don't trigger shortcuts when typing in inputs
+  if (event.target.tagName === 'INPUT') return
+
+  // F5 - Cash
+  if (event.key === 'F5') {
+    event.preventDefault()
+    selectedMethod.value = 'Bar'
+  }
+
+  // F6 - EC Card
+  if (event.key === 'F6') {
+    event.preventDefault()
+    selectedMethod.value = 'EC-Karte'
+  }
+
+  // F7 - Credit Card
+  if (event.key === 'F7') {
+    event.preventDefault()
+    selectedMethod.value = 'Kreditkarte'
+  }
+
+  // F8 - Voucher
+  if (event.key === 'F8') {
+    event.preventDefault()
+    selectedMethod.value = 'Gutschein'
+  }
+
+  // Enter - Complete checkout
+  if (event.key === 'Enter' && canCheckout.value && !props.processing) {
+    event.preventDefault()
+    handleCheckout()
+  }
+}
 
 const quickAmounts = computed(() => {
   const amounts = [5, 10, 20, 50]
@@ -156,4 +192,12 @@ watch(() => props.total, (newTotal) => {
     receivedAmount.value = 0
   }
 }, { immediate: true })
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyboard)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyboard)
+})
 </script>

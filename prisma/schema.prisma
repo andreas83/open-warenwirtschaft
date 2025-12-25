@@ -384,6 +384,7 @@ model Produkte {
   Vertragspositionen          Vertragspositionen[]
   Angebotspositionen          Angebotspositionen[]
   shopProduktes               ShopProdukte[]
+  MenuItems                   MenuItem[]
 
   @@index([EinheitID], map: "idx_produkte_einheitid")
   @@index([Produktname], map: "idx_produkte_name")
@@ -494,6 +495,7 @@ model Rechnungen {
   Provisionen            Provisionen[]
   Mahnungen              Mahnungen[]
   HotelBuchungen         HotelBuchungen[]
+  Teilrechnungen         Teilrechnung[]
 
   @@index([BestellID], map: "BestellID")
   @@index([ErstelltVonBenutzerID], map: "ErstelltVonBenutzerID")
@@ -971,9 +973,12 @@ model RestaurantTische {
   Erstelldatum    DateTime?                @default(dbgenerated("(now())")) @db.Timestamp(0)
   LetzteAenderung DateTime?                @default(now()) @db.Timestamp(0)
 
-  Tischbereiche          Tischbereiche?           @relation(fields: [BereichID], references: [BereichID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantTische_ibfk_1")
-  Reservierungen         Reservierungen[]
-  RestaurantBestellungen RestaurantBestellungen[]
+  Tischbereiche            Tischbereiche?                  @relation(fields: [BereichID], references: [BereichID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantTische_ibfk_1")
+  Reservierungen           Reservierungen[]
+  RestaurantBestellungen   RestaurantBestellungen[]
+  Warteliste               Warteliste[]
+  TischZusammenlegung      TischZusammenlegung[]           @relation("HauptTisch")
+  TischZusammenlegungDetails TischZusammenlegungDetail[]   @relation("ZusammengelegteTische")
 
   @@index([BereichID], map: "idx_restauranttische_bereichid")
   @@index([Status], map: "idx_restauranttische_status")
@@ -1031,6 +1036,7 @@ model RestaurantBestellungen {
   Benutzer                    Benutzer?                     @relation(fields: [BenutzerID], references: [BenutzerID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_3")
   Rechnungen                  Rechnungen?                   @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellungen_ibfk_4")
   RestaurantBestellpositionen RestaurantBestellpositionen[]
+  RechnungsAufteilungen       RechnungsAufteilung[]
 
   @@index([TischID], map: "idx_restaurantbestellungen_tischid")
   @@index([KundenID], map: "idx_restaurantbestellungen_kundenid")
@@ -1044,6 +1050,8 @@ model RestaurantBestellpositionen {
   PositionID          Int                                 @id @default(autoincrement())
   RestaurantBestellID Int
   ProduktID           Int
+  MenuItemID          Int?
+  Gang                Int?                                @default(1)
   Menge               Decimal                             @db.Decimal(10, 2)
   EinzelpreisNetto    Decimal                             @db.Decimal(10, 2)
   GesamtpreisNetto    Decimal                             @db.Decimal(10, 2)
@@ -1058,12 +1066,17 @@ model RestaurantBestellpositionen {
   Erstelldatum        DateTime?                           @default(dbgenerated("(now())")) @db.Timestamp(0)
   LetzteAenderung     DateTime?                           @default(now()) @db.Timestamp(0)
 
-  RestaurantBestellungen RestaurantBestellungen @relation(fields: [RestaurantBestellID], references: [RestaurantBestellID], onDelete: Cascade, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_1")
-  Produkte               Produkte               @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_2")
+  RestaurantBestellungen   RestaurantBestellungen        @relation(fields: [RestaurantBestellID], references: [RestaurantBestellID], onDelete: Cascade, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_1")
+  Produkte                 Produkte                      @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_2")
+  MenuItem                 MenuItem?                     @relation(fields: [MenuItemID], references: [MenuItemID], onDelete: NoAction, onUpdate: NoAction, map: "RestaurantBestellpositionen_ibfk_3")
+  BestellpositionModifiers BestellpositionModifier[]
+  TeilrechnungPositionen   TeilrechnungPosition[]
 
   @@index([RestaurantBestellID], map: "idx_restaurantbestellpositionen_bestellid")
   @@index([ProduktID], map: "idx_restaurantbestellpositionen_produktid")
+  @@index([MenuItemID], map: "idx_restaurantbestellpositionen_menuitemid")
   @@index([Status], map: "idx_restaurantbestellpositionen_status")
+  @@index([Gang], map: "idx_restaurantbestellpositionen_gang")
 }
 
 enum RestaurantTische_Status {
@@ -1103,6 +1116,210 @@ enum RestaurantBestellungen_Zahlungsart {
   EC_Karte    @map("EC-Karte")
   Rechnung
   Gutschein
+}
+
+// ========================================
+// RESTAURANT MODULE EXTENSIONS
+// ========================================
+
+// Menu Management
+model MenuKategorien {
+  KategorieID     Int         @id @default(autoincrement())
+  Name            String      @db.VarChar(100)
+  Beschreibung    String?     @db.Text
+  ParentID        Int?
+  SortOrder       Int?        @default(0)
+  Icon            String?     @db.VarChar(100)
+  IstAktiv        Boolean?    @default(true)
+  Erstelldatum    DateTime?   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?   @default(now()) @db.Timestamp(0)
+
+  Parent    MenuKategorien?  @relation("MenuKategorieHierarchy", fields: [ParentID], references: [KategorieID], onDelete: NoAction, onUpdate: NoAction, map: "MenuKategorien_ibfk_1")
+  Children  MenuKategorien[] @relation("MenuKategorieHierarchy")
+  MenuItems MenuItem[]
+
+  @@index([ParentID], map: "idx_menukategorien_parentid")
+}
+
+model MenuItem {
+  MenuItemID      Int       @id @default(autoincrement())
+  ProduktID       Int
+  KategorieID     Int?
+  Name            String    @db.VarChar(255)
+  Beschreibung    String?   @db.Text
+  Preis           Decimal   @db.Decimal(10, 2)
+  Bild            String?   @db.VarChar(500)
+  IstVerfuegbar   Boolean?  @default(true)
+  IstTagesessen   Boolean?  @default(false)
+  Allergene       String?   @db.Text
+  Zutaten         String?   @db.Text
+  Kalorien        Int?
+  Zubereitungszeit Int?
+  SortOrder       Int?      @default(0)
+  IstAktiv        Boolean?  @default(true)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
+
+  Produkte                Produkte              @relation(fields: [ProduktID], references: [ProduktID], onDelete: NoAction, onUpdate: NoAction, map: "MenuItem_ibfk_1")
+  MenuKategorien          MenuKategorien?       @relation(fields: [KategorieID], references: [KategorieID], onDelete: NoAction, onUpdate: NoAction, map: "MenuItem_ibfk_2")
+  MenuItemModifiers       MenuItemModifier[]
+  RestaurantBestellpositionen RestaurantBestellpositionen[]
+
+  @@index([ProduktID], map: "idx_menuitem_produktid")
+  @@index([KategorieID], map: "idx_menuitem_kategorieid")
+}
+
+model Modifier {
+  ModifierID      Int       @id @default(autoincrement())
+  Name            String    @db.VarChar(100)
+  Typ             Modifier_Typ?
+  Beschreibung    String?   @db.Text
+  PreisAufschlag  Decimal?  @default(0.00) @db.Decimal(10, 2)
+  IstAktiv        Boolean?  @default(true)
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime? @default(now()) @db.Timestamp(0)
+
+  MenuItemModifiers         MenuItemModifier[]
+  BestellpositionModifiers  BestellpositionModifier[]
+}
+
+model MenuItemModifier {
+  MenuItemModifierID Int      @id @default(autoincrement())
+  MenuItemID         Int
+  ModifierID         Int
+  IstPflicht         Boolean? @default(false)
+  SortOrder          Int?     @default(0)
+
+  MenuItem MenuItem @relation(fields: [MenuItemID], references: [MenuItemID], onDelete: Cascade, onUpdate: NoAction, map: "MenuItemModifier_ibfk_1")
+  Modifier Modifier @relation(fields: [ModifierID], references: [ModifierID], onDelete: Cascade, onUpdate: NoAction, map: "MenuItemModifier_ibfk_2")
+
+  @@unique([MenuItemID, ModifierID], map: "uq_menuitem_modifier")
+  @@index([MenuItemID], map: "idx_menuitemmodifier_menuitemid")
+  @@index([ModifierID], map: "idx_menuitemmodifier_modifierid")
+}
+
+model BestellpositionModifier {
+  BestellpositionModifierID Int      @id @default(autoincrement())
+  PositionID                Int
+  ModifierID                Int
+  PreisAufschlag            Decimal  @db.Decimal(10, 2)
+
+  RestaurantBestellpositionen RestaurantBestellpositionen @relation(fields: [PositionID], references: [PositionID], onDelete: Cascade, onUpdate: NoAction, map: "BestellpositionModifier_ibfk_1")
+  Modifier                    Modifier                    @relation(fields: [ModifierID], references: [ModifierID], onDelete: NoAction, onUpdate: NoAction, map: "BestellpositionModifier_ibfk_2")
+
+  @@index([PositionID], map: "idx_bestellpositionmodifier_positionid")
+  @@index([ModifierID], map: "idx_bestellpositionmodifier_modifierid")
+}
+
+// Waitlist Management
+model Warteliste {
+  WartelisteID    Int                  @id @default(autoincrement())
+  Gastname        String               @db.VarChar(255)
+  Telefon         String?              @db.VarChar(50)
+  PersonenAnzahl  Int
+  Ankunftszeit    DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  GeschaetzteWartezeit Int?
+  Status          Warteliste_Status?   @default(Wartend)
+  TischID         Int?
+  Notizen         String?              @db.Text
+  BenachrichtigtUm DateTime?           @db.Timestamp(0)
+  PlatzierungsUm  DateTime?            @db.Timestamp(0)
+  Erstelldatum    DateTime?            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  LetzteAenderung DateTime?            @default(now()) @db.Timestamp(0)
+
+  RestaurantTische RestaurantTische? @relation(fields: [TischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "Warteliste_ibfk_1")
+
+  @@index([TischID], map: "idx_warteliste_tischid")
+  @@index([Status], map: "idx_warteliste_status")
+  @@index([Ankunftszeit], map: "idx_warteliste_ankunftszeit")
+}
+
+// Split Bill Management
+model RechnungsAufteilung {
+  AufteilungID        Int      @id @default(autoincrement())
+  RestaurantBestellID Int
+  Anzahl              Int      @default(2)
+  Erstelldatum        DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  RestaurantBestellungen RestaurantBestellungen     @relation(fields: [RestaurantBestellID], references: [RestaurantBestellID], onDelete: Cascade, onUpdate: NoAction, map: "RechnungsAufteilung_ibfk_1")
+  Teilrechnungen         Teilrechnung[]
+
+  @@index([RestaurantBestellID], map: "idx_rechnungsaufteilung_bestellid")
+}
+
+model Teilrechnung {
+  TeilrechnungID  Int      @id @default(autoincrement())
+  AufteilungID    Int
+  Nummer          Int
+  BetragNetto     Decimal  @db.Decimal(10, 2)
+  BetragBrutto    Decimal  @db.Decimal(10, 2)
+  MwStBetrag      Decimal  @db.Decimal(10, 2)
+  Bezahlt         Boolean? @default(false)
+  RechnungsID     Int?
+  Erstelldatum    DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+
+  RechnungsAufteilung RechnungsAufteilung        @relation(fields: [AufteilungID], references: [AufteilungID], onDelete: Cascade, onUpdate: NoAction, map: "Teilrechnung_ibfk_1")
+  Rechnungen          Rechnungen?                @relation(fields: [RechnungsID], references: [RechnungsID], onDelete: NoAction, onUpdate: NoAction, map: "Teilrechnung_ibfk_2")
+  TeilrechnungPositionen TeilrechnungPosition[]
+
+  @@index([AufteilungID], map: "idx_teilrechnung_aufteilungid")
+  @@index([RechnungsID], map: "idx_teilrechnung_rechnungsid")
+}
+
+model TeilrechnungPosition {
+  TeilrechnungPositionID Int @id @default(autoincrement())
+  TeilrechnungID         Int
+  PositionID             Int
+
+  Teilrechnung                Teilrechnung                @relation(fields: [TeilrechnungID], references: [TeilrechnungID], onDelete: Cascade, onUpdate: NoAction, map: "TeilrechnungPosition_ibfk_1")
+  RestaurantBestellpositionen RestaurantBestellpositionen @relation(fields: [PositionID], references: [PositionID], onDelete: Cascade, onUpdate: NoAction, map: "TeilrechnungPosition_ibfk_2")
+
+  @@unique([TeilrechnungID, PositionID], map: "uq_teilrechnung_position")
+  @@index([TeilrechnungID], map: "idx_teilrechnungposition_teilrechnungid")
+  @@index([PositionID], map: "idx_teilrechnungposition_positionid")
+}
+
+// Table Merge/Split Management
+model TischZusammenlegung {
+  ZusammenlegungID Int       @id @default(autoincrement())
+  HauptTischID     Int
+  IstAktiv         Boolean?  @default(true)
+  ErstelltAm       DateTime? @default(dbgenerated("(now())")) @db.Timestamp(0)
+  AufgeloestAm     DateTime? @db.Timestamp(0)
+
+  RestaurantTische         RestaurantTische           @relation("HauptTisch", fields: [HauptTischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "TischZusammenlegung_ibfk_1")
+  TischZusammenlegungDetails TischZusammenlegungDetail[]
+
+  @@index([HauptTischID], map: "idx_tischzusammenlegung_haupttischid")
+  @@index([IstAktiv], map: "idx_tischzusammenlegung_istaktiv")
+}
+
+model TischZusammenlegungDetail {
+  DetailID         Int @id @default(autoincrement())
+  ZusammenlegungID Int
+  TischID          Int
+
+  TischZusammenlegung TischZusammenlegung @relation(fields: [ZusammenlegungID], references: [ZusammenlegungID], onDelete: Cascade, onUpdate: NoAction, map: "TischZusammenlegungDetail_ibfk_1")
+  RestaurantTische    RestaurantTische    @relation("ZusammengelegteTische", fields: [TischID], references: [TischID], onDelete: NoAction, onUpdate: NoAction, map: "TischZusammenlegungDetail_ibfk_2")
+
+  @@unique([ZusammenlegungID, TischID], map: "uq_zusammenlegung_tisch")
+  @@index([ZusammenlegungID], map: "idx_tischzusammenlegungdetail_zusammenlegungid")
+  @@index([TischID], map: "idx_tischzusammenlegungdetail_tischid")
+}
+
+enum Modifier_Typ {
+  Extra
+  Option
+  Groesse    @map("Größe")
+  Beilage
+  Sauce
+}
+
+enum Warteliste_Status {
+  Wartend
+  Benachrichtigt
+  Platziert
+  Abgebrochen
 }
 
 // ========================================
